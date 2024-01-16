@@ -1,0 +1,24 @@
+<!-- <div class="time">
+    <h1>00:00</h1>
+</div> -->
+<div class="stopwatch-box">
+
+
+    <div class="stopwatch">
+        <h1>{{hr}}:</h1>
+        <h1> {{min}}:</h1>
+        <h1>{{sec}}</h1>
+        <!-- <h1>{{ms}}</h1> -->
+    </div>
+
+    <div class="stopwatch-btns">
+        <button mat-mini-fab color="primary" (click)="start()">
+            <i *ngIf="!running"><mat-icon>play_arrow</mat-icon></i>
+            <i *ngIf="running"><mat-icon>pause</mat-icon></i>
+        </button>
+
+        <button mat-mini-fab color="primary" (click)="reset()">
+            <mat-icon>restart_alt</mat-icon>
+        </button>
+    </div>
+</div>

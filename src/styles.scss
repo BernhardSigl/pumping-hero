@@ -1,1 +1,67 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    max-height: 100vh;
+    width: 768px;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-color: #171717;
+    caret-color: transparent;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    display: flex;
+    justify-content: center;
+}
+
+.mat-icon {
+    color: white;
+}
+
+.mat-divider {
+    background-color: rgba(255, 255, 255, 0.2);
+    margin: 8px 0;
+}
+
+.content {
+    padding: 0 16px;
+    overflow-y: auto !important;
+    // height: calc(100vh - 48px - 66px - 20px - 48px);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+    color: white;
+    margin: 0 !important;
+}
+
+.mdc-tab__text-label {
+    color: white !important;
+}
+
+.mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+    color: var(--mat-tab-header-active-label-text-color) !important;
+}
+
+app-dialog-add-exercise {
+    width: 100%;
+}
+
+// add exercise container
+.cdk-overlay-pane {
+    max-width: calc(768px - 64px) !important;
+    width: 80%;
+}
+
+.cdk-global-overlay-wrapper {
+    align-items: flex-start !important;
+    margin-top: 136px;
+}

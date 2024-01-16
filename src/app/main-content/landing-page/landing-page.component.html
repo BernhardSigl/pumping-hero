@@ -1,0 +1,68 @@
+<app-timer></app-timer>
+
+<div class="content">
+    <mat-divider></mat-divider>
+
+    <div class="interval">
+        <div class="interval-title">
+            <h3>Alarm</h3>
+            <mat-icon>notifications_active</mat-icon>
+        </div>
+        <button mat-mini-fab color="primary" (click)="openAddIntervalCard()">
+            <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-raised-button color="primary" class="interval-btns">{{ firstInterval }}</button>
+        <button mat-raised-button color="primary" class="interval-btns">{{ secondInterval }}</button>
+    </div>
+
+    <div class="pre-interval">
+        <div class="pre-interval-title">
+            <h3>Pre-Alarm</h3>
+            <mat-icon>notifications</mat-icon>
+        </div>
+        <button mat-mini-fab color="primary" (click)="openAddPreIntervalCard()">
+            <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-raised-button color="primary" class="interval-btns">{{ firstPreInterval }}</button>
+        <button mat-raised-button color="primary" class="interval-btns">{{ secondPreInterval }}</button>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="gym-diary-title">
+        <h3>Gym-Diary</h3>
+        <mat-icon>fitness_center</mat-icon>
+    </div>
+    <div class="gym-diary">
+        <button mat-raised-button color="primary" (click)="openAddExerciseCard()"><mat-icon>add</mat-icon>Add
+            exercise</button>
+        <button mat-raised-button color="primary">
+            <h3>Back</h3>
+        </button>
+        <button mat-raised-button color="primary">
+            <h3>Chest</h3>
+        </button>
+        <button mat-raised-button color="primary">
+            <h3>Shoulders and Bis</h3>
+        </button>
+        <button mat-raised-button color="primary">
+            <h3>Claves</h3>
+        </button>
+        <button mat-raised-button color="primary">
+            <h3>Bizeps Tripzes</h3>
+        </button>
+        <button mat-raised-button color="primary">
+            <h3>Laufen und Chin ups</h3>
+        </button>
+        <button mat-raised-button color="primary">
+            <h3>Claves</h3>
+        </button>
+        <button mat-raised-button color="primary">
+            <h3>Bizeps Tripzes</h3>
+        </button>
+        <button mat-raised-button color="primary">
+            <h3>Laufen und Chin ups</h3>
+        </button>
+
+    </div>
+</div>

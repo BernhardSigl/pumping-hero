@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "simplefit-411215": {
+      "hosting": {
+        "simple-fit": [
+          "simplefit-411215"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "simplefit-411215"
+  }
+}
