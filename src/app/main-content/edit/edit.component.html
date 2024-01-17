@@ -1,31 +1,73 @@
-<div class="content">
-    <!-- <mat-divider></mat-divider> -->
-    <div class="interval">
-        <div class="interval-title">
-            <h3>Alarm</h3>
-            <mat-icon>notifications_active</mat-icon>
+<div class="test">
+    <mat-card>
+        <mat-card-title class="title">Select your presets</mat-card-title>
+
+        <div class="interval-content">
+            <mat-card-header>
+                <mat-card-title><mat-icon>notifications_active</mat-icon>Option 1</mat-card-title>
+                <div class="interval-input-boxes">
+                    <mat-form-field class="example-form-field">
+                        <mat-label>Min</mat-label>
+                        <input matInput type="number" [(ngModel)]="firstIntervalMin" min="0" max="59">
+                    </mat-form-field>
+                    <mat-form-field class="example-form-field">
+                        <mat-label>Sec</mat-label>
+                        <input matInput type="number" [(ngModel)]="firstIntervalSec" min="0" max="59">
+                    </mat-form-field>
+                </div>
+            </mat-card-header>
+
+            <mat-card-header>
+                <mat-card-title><mat-icon>notifications_active</mat-icon>Option 2</mat-card-title>
+                <div class="interval-input-boxes">
+                    <mat-form-field class="example-form-field">
+                        <mat-label>Min</mat-label>
+                        <input matInput type="number" [(ngModel)]="secondIntervalMin" min="0" max="59">
+                    </mat-form-field>
+                    <mat-form-field class="example-form-field">
+                        <mat-label>Sec</mat-label>
+                        <input matInput type="number" [(ngModel)]="secondIntervalSec" min="0" max="59">
+                    </mat-form-field>
+                </div>
+            </mat-card-header>
+
         </div>
-        <input style="visibility: hidden;">
-        <button mat-raised-button color="primary" (click)="openAddIntervalCard()">3.1</button>
-        <button mat-raised-button color="primary" (click)="openAddIntervalCard()">4.2</button>
-    </div>
+        <mat-divider></mat-divider>
+        <div class="interval-content">
 
-    <div class="pre-interval">
-        <div class="pre-interval-title">
-            <h3>Pre-Alarm</h3>
-            <mat-icon>notifications</mat-icon>
+            <mat-card-header>
+                <mat-card-title><mat-icon>notifications</mat-icon>Option 1</mat-card-title>
+                <div class="interval-input-boxes">
+                    <mat-form-field class="example-form-field">
+                        <mat-label>Min</mat-label>
+                        <input matInput type="number" [(ngModel)]="firstPreIntervalMin" min="0" max="59">
+                    </mat-form-field>
+                    <mat-form-field class="example-form-field">
+                        <mat-label>Sec</mat-label>
+                        <input matInput type="number" [(ngModel)]="firstPreIntervalSec" min="0" max="59">
+                    </mat-form-field>
+                </div>
+            </mat-card-header>
+
+            <mat-card-header>
+                <mat-card-title><mat-icon>notifications</mat-icon>Option 2</mat-card-title>
+                <div class="interval-input-boxes">
+                    <mat-form-field class="example-form-field">
+                        <mat-label>Min</mat-label>
+                        <input matInput type="number" [(ngModel)]="secondPreIntervalMin" min="0" max="59">
+                    </mat-form-field>
+                    <mat-form-field class="example-form-field">
+                        <mat-label>Sec</mat-label>
+                        <input matInput type="number" [(ngModel)]="secondPreIntervalSec" min="0" max="59">
+                    </mat-form-field>
+                </div>
+            </mat-card-header>
+
         </div>
-        <input style="visibility: hidden;">
-        <button mat-raised-button color="primary" (click)="openAddPreIntervalCard()">3.1</button>
-        <button mat-raised-button color="primary" (click)="openAddPreIntervalCard()">4.2</button>
-    </div>
 
-    <mat-divider></mat-divider>
-
-    <div class="gym-diary-title">
-        <h3>Gym-Diary</h3>
-        <mat-icon>fitness_center</mat-icon>
-    </div>
-    <button mat-raised-button color="primary" (click)="openAddExerciseCard()"><mat-icon>add</mat-icon>Add
-        exercise</button>
+        <mat-card-actions>
+            <button mat-button (click)="this.dialogRef.close()">Cancel</button>
+            <button mat-button (click)="saveUser()">Apply</button>
+        </mat-card-actions>
+    </mat-card>
 </div>

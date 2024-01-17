@@ -8,9 +8,6 @@
             <h3>Alert every</h3>
             <mat-icon>notifications_active</mat-icon>
         </div>
-        <button mat-mini-fab color="primary" (click)="openAddIntervalCard()">
-            <mat-icon>edit</mat-icon>
-        </button>
         <button mat-raised-button color="primary" class="interval-btns" (click)="setInterval('firstInterval')"
             [id]="activeFirstInterval" [ngClass]="{'active-button': activeFirstInterval}">
             {{ firstIntervalMin}}m<br>{{ firstIntervalSec }}s
@@ -26,9 +23,6 @@
             <h3>Pre Alert</h3>
             <mat-icon>notifications</mat-icon>
         </div>
-        <button mat-mini-fab color="primary" (click)="openAddPreIntervalCard()">
-            <mat-icon>edit</mat-icon>
-        </button>
         <button mat-raised-button color="primary" class="interval-btns" [id]="activeFirstPreInterval"
             (click)="setInterval('firstPreInterval')" [ngClass]="{'active-button': activeFirstPreInterval}">
             {{firstPreIntervalMin }}m<br>{{firstPreIntervalSec}}s

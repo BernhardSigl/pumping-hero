@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogAddExerciseComponent } from '../edit/dialog-add-exercise/dialog-add-exercise.component';
 import { DialogAddIntervalComponent } from '../edit/dialog-add-interval/dialog-add-interval.component';
 import { DialogAddPreIntervalComponent } from '../edit/dialog-add-pre-interval/dialog-add-pre-interval.component';
+import { EditComponent } from '../edit/edit.component';
 
 
 @Component({
@@ -91,18 +92,6 @@ export class LandingPageComponent {
 
     openAddExerciseCard() {
         this.dialog.open(DialogAddExerciseComponent, {
-            data: { userId: this.userId, userVariables: this.userVariables },
-        });
-    }
-
-    openAddIntervalCard() {
-        this.dialog.open(DialogAddIntervalComponent, {
-            data: { userId: this.userId, userVariables: this.userVariables },
-        });
-    }
-
-    openAddPreIntervalCard() {
-        this.dialog.open(DialogAddPreIntervalComponent, {
             data: { userId: this.userId, userVariables: this.userVariables },
         });
     }

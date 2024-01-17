@@ -56,12 +56,23 @@ app-dialog-add-exercise {
 }
 
 // add exercise container
+// .cdk-overlay-pane {
+//     max-width: calc(768px - 64px) !important;
+//     width: 80%;
+// }
+
+// .cdk-global-overlay-wrapper {
+//     align-items: flex-start !important;
+//     margin-top: 136px;
+// }
+
+// edit interval container
 .cdk-overlay-pane {
-    max-width: calc(768px - 64px) !important;
-    width: 80%;
+    max-width: 90vw !important;
 }
 
+//
+
 .cdk-global-overlay-wrapper {
-    align-items: flex-start !important;
-    margin-top: 136px;
+    top: -124px !important;
 }
