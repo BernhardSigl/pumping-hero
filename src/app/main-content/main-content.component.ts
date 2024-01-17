@@ -24,10 +24,10 @@ export class MainContentComponent {
   userId!: string;
   userVariables: any[] = [];
 
-  firstInterval!: number;
-  secondInterval!: number;
-  firstPreInterval!: number;
-  secondPreInterval!: number;
+  firstIntervalMin!: number;
+  secondIntervalMin!: number;
+  firstPreIntervalMin!: number;
+  secondPreIntervalMin!: number;
 
   firestore: Firestore = inject(Firestore);
 
@@ -47,10 +47,10 @@ export class MainContentComponent {
       let userField = querySnapshot.data();
       this.userVariables.push(userField);
       const userVariable = this.userVariables[0];
-      this.firstInterval = userVariable.firstInterval;
-      this.secondInterval = userVariable.secondInterval;
-      this.firstPreInterval = userVariable.firstPreInterval;
-      this.secondPreInterval = userVariable.secondPreInterval;
+      this.firstIntervalMin = userVariable.firstIntervalMin;
+      this.secondIntervalMin = userVariable.secondIntervalMin;
+      this.firstPreIntervalMin = userVariable.firstPreIntervalMin;
+      this.secondPreIntervalMin = userVariable.secondPreIntervalMin;
     });
   }
 

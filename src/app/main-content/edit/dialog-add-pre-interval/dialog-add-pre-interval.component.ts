@@ -25,8 +25,10 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './dialog-add-pre-interval.component.scss'
 })
 export class DialogAddPreIntervalComponent {
-  firstPreInterval!: number;
-  secondPreInterval!: number;
+  firstPreIntervalMin!: number;
+  secondPreIntervalMin!: number;
+  firstPreIntervalSec!: number;
+  secondPreIntervalSec!: number;
   user!: User;
   userId!: string;
 
@@ -42,19 +44,29 @@ export class DialogAddPreIntervalComponent {
     });
 
     const existingUser = this.data.userVariables[0];
-    this.firstPreInterval = existingUser?.firstPreInterval || 0;
-    this.secondPreInterval = existingUser?.secondPreInterval || 0;
+    // fill inputs in html
+    this.firstPreIntervalMin = existingUser?.firstPreIntervalMin || 0;
+    this.secondPreIntervalMin = existingUser?.secondPreIntervalMin || 0;
+    this.firstPreIntervalSec = existingUser?.firstPreIntervalSec || 0;
+    this.secondPreIntervalSec = existingUser?.secondPreIntervalSec || 0;
     this.userId = this.data.userId;
 
     this.user = new User({
+      // nicht verändert
       firstName: existingUser?.firstName,
       email: existingUser?.email,
       picture: existingUser?.picture,
       location: existingUser?.location,
-      firstInterval: existingUser?.firstPreInterval || 0,
-      secondInterval: existingUser?.firstPreInterval || 0,
-      firstPreInterval: this.secondPreInterval,
-      secondPreInterval: this.secondPreInterval,
+      firstIntervalMin: existingUser?.firstIntervalMin || 0,
+      secondIntervalMin: existingUser?.secondIntervalMin || 0,
+      firstIntervalSec: existingUser?.firstIntervalSec || 0,
+      secondIntervalSec: existingUser?.secondIntervalSec || 0,
+
+      // ändern
+      firstPreIntervalMin: this.firstPreIntervalMin,
+      secondPreIntervalMin: this.secondPreIntervalMin,
+      firstPreIntervalSec: this.firstPreIntervalSec,
+      secondPreIntervalSec: this.secondPreIntervalSec,
     });
   }
 
@@ -69,11 +81,11 @@ export class DialogAddPreIntervalComponent {
   async saveUser() {
     let docRef = this.getSingleUserDocRef(this.userId);
 
-    // Aktualisiere this.user mit den neuen Werten
-    this.user.firstPreInterval = this.firstPreInterval;
-    this.user.secondPreInterval = this.secondPreInterval;
+    this.user.firstPreIntervalMin = this.firstPreIntervalMin;
+    this.user.secondPreIntervalMin = this.secondPreIntervalMin;
+    this.user.firstPreIntervalSec = this.firstPreIntervalSec;
+    this.user.secondPreIntervalSec = this.secondPreIntervalSec;
 
-    // Speichere die aktualisierten Benutzerdaten
     await updateDoc(docRef, this.user.toJson()).then(() => {
       this.dialogRef.close();
     });

@@ -5,11 +5,11 @@
             <div class="interval-input-boxes">
                 <mat-form-field class="example-form-field">
                     <mat-label>Minutes</mat-label>
-                    <input matInput type="number" [(ngModel)]="firstInterval" min="0" max="59">
+                    <input matInput type="number" [(ngModel)]="firstIntervalMin" min="0" max="59">
                 </mat-form-field>
                 <mat-form-field class="example-form-field">
                     <mat-label>Seconds</mat-label>
-                    <input matInput type="number" min="0" max="59">
+                    <input matInput type="number" [(ngModel)]="firstIntervalSec" min="0" max="59">
                 </mat-form-field>
             </div>
         </mat-card-header>
@@ -18,11 +18,11 @@
             <div class="interval-input-boxes">
                 <mat-form-field class="example-form-field">
                     <mat-label>Minutes</mat-label>
-                    <input matInput type="number" [(ngModel)]="secondInterval" min="0" max="59">
+                    <input matInput type="number" [(ngModel)]="secondIntervalMin" min="0" max="59">
                 </mat-form-field>
                 <mat-form-field class="example-form-field">
                     <mat-label>Seconds</mat-label>
-                    <input matInput type="number" min="0" max="59">
+                    <input matInput type="number" [(ngModel)]="secondIntervalSec" min="0" max="59">
                 </mat-form-field>
             </div>
         </mat-card-header>

@@ -5,26 +5,38 @@
 
     <div class="interval">
         <div class="interval-title">
-            <h3>Alarm</h3>
+            <h3>Alert every</h3>
             <mat-icon>notifications_active</mat-icon>
         </div>
         <button mat-mini-fab color="primary" (click)="openAddIntervalCard()">
             <mat-icon>edit</mat-icon>
         </button>
-        <button mat-raised-button color="primary" class="interval-btns">{{ firstInterval }}</button>
-        <button mat-raised-button color="primary" class="interval-btns">{{ secondInterval }}</button>
+        <button mat-raised-button color="primary" class="interval-btns" (click)="setInterval('firstInterval')"
+            [id]="activeFirstInterval" [ngClass]="{'active-button': activeFirstInterval}">
+            {{ firstIntervalMin}}m<br>{{ firstIntervalSec }}s
+        </button>
+        <button mat-raised-button color="primary" class="interval-btns" [id]="activeSecondInterval"
+            (click)="setInterval('secondInterval')" [ngClass]="{'active-button': activeSecondInterval}">
+            {{secondIntervalMin }}m<br>{{ secondIntervalSec }}s
+        </button>
     </div>
 
     <div class="pre-interval">
         <div class="pre-interval-title">
-            <h3>Pre-Alarm</h3>
+            <h3>Pre Alert</h3>
             <mat-icon>notifications</mat-icon>
         </div>
         <button mat-mini-fab color="primary" (click)="openAddPreIntervalCard()">
             <mat-icon>edit</mat-icon>
         </button>
-        <button mat-raised-button color="primary" class="interval-btns">{{ firstPreInterval }}</button>
-        <button mat-raised-button color="primary" class="interval-btns">{{ secondPreInterval }}</button>
+        <button mat-raised-button color="primary" class="interval-btns" [id]="activeFirstPreInterval"
+            (click)="setInterval('firstPreInterval')" [ngClass]="{'active-button': activeFirstPreInterval}">
+            {{firstPreIntervalMin }}m<br>{{firstPreIntervalSec}}s
+        </button>
+        <button mat-raised-button color="primary" class="interval-btns" [id]="activeSecondPreInterval"
+            (click)="setInterval('secondPreInterval')" [ngClass]="{'active-button': activeSecondPreInterval}">
+            {{secondPreIntervalMin }}m<br>{{secondPreIntervalSec}}s
+        </button>
     </div>
 
     <mat-divider></mat-divider>

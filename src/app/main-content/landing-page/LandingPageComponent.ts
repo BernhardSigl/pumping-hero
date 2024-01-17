@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
@@ -18,6 +19,7 @@ import { DialogAddPreIntervalComponent } from '../edit/dialog-add-pre-interval/d
     selector: 'app-landing-page',
     standalone: true,
     imports: [
+        CommonModule,
         TimerComponent,
         MatButtonModule,
         MatIconModule,
@@ -33,10 +35,20 @@ export class LandingPageComponent {
     userId!: string;
     userVariables: any[] = [];
 
-    firstInterval!: number;
-    secondInterval!: number;
-    firstPreInterval!: number;
-    secondPreInterval!: number;
+    firstIntervalMin!: number;
+    secondIntervalMin!: number;
+    firstPreIntervalMin!: number;
+    secondPreIntervalMin!: number;
+
+    firstIntervalSec!: number;
+    secondIntervalSec!: number;
+    firstPreIntervalSec!: number;
+    secondPreIntervalSec!: number;
+
+    activeFirstInterval = false;
+    activeSecondInterval = false;
+    activeFirstPreInterval = false;
+    activeSecondPreInterval = false;
 
     firestore: Firestore = inject(Firestore);
 
@@ -57,10 +69,15 @@ export class LandingPageComponent {
             this.userVariables.pop(); // aktuallisiert potenzielle Änderungen
             this.userVariables.push(userField);
             const userVariable = this.userVariables[0];
-            this.firstInterval = userVariable.firstInterval;
-            this.secondInterval = userVariable.secondInterval;
-            this.firstPreInterval = userVariable.firstPreInterval;
-            this.secondPreInterval = userVariable.secondPreInterval;
+            this.firstIntervalMin = userVariable.firstIntervalMin;
+            this.secondIntervalMin = userVariable.secondIntervalMin;
+            this.firstPreIntervalMin = userVariable.firstPreIntervalMin;
+            this.secondPreIntervalMin = userVariable.secondPreIntervalMin;
+
+            this.firstIntervalSec = userVariable.firstIntervalSec;
+            this.secondIntervalSec = userVariable.secondIntervalSec;
+            this.firstPreIntervalSec = userVariable.firstPreIntervalSec;
+            this.secondPreIntervalSec = userVariable.secondPreIntervalSec;
         });
     }
 
@@ -88,5 +105,44 @@ export class LandingPageComponent {
         this.dialog.open(DialogAddPreIntervalComponent, {
             data: { userId: this.userId, userVariables: this.userVariables },
         });
+    }
+
+    calculateValue(intervalMin: number, intervalSec: number): string | number {
+        const timeToDec = ((intervalMin * 60) + intervalSec) / 60;
+
+        if (isNaN(timeToDec)) {
+            return "...";
+        } else {
+            return timeToDec.toFixed(1);
+        }
+    }
+
+    setInterval(interval: string) {
+        this.toggleInterval(interval);
+        this.togglePreInterval(interval);
+    }
+
+    toggleInterval(interval: string) {
+        if (interval === 'firstInterval') {
+            this.activeFirstInterval = !this.activeFirstInterval;
+            this.activeSecondInterval = false;
+        } else if (interval === 'secondInterval') {
+            this.activeSecondInterval = !this.activeSecondInterval;
+            this.activeFirstInterval = false;
+        }
+        if (!this.activeFirstInterval && !this.activeSecondInterval) {
+            this.activeFirstPreInterval = false;
+            this.activeSecondPreInterval = false;
+        }
+    }
+
+    togglePreInterval(interval: string) {
+        if (interval === 'firstPreInterval' && (this.activeFirstInterval || this.activeSecondInterval)) {
+            this.activeFirstPreInterval = !this.activeFirstPreInterval;
+            this.activeSecondPreInterval = false;
+        } else if (interval === 'secondPreInterval' && (this.activeFirstInterval || this.activeSecondInterval)) {
+            this.activeSecondPreInterval = !this.activeSecondPreInterval;
+            this.activeFirstPreInterval = false;
+        }
     }
 }
