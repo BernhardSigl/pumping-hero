@@ -54,6 +54,7 @@ export class LandingPageComponent {
         const q = this.getSingleUserDocRef(this.userId);
         onSnapshot(q, (querySnapshot) => {
             let userField = querySnapshot.data();
+            this.userVariables.pop(); // aktuallisiert potenzielle Änderungen
             this.userVariables.push(userField);
             const userVariable = this.userVariables[0];
             this.firstInterval = userVariable.firstInterval;
@@ -71,16 +72,21 @@ export class LandingPageComponent {
         return doc(this.getUsersColRef(), docId);
     }
 
-
     openAddExerciseCard() {
-        const dialog = this.dialog.open(DialogAddExerciseComponent);
+        this.dialog.open(DialogAddExerciseComponent, {
+            data: { userId: this.userId, userVariables: this.userVariables },
+        });
     }
 
     openAddIntervalCard() {
-        const dialog = this.dialog.open(DialogAddIntervalComponent);
+        this.dialog.open(DialogAddIntervalComponent, {
+            data: { userId: this.userId, userVariables: this.userVariables },
+        });
     }
 
     openAddPreIntervalCard() {
-        const dialog = this.dialog.open(DialogAddPreIntervalComponent);
+        this.dialog.open(DialogAddPreIntervalComponent, {
+            data: { userId: this.userId, userVariables: this.userVariables },
+        });
     }
 }

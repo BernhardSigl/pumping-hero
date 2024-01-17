@@ -1,9 +1,7 @@
 declare var google: any;
-import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-
-import { Firestore, addDoc, collection, doc, getDoc, getDocs, onSnapshot, query, updateDoc, where } from '@angular/fire/firestore';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit, inject, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
+import { Firestore, addDoc, collection, getDocs, query } from '@angular/fire/firestore';
 import { User } from '../models/user.class';
 
 @Component({
@@ -19,6 +17,8 @@ export class LoginComponent implements OnInit {
 
   private router = inject(Router);
 
+  constructor(private ngZone: NgZone) { }
+
   ngOnInit(): void {
     google.accounts.id.initialize({
       client_id: '48091826759-81j87796gcoeko02ls6hjvjbkunvaolj.apps.googleusercontent.com',
@@ -31,7 +31,6 @@ export class LoginComponent implements OnInit {
       shape: 'rectangle',
       width: 350
     })
-
   }
 
   private decodeToken(token: string) {
@@ -47,7 +46,7 @@ export class LoginComponent implements OnInit {
       const newFirstName = payLoad.given_name;
       const newProfilePic = payLoad.picture;
       const newLocation = payLoad.locale;
-      const querySnapshot = await this.getUsersDocuments();
+      const querySnapshot = await this.getUsersDocRef();
 
       const existingUser = querySnapshot.docs.find(doc => doc.data()['email'] === newEmail); // email already exists?
 
@@ -61,7 +60,7 @@ export class LoginComponent implements OnInit {
 
   // Angular / Daten lesen / Daten abrufen / Holen Sie sich mehrere Dokumente aus einer Sammlung:
   // db: "this.firestore"; cities: "collection" -> "users"; Hier: getUsersColRef()
-  async getUsersDocuments() {
+  async getUsersDocRef() {
     const q = query(this.getUsersColRef());
     const querySnapshot = await getDocs(q);
     return querySnapshot;
@@ -93,7 +92,9 @@ export class LoginComponent implements OnInit {
   }
 
   async redirect(token: string) {
-    this.router.navigate([`mainContent/${token}`]);
+    this.ngZone.run(() => {
+      this.router.navigate([`mainContent/${token}`]);
+    });
   }
 }
 

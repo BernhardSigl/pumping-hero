@@ -13,10 +13,10 @@ export class User {
         this.email = obj && obj.email ? obj.email : '';
         this.picture = obj && obj.picture ? obj.picture : '';
         this.location = obj && obj.location ? obj.location : '';
-        this.firstInterval = obj && obj.firstInterval ? obj.firstInterval : '';
-        this.secondInterval = obj && obj.secondInterval ? obj.secondInterval : '';
-        this.firstPreInterval = obj && obj.firstPreInterval ? obj.firstPreInterval : '';
-        this.secondPreInterval = obj && obj.secondPreInterval ? obj.secondPreInterval : '';
+        this.firstInterval = obj && obj.firstInterval ? Number(obj.firstInterval) : 0;
+        this.secondInterval = obj && obj.secondInterval ? Number(obj.secondInterval) : 0;
+        this.firstPreInterval = obj && obj.firstPreInterval ? Number(obj.firstPreInterval) : 0;
+        this.secondPreInterval = obj && obj.secondPreInterval ? Number(obj.secondPreInterval) : 0;
     }
 
     public toJson() {
