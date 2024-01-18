@@ -9,18 +9,36 @@ import { Firestore, collection, doc, onSnapshot } from '@angular/fire/firestore'
 import { User } from '../../models/user.class';
 import { LandingPageComponent } from '../landing-page/LandingPageComponent';
 
+//spinning wheel
+import { ThemePalette } from '@angular/material/core';
+import { ProgressSpinnerMode, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSliderModule } from '@angular/material/slider';
+import { FormsModule } from '@angular/forms';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCardModule } from '@angular/material/card';
+
 @Component({
   selector: 'app-timer',
   standalone: true,
   imports: [
     CommonModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+
+    MatCardModule, MatRadioModule, FormsModule, MatSliderModule, MatProgressSpinnerModule
   ],
   templateUrl: './timer.component.html',
   styleUrl: './timer.component.scss'
 })
 export class TimerComponent {
+  color: ThemePalette = 'primary';
+  mode: ProgressSpinnerMode = 'determinate';
+  value = 0;
+
+  initialValue = 0;
+  finaleValue = 60;
+  speed = 10;
+
   AUDIO_MAIN_ALERT = new Audio('./../../../assets/sounds/main-alert.mp3');
   AUDIO_PRE_ALERT = new Audio('./../../../assets/sounds/pre-alert.mp3');
 
@@ -66,6 +84,9 @@ export class TimerComponent {
       this.userId = params['id'];
     });
     this.subUsers();
+    // setInterval(() => {
+    //   console.log(this.value);
+    // }, 1000);
   }
 
   subUsers() {
@@ -107,6 +128,7 @@ export class TimerComponent {
       this.running = true;
       this.logCurrentTime();
       this.startTimer = setInterval(() => {
+        // this.value = this.sec * (10 / 6);
         this.ms++;
         this.ms = this.ms < 10 ? '0' + this.ms : this.ms;
 
@@ -121,7 +143,6 @@ export class TimerComponent {
           this.min++;
           this.min = this.min < 10 ? '0' + this.min : this.min;
           this.sec = '0' + 0;
-          // this.logCurrentTime(this.sec)
         }
 
         if (this.min === 60) {
@@ -147,6 +168,7 @@ export class TimerComponent {
     this.running = false;
     this.hr = this.min = this.sec = this.ms = '0' + 0;
     this.secAlert = 0;
+    this.value = 0;
   }
 
   logCurrentTime() {
@@ -168,7 +190,18 @@ export class TimerComponent {
     if (this.landingPage.activeFirstInterval) {
       this.intervalConvert = this.firstIntervalMin * 60 + this.firstIntervalSec;
     } else if (this.landingPage.activeSecondInterval) {
-      this.intervalConvert = this.firstIntervalMin * 60 + this.firstIntervalSec;
+      this.intervalConvert = this.secondIntervalMin * 60 + this.secondIntervalSec;
+    }
+    this.circleProgressBehaviour();
+  }
+
+  circleProgressBehaviour() {
+    this.value = this.secAlert * (100 / this.intervalConvert);
+    if (this.value == 100) {
+      this.secAlert = 0;
+    }
+    if (this.value > 100) {
+      this.value = +('' + this.value % 100);
     }
   }
 
