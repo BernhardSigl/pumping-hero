@@ -10,11 +10,11 @@
         </div>
         <button mat-raised-button color="primary" class="interval-btns" (click)="setInterval('firstInterval')"
             [id]="activeFirstInterval" [ngClass]="{'active-button': activeFirstInterval}">
-            {{ firstIntervalMin}}m<br>{{ firstIntervalSec }}s
+            {{ firstIntervalMin }}m<br>{{ firstIntervalSec }}s
         </button>
         <button mat-raised-button color="primary" class="interval-btns" [id]="activeSecondInterval"
             (click)="setInterval('secondInterval')" [ngClass]="{'active-button': activeSecondInterval}">
-            {{secondIntervalMin }}m<br>{{ secondIntervalSec }}s
+            {{ secondIntervalMin }}m<br>{{ secondIntervalSec }}s
         </button>
     </div>
 
@@ -25,11 +25,11 @@
         </div>
         <button mat-raised-button color="primary" class="interval-btns" [id]="activeFirstPreInterval"
             (click)="setInterval('firstPreInterval')" [ngClass]="{'active-button': activeFirstPreInterval}">
-            {{firstPreIntervalMin }}m<br>{{firstPreIntervalSec}}s
+            {{ firstPreIntervalMin }}m<br>{{ firstPreIntervalSec}}s
         </button>
         <button mat-raised-button color="primary" class="interval-btns" [id]="activeSecondPreInterval"
             (click)="setInterval('secondPreInterval')" [ngClass]="{'active-button': activeSecondPreInterval}">
-            {{secondPreIntervalMin }}m<br>{{secondPreIntervalSec}}s
+            {{ secondPreIntervalMin }}m<br>{{ secondPreIntervalSec}}s
         </button>
     </div>
 

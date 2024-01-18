@@ -54,6 +54,7 @@ export class EditComponent {
     });
 
     const existingUser = this.data.userVariables[0];
+
     // fill inputs in html
     this.firstIntervalMin = existingUser?.firstIntervalMin || 0;
     this.secondIntervalMin = existingUser?.secondIntervalMin || 0;

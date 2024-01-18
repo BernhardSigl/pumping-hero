@@ -11,10 +11,6 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddExerciseComponent } from '../edit/dialog-add-exercise/dialog-add-exercise.component';
-import { DialogAddIntervalComponent } from '../edit/dialog-add-interval/dialog-add-interval.component';
-import { DialogAddPreIntervalComponent } from '../edit/dialog-add-pre-interval/dialog-add-pre-interval.component';
-import { EditComponent } from '../edit/edit.component';
-
 
 @Component({
     selector: 'app-landing-page',
@@ -63,13 +59,14 @@ export class LandingPageComponent {
         this.subUsers();
     }
 
-    async subUsers() {
+    subUsers() {
         const q = this.getSingleUserDocRef(this.userId);
         onSnapshot(q, (querySnapshot) => {
             let userField = querySnapshot.data();
             this.userVariables.pop(); // aktuallisiert potenzielle Änderungen
             this.userVariables.push(userField);
             const userVariable = this.userVariables[0];
+
             this.firstIntervalMin = userVariable.firstIntervalMin;
             this.secondIntervalMin = userVariable.secondIntervalMin;
             this.firstPreIntervalMin = userVariable.firstPreIntervalMin;
