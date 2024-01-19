@@ -1,13 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 import { EditComponent } from '../edit/edit.component';
 import { Firestore, collection, doc, onSnapshot } from '@angular/fire/firestore';
 import { User } from '../../models/user.class';
-import { LandingPageComponent } from '../landing-page/LandingPageComponent';
 
 //spinning wheel
 import { ThemePalette } from '@angular/material/core';
@@ -16,6 +15,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
+import { ShareTimeService } from '../../share-time/share-time.service';
 
 @Component({
   selector: 'app-timer',
@@ -33,50 +33,29 @@ import { MatCardModule } from '@angular/material/card';
 export class TimerComponent {
   color: ThemePalette = 'primary';
   mode: ProgressSpinnerMode = 'determinate';
-  value = 0;
 
   initialValue = 0;
   finaleValue = 60;
-  speed = 10;
-
-  AUDIO_MAIN_ALERT = new Audio('./../../../assets/sounds/main-alert.mp3');
-  AUDIO_PRE_ALERT = new Audio('./../../../assets/sounds/pre-alert.mp3');
 
   user!: User;
   userId!: string;
   userVariables: any[] = [];
 
-  firstIntervalMin!: number;
-  secondIntervalMin!: number;
-  firstPreIntervalMin!: number;
-  secondPreIntervalMin!: number;
-
-  firstIntervalSec!: number;
-  secondIntervalSec!: number;
-  firstPreIntervalSec!: number;
-  secondPreIntervalSec!: number;
-
-  intervalConvert!: any;
-  preIntervalConvert!: any;
-
   ms: any = '0' + 0;
   sec: any = '0' + 0;
-  secAlert: number = 0;
   min: any = '0' + 0;
   hr: any = '0' + 0;
 
   startTimer: any;
-  startTimerAlert: any;
-  running = false;
 
   firestore: Firestore = inject(Firestore);
 
-  constructor(private route: ActivatedRoute, public dialog: MatDialog, private landingPage: LandingPageComponent) {
+  constructor(private route: ActivatedRoute, public dialog: MatDialog, public shareTimeService: ShareTimeService) {
     // btn booleans
-    this.landingPage.activeFirstInterval;
-    this.landingPage.activeSecondInterval;
-    this.landingPage.activeFirstPreInterval;
-    this.landingPage.activeSecondPreInterval;
+    this.shareTimeService.activeFirstInterval;
+    this.shareTimeService.activeSecondInterval;
+    this.shareTimeService.activeFirstPreInterval;
+    this.shareTimeService.activeSecondPreInterval;
   }
 
   ngOnInit(): void {
@@ -84,9 +63,6 @@ export class TimerComponent {
       this.userId = params['id'];
     });
     this.subUsers();
-    // setInterval(() => {
-    //   console.log(this.value);
-    // }, 1000);
   }
 
   subUsers() {
@@ -97,15 +73,15 @@ export class TimerComponent {
       this.userVariables.push(userField);
       const userVariable = this.userVariables[0];
 
-      this.firstIntervalMin = userVariable.firstIntervalMin;
-      this.secondIntervalMin = userVariable.secondIntervalMin;
-      this.firstPreIntervalMin = userVariable.firstPreIntervalMin;
-      this.secondPreIntervalMin = userVariable.secondPreIntervalMin;
+      this.shareTimeService.firstIntervalMin = userVariable.firstIntervalMin;
+      this.shareTimeService.secondIntervalMin = userVariable.secondIntervalMin;
+      this.shareTimeService.firstPreIntervalMin = userVariable.firstPreIntervalMin;
+      this.shareTimeService.secondPreIntervalMin = userVariable.secondPreIntervalMin;
 
-      this.firstIntervalSec = userVariable.firstIntervalSec;
-      this.secondIntervalSec = userVariable.secondIntervalSec;
-      this.firstPreIntervalSec = userVariable.firstPreIntervalSec;
-      this.secondPreIntervalSec = userVariable.secondPreIntervalSec;
+      this.shareTimeService.firstIntervalSec = userVariable.firstIntervalSec;
+      this.shareTimeService.secondIntervalSec = userVariable.secondIntervalSec;
+      this.shareTimeService.firstPreIntervalSec = userVariable.firstPreIntervalSec;
+      this.shareTimeService.secondPreIntervalSec = userVariable.secondPreIntervalSec;
     });
   }
 
@@ -124,17 +100,16 @@ export class TimerComponent {
   }
 
   start(): void {
-    if (!this.running) {
-      this.running = true;
-      this.logCurrentTime();
+    if (!this.shareTimeService.running) {
+      this.shareTimeService.running = true;
+      this.shareTimeService.logCurrentTime();
       this.startTimer = setInterval(() => {
-        // this.value = this.sec * (10 / 6);
         this.ms++;
         this.ms = this.ms < 10 ? '0' + this.ms : this.ms;
 
         if (this.ms === 100) {
           this.sec++;
-          this.secAlert++;
+          this.shareTimeService.secAlert++;
           this.sec = this.sec < 10 ? '0' + this.sec : this.sec;
           this.ms = '0' + 0;
         }
@@ -158,80 +133,16 @@ export class TimerComponent {
 
   stop(): void {
     clearInterval(this.startTimer);
-    clearInterval(this.startTimerAlert);
-    this.running = false;
+    clearInterval(this.shareTimeService.startTimerAlert);
+    this.shareTimeService.running = false;
   }
 
   reset(): void {
     clearInterval(this.startTimer);
-    clearInterval(this.startTimerAlert);
-    this.running = false;
+    clearInterval(this.shareTimeService.startTimerAlert);
+    this.shareTimeService.running = false;
     this.hr = this.min = this.sec = this.ms = '0' + 0;
-    this.secAlert = 0;
-    this.value = 0;
-  }
-
-  logCurrentTime() {
-    if (this.checkActiveInterval()) {
-      this.startTimerAlert = setInterval(() => {
-        this.intervalCalc();
-        this.preIntervalCalc();
-        this.playIntervalSound();
-        this.playPreIntervalSound();
-      }, 10);
-    }
-  }
-
-  checkActiveInterval() {
-    return this.landingPage.activeFirstInterval || this.landingPage.activeSecondInterval;
-  }
-
-  intervalCalc() {
-    if (this.landingPage.activeFirstInterval) {
-      this.intervalConvert = this.firstIntervalMin * 60 + this.firstIntervalSec;
-    } else if (this.landingPage.activeSecondInterval) {
-      this.intervalConvert = this.secondIntervalMin * 60 + this.secondIntervalSec;
-    }
-    this.circleProgressBehaviour();
-  }
-
-  circleProgressBehaviour() {
-    this.value = this.secAlert * (100 / this.intervalConvert);
-    if (this.value == 100) {
-      this.secAlert = 0;
-    }
-    if (this.value > 100) {
-      this.value = +('' + this.value % 100);
-    }
-  }
-
-  preIntervalCalc() {
-    if (this.landingPage.activeFirstPreInterval) {
-      this.preIntervalConvert = this.intervalConvert - (this.firstPreIntervalMin * 60 + this.firstPreIntervalSec);
-    } else if (this.landingPage.activeSecondPreInterval) {
-      this.preIntervalConvert = this.intervalConvert - (this.secondPreIntervalMin * 60 + this.secondPreIntervalSec);
-    }
-  }
-
-  playIntervalSound() {
-    if (this.secAlert % this.intervalConvert === 0) {
-      this.intervalSoundBehaviour(this.AUDIO_MAIN_ALERT);
-    }
-  }
-
-  playPreIntervalSound() {
-    if (this.secAlert % this.intervalConvert === this.preIntervalConvert) {
-      this.intervalSoundBehaviour(this.AUDIO_PRE_ALERT);
-    }
-  }
-
-  intervalSoundBehaviour(AUDIO_NAME: HTMLAudioElement) {
-    if (AUDIO_NAME.paused) {
-      AUDIO_NAME.play();
-    }
-    setTimeout(() => {
-      AUDIO_NAME.pause();
-      AUDIO_NAME.currentTime = 0;
-    }, 900);
+    this.shareTimeService.secAlert = 0;
+    this.shareTimeService.value = 0;
   }
 }

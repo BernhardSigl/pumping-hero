@@ -12,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
+import { ShareTimeService } from '../../share-time/share-time.service';
 
 @Component({
   selector: 'app-edit',
@@ -46,7 +47,7 @@ export class EditComponent {
 
   // Mit @Inject(MAT_DIALOG_DATA) public data: any kann ich die Daten von der Landing Page beziehen
   // public dialogRef: MatDialogRef<DialogAddIntervalComponent>: schließt das popup fenster
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private route: ActivatedRoute, public dialogRef: MatDialogRef<EditComponent>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private route: ActivatedRoute, public dialogRef: MatDialogRef<EditComponent>, private shareTimeService: ShareTimeService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -112,5 +113,6 @@ export class EditComponent {
     await updateDoc(docRef, this.user.toJson()).then(() => {
       this.dialogRef.close();
     });
+    this.shareTimeService.intervalComparison();
   }
 }
