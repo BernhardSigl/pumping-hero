@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { Firestore, collection, doc, onSnapshot } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,7 @@ export class ShareTimeService {
   value = 0;
   secAlert: number = 0;
   running = false;
+  userVariables: any[] = [];
 
   preIntervalConvert!: any;
   startTimerAlert: any;
@@ -30,7 +32,37 @@ export class ShareTimeService {
   AUDIO_MAIN_ALERT = new Audio('./../../assets/sounds/main-alert.mp3');
   AUDIO_PRE_ALERT = new Audio('./../../assets/sounds/pre-alert.mp3');
 
-  constructor() {
+  firestore: Firestore = inject(Firestore);
+
+  constructor() { }
+
+  subUsers(userId: string) {
+    const q = this.getSingleUserDocRef(userId);
+    onSnapshot(q, (querySnapshot) => {
+      let userField = querySnapshot.data();
+      this.userVariables.pop(); // aktuallisiert potenzielle Änderungen
+      this.userVariables.push(userField);
+
+      const userVariable = this.userVariables[0];
+
+      this.firstIntervalMin = userVariable.firstIntervalMin;
+      this.secondIntervalMin = userVariable.secondIntervalMin;
+      this.firstPreIntervalMin = userVariable.firstPreIntervalMin;
+      this.secondPreIntervalMin = userVariable.secondPreIntervalMin;
+
+      this.firstIntervalSec = userVariable.firstIntervalSec;
+      this.secondIntervalSec = userVariable.secondIntervalSec;
+      this.firstPreIntervalSec = userVariable.firstPreIntervalSec;
+      this.secondPreIntervalSec = userVariable.secondPreIntervalSec;
+    });
+  }
+
+  getUsersColRef() {
+    return collection(this.firestore, "users");
+  }
+
+  getSingleUserDocRef(docId: string) {
+    return doc(this.getUsersColRef(), docId);
   }
 
   logCurrentTime() {

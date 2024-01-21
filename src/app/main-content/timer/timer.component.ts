@@ -1,12 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 import { EditComponent } from '../edit/edit.component';
-import { Firestore, collection, doc, onSnapshot } from '@angular/fire/firestore';
-import { User } from '../../models/user.class';
 
 //spinning wheel
 import { ThemePalette } from '@angular/material/core';
@@ -37,7 +35,6 @@ export class TimerComponent {
   initialValue = 0;
   finaleValue = 60;
 
-  user!: User;
   userId!: string;
   userVariables: any[] = [];
 
@@ -48,54 +45,21 @@ export class TimerComponent {
 
   startTimer: any;
 
-  firestore: Firestore = inject(Firestore);
-
-  constructor(private route: ActivatedRoute, public dialog: MatDialog, public shareTimeService: ShareTimeService) {
-    // btn booleans
-    this.shareTimeService.activeFirstInterval;
-    this.shareTimeService.activeSecondInterval;
-    this.shareTimeService.activeFirstPreInterval;
-    this.shareTimeService.activeSecondPreInterval;
-  }
+  constructor(
+    private route: ActivatedRoute,
+    public dialog: MatDialog,
+    public shareTimeService: ShareTimeService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.userId = params['id'];
     });
-    this.subUsers();
-  }
-
-  subUsers() {
-    const q = this.getSingleUserDocRef(this.userId);
-    onSnapshot(q, (querySnapshot) => {
-      let userField = querySnapshot.data();
-      this.userVariables.pop(); // aktuallisiert potenzielle Änderungen
-      this.userVariables.push(userField);
-      const userVariable = this.userVariables[0];
-
-      this.shareTimeService.firstIntervalMin = userVariable.firstIntervalMin;
-      this.shareTimeService.secondIntervalMin = userVariable.secondIntervalMin;
-      this.shareTimeService.firstPreIntervalMin = userVariable.firstPreIntervalMin;
-      this.shareTimeService.secondPreIntervalMin = userVariable.secondPreIntervalMin;
-
-      this.shareTimeService.firstIntervalSec = userVariable.firstIntervalSec;
-      this.shareTimeService.secondIntervalSec = userVariable.secondIntervalSec;
-      this.shareTimeService.firstPreIntervalSec = userVariable.firstPreIntervalSec;
-      this.shareTimeService.secondPreIntervalSec = userVariable.secondPreIntervalSec;
-    });
-  }
-
-  getUsersColRef() {
-    return collection(this.firestore, "users");
-  }
-
-  getSingleUserDocRef(docId: string) {
-    return doc(this.getUsersColRef(), docId);
+    this.shareTimeService.subUsers(this.userId)
   }
 
   openEditIntervalCard() {
     this.dialog.open(EditComponent, {
-      data: { userId: this.userId, userVariables: this.userVariables },
+      data: { userId: this.userId, userVariables: this.shareTimeService.userVariables },
     });
   }
 
