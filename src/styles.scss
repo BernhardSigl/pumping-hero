@@ -51,28 +51,13 @@ p {
     color: var(--mat-tab-header-active-label-text-color) !important;
 }
 
-app-dialog-add-exercise {
-    width: 100%;
-}
-
-// add exercise container
-// .cdk-overlay-pane {
-//     max-width: calc(768px - 64px) !important;
-//     width: 80%;
-// }
-
-// .cdk-global-overlay-wrapper {
-//     align-items: flex-start !important;
-//     margin-top: 136px;
-// }
-
-// edit interval container
+// card
 .cdk-overlay-pane {
-    max-width: 90vw !important;
+    width: 90vw !important;
 }
 
 //
 
 .cdk-global-overlay-wrapper {
-    top: -124px !important;
+    top: -20% !important;
 }

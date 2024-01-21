@@ -3,6 +3,7 @@ export class User {
     email: string;
     picture: string;
     location: string;
+    exercises: { [key: string]: any };
     // min
     firstIntervalMin: number;
     secondIntervalMin: number;
@@ -19,6 +20,7 @@ export class User {
         this.email = obj && obj.email ? obj.email : '';
         this.picture = obj && obj.picture ? obj.picture : '';
         this.location = obj && obj.location ? obj.location : '';
+        this.exercises = obj && obj.exercises ? obj.exercises : [];
         // min
         this.firstIntervalMin = obj && obj.firstIntervalMin ? Number(obj.firstIntervalMin) : 0;
         this.secondIntervalMin = obj && obj.secondIntervalMin ? Number(obj.secondIntervalMin) : 0;
@@ -37,6 +39,7 @@ export class User {
             email: this.email,
             picture: this.picture,
             location: this.location,
+            exercises: this.exercises,
             // min
             firstIntervalMin: this.firstIntervalMin,
             secondIntervalMin: this.secondIntervalMin,

@@ -81,14 +81,15 @@ export class LoginComponent implements OnInit {
       picture: newProfilePic,
       location: newLocation,
       email: newEmail,
+      exercises: {},
       firstIntervalMin: 3,
       secondIntervalMin: 4,
-      firstPreIntervalMin: 10,
-      secondPreIntervalMin: 15,
+      firstPreIntervalMin: 0,
+      secondPreIntervalMin: 0,
       firstIntervalSec: 0,
       secondIntervalSec: 0,
-      firstPreIntervalSec: 0,
-      secondPreIntervalSec: 0,
+      firstPreIntervalSec: 10,
+      secondPreIntervalSec: 15,
     });
     await this.addUser().then((result: any) => {
       this.redirect(result.id);

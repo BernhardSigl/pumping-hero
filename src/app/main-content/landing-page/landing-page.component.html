@@ -47,33 +47,14 @@
     <div class="gym-diary">
         <button mat-raised-button color="primary" (click)="openAddExerciseCard()"><mat-icon>add</mat-icon>Add
             exercise</button>
-        <button mat-raised-button color="primary">
-            <h3>Back</h3>
-        </button>
-        <button mat-raised-button color="primary">
-            <h3>Chest</h3>
-        </button>
-        <button mat-raised-button color="primary">
-            <h3>Shoulders and Bis</h3>
-        </button>
-        <button mat-raised-button color="primary">
-            <h3>Claves</h3>
-        </button>
-        <button mat-raised-button color="primary">
-            <h3>Bizeps Tripzes</h3>
-        </button>
-        <button mat-raised-button color="primary">
-            <h3>Laufen und Chin ups</h3>
-        </button>
-        <button mat-raised-button color="primary">
-            <h3>Claves</h3>
-        </button>
-        <button mat-raised-button color="primary">
-            <h3>Bizeps Tripzes</h3>
-        </button>
-        <button mat-raised-button color="primary">
-            <h3>Laufen und Chin ups</h3>
+
+        <button mat-raised-button color="primary" *ngFor="let exercise of exercisesList">
+            <h3>{{ exercise }}</h3>
         </button>
 
     </div>
 </div>
+
+<!-- <button mat-raised-button color="primary">
+    <h3></h3>
+</button> -->

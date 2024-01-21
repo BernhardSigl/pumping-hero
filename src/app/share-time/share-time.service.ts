@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, doc, onSnapshot } from '@angular/fire/firestore';
+import { Firestore, collection, doc, onSnapshot, updateDoc } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +36,7 @@ export class ShareTimeService {
 
   constructor() { }
 
+  // Firebase
   subUsers(userId: string) {
     const q = this.getSingleUserDocRef(userId);
     onSnapshot(q, (querySnapshot) => {
@@ -65,6 +66,7 @@ export class ShareTimeService {
     return doc(this.getUsersColRef(), docId);
   }
 
+  // Timer
   logCurrentTime() {
     if (this.checkActiveInterval()) {
       this.startTimerAlert = setInterval(() => {
@@ -130,7 +132,7 @@ export class ShareTimeService {
     };
   }
 
-  //
+
   setInterval(interval: string) {
     this.toggleInterval(interval);
     this.togglePreInterval(interval);

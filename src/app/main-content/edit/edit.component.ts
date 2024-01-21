@@ -1,4 +1,4 @@
-import { Component, Inject, inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Firestore, collection, doc, updateDoc } from '@angular/fire/firestore';
+import { updateDoc } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
 import { MatIconModule } from '@angular/material/icon';
@@ -43,19 +43,17 @@ export class EditComponent {
   user!: User;
   userId!: string;
 
-  firestore: Firestore = inject(Firestore);
-
-  // Mit @Inject(MAT_DIALOG_DATA) public data: any kann ich die Daten von der Landing Page beziehen
-  // public dialogRef: MatDialogRef<DialogAddIntervalComponent>: schließt das popup fenster
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private route: ActivatedRoute, public dialogRef: MatDialogRef<EditComponent>, private shareTimeService: ShareTimeService) { }
+  // Mit @Inject(MAT_DIALOG_DATA) public data: any kann ich die Daten von der Timer Page beziehen. (Timer bezieht Daten von share-timer.service)
+  // public dialogRef: MatDialogRef<EditComponent>: schließt das popup fenster
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<EditComponent>,
+    private shareTimeService: ShareTimeService,
+  ) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      this.userId = params['id'];
-    });
-
     const existingUser = this.data.userVariables[0];
-
+    this.userId = this.data.userId;
     // fill inputs in html
     this.firstIntervalMin = existingUser?.firstIntervalMin || 0;
     this.secondIntervalMin = existingUser?.secondIntervalMin || 0;
@@ -66,8 +64,6 @@ export class EditComponent {
     this.secondPreIntervalMin = existingUser?.secondPreIntervalMin || 0;
     this.firstPreIntervalSec = existingUser?.firstPreIntervalSec || 0;
     this.secondPreIntervalSec = existingUser?.secondPreIntervalSec || 0;
-
-    this.userId = this.data.userId;
 
     this.user = new User({
       // nicht verändert
@@ -89,16 +85,8 @@ export class EditComponent {
     });
   }
 
-  getUsersColRef() {
-    return collection(this.firestore, "users");
-  }
-
-  getSingleUserDocRef(docId: string) {
-    return doc(this.getUsersColRef(), docId);
-  }
-
   async saveUser() {
-    let docRef = this.getSingleUserDocRef(this.userId);
+    let docRef = this.shareTimeService.getSingleUserDocRef(this.userId);
 
     this.user.firstIntervalMin = this.firstIntervalMin;
     this.user.secondIntervalMin = this.secondIntervalMin;

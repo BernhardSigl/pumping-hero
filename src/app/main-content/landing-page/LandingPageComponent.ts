@@ -7,9 +7,10 @@ import { MatCardModule } from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogAddExerciseComponent } from '../edit/dialog-add-exercise/dialog-add-exercise.component';
 import { TimerComponent } from '../timer/timer.component';
 import { ShareTimeService } from '../../share-time/share-time.service';
+import { AddExerciseComponent } from '../add-exercise/add-exercise.component';
+import { onSnapshot } from '@angular/fire/firestore';
 
 @Component({
     selector: 'app-landing-page',
@@ -29,22 +30,38 @@ import { ShareTimeService } from '../../share-time/share-time.service';
 
 export class LandingPageComponent {
     userId!: string;
+    exercisesList: any[] = [];
 
     constructor(
         private route: ActivatedRoute,
         public dialog: MatDialog,
-        public shareTimeService: ShareTimeService) {
+        public shareTimeService: ShareTimeService,
+    ) {
+        // console.log(this.shareTimeService.userVariables);
     }
+
+    subUsers() {
+        const q = this.shareTimeService.getSingleUserDocRef(this.userId);
+        onSnapshot(q, (querySnapshot) => {
+            let userField = querySnapshot.data();
+            const exercises = userField!['exercises'];
+            // map to array
+            this.exercisesList = exercises ? Object.keys(exercises) : [];
+            console.log(this.exercisesList);
+        });
+    }
+
 
     ngOnInit(): void {
         this.route.params.subscribe((params) => {
             this.userId = params['id'];
         });
-        this.shareTimeService.subUsers(this.userId)
+        this.shareTimeService.subUsers(this.userId);
+        this.subUsers();
     }
 
     openAddExerciseCard() {
-        this.dialog.open(DialogAddExerciseComponent, {
+        this.dialog.open(AddExerciseComponent, {
             data: { userId: this.userId, userVariables: this.shareTimeService.userVariables },
         });
     }
