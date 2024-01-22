@@ -1,5 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, doc, onSnapshot, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, onSnapshot } from '@angular/fire/firestore';
+
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackBarComponent } from '../main-content/snack-bar/snack-bar.component';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +37,7 @@ export class ShareTimeService {
 
   firestore: Firestore = inject(Firestore);
 
-  constructor() { }
+  constructor(private _snackBar: MatSnackBar,) { }
 
   // Firebase
   subUsers(userId: string) {
@@ -183,11 +186,11 @@ export class ShareTimeService {
 
   inervalComparisonCalc(preIntervalTime: number, activePreInterval: Boolean) {
     if (this.firstIntervalSmallerThanPreInterval(preIntervalTime, activePreInterval)) {
-      console.log('first pre interval must be smaller than selected interval');
       this.disablePreIntervalBtns();
+      this.openSnackBar();
     } else if (this.secondIntervalSmallerThanPreInterval(preIntervalTime, activePreInterval)) {
-      console.log('first pre interval must be smaller than selected interval');
       this.disablePreIntervalBtns();
+      this.openSnackBar();
     }
   }
 
@@ -204,5 +207,11 @@ export class ShareTimeService {
   disablePreIntervalBtns() {
     this.activeFirstPreInterval = false;
     this.activeSecondPreInterval = false;
+  }
+
+  openSnackBar() {
+    this._snackBar.openFromComponent(SnackBarComponent, {
+      duration: 3000,
+    });
   }
 }

@@ -67,10 +67,4 @@ export class AddExerciseComponent {
       this.dialogRef.close();
     });
   }
-
-  test() {
-    // this.user.exercises[0].push('bizps');
-    console.log(this.user.exercises[0]);
-
-  }
 }

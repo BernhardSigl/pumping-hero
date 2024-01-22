@@ -12,6 +12,9 @@ import { ShareTimeService } from '../../share-time/share-time.service';
 import { AddExerciseComponent } from '../add-exercise/add-exercise.component';
 import { onSnapshot } from '@angular/fire/firestore';
 
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackBarComponent } from '../snack-bar/snack-bar.component';
+
 @Component({
     selector: 'app-landing-page',
     standalone: true,
@@ -22,7 +25,7 @@ import { onSnapshot } from '@angular/fire/firestore';
         MatDividerModule,
         MatCardModule,
         FormsModule,
-        TimerComponent,
+        TimerComponent
     ],
     templateUrl: './landing-page.component.html',
     styleUrl: './landing-page.component.scss'
@@ -32,14 +35,16 @@ export class LandingPageComponent {
     userId!: string;
     exercisesList: any[] = [];
 
+    durationInSeconds = 5;
+
     constructor(
         private route: ActivatedRoute,
         public dialog: MatDialog,
         public shareTimeService: ShareTimeService,
-    ) {
-        // console.log(this.shareTimeService.userVariables);
-    }
+        private _snackBar: MatSnackBar,
+    ) { }
 
+    // get the exercise list
     subUsers() {
         const q = this.shareTimeService.getSingleUserDocRef(this.userId);
         onSnapshot(q, (querySnapshot) => {
@@ -50,7 +55,6 @@ export class LandingPageComponent {
             console.log(this.exercisesList);
         });
     }
-
 
     ngOnInit(): void {
         this.route.params.subscribe((params) => {

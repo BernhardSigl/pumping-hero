@@ -20,45 +20,45 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './main-content.component.scss'
 })
 export class MainContentComponent {
-  user!: User;
-  userId!: string;
-  userVariables: any[] = [];
+  // user!: User;
+  // userId!: string;
+  // userVariables: any[] = [];
 
-  firstIntervalMin!: number;
-  secondIntervalMin!: number;
-  firstPreIntervalMin!: number;
-  secondPreIntervalMin!: number;
+  // firstIntervalMin!: number;
+  // secondIntervalMin!: number;
+  // firstPreIntervalMin!: number;
+  // secondPreIntervalMin!: number;
 
-  firestore: Firestore = inject(Firestore);
+  // firestore: Firestore = inject(Firestore);
 
-  constructor(private route: ActivatedRoute) {
-  }
+  // constructor(private route: ActivatedRoute) {
+  // }
 
-  ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      this.userId = params['id'];
-    })
-    this.subUsers();
-  }
+  // ngOnInit(): void {
+  //   this.route.params.subscribe((params) => {
+  //     this.userId = params['id'];
+  //   })
+  //   this.subUsers();
+  // }
 
-  async subUsers() {
-    const q = this.getSingleUserDocRef(this.userId);
-    onSnapshot(q, (querySnapshot) => {
-      let userField = querySnapshot.data();
-      this.userVariables.push(userField);
-      const userVariable = this.userVariables[0];
-      this.firstIntervalMin = userVariable.firstIntervalMin;
-      this.secondIntervalMin = userVariable.secondIntervalMin;
-      this.firstPreIntervalMin = userVariable.firstPreIntervalMin;
-      this.secondPreIntervalMin = userVariable.secondPreIntervalMin;
-    });
-  }
+  // async subUsers() {
+  //   const q = this.getSingleUserDocRef(this.userId);
+  //   onSnapshot(q, (querySnapshot) => {
+  //     let userField = querySnapshot.data();
+  //     this.userVariables.push(userField);
+  //     const userVariable = this.userVariables[0];
+  //     this.firstIntervalMin = userVariable.firstIntervalMin;
+  //     this.secondIntervalMin = userVariable.secondIntervalMin;
+  //     this.firstPreIntervalMin = userVariable.firstPreIntervalMin;
+  //     this.secondPreIntervalMin = userVariable.secondPreIntervalMin;
+  //   });
+  // }
 
-  getUsersColRef() {
-    return collection(this.firestore, "users");
-  }
+  // getUsersColRef() {
+  //   return collection(this.firestore, "users");
+  // }
 
-  getSingleUserDocRef(docId: string) {
-    return doc(this.getUsersColRef(), docId);
-  }
+  // getSingleUserDocRef(docId: string) {
+  //   return doc(this.getUsersColRef(), docId);
+  // }
 }
