@@ -5,19 +5,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { TimerComponent } from '../timer/timer.component';
 import { ShareTimeService } from '../../share-time/share-time.service';
 import { AddExerciseComponent } from '../add-exercise/add-exercise.component';
 import { onSnapshot } from '@angular/fire/firestore';
-
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackBarComponent } from '../snack-bar/snack-bar.component';
+import { EditExerciseComponent } from "../edit-exercise/edit-exercise.component";
 
 @Component({
     selector: 'app-landing-page',
     standalone: true,
+    templateUrl: './landing-page.component.html',
+    styleUrl: './landing-page.component.scss',
     imports: [
         CommonModule,
         MatButtonModule,
@@ -25,23 +25,19 @@ import { SnackBarComponent } from '../snack-bar/snack-bar.component';
         MatDividerModule,
         MatCardModule,
         FormsModule,
-        TimerComponent
-    ],
-    templateUrl: './landing-page.component.html',
-    styleUrl: './landing-page.component.scss'
+        TimerComponent,
+        EditExerciseComponent
+    ]
 })
 
 export class LandingPageComponent {
     userId!: string;
     exercisesList: any[] = [];
 
-    durationInSeconds = 5;
-
     constructor(
         private route: ActivatedRoute,
         public dialog: MatDialog,
         public shareTimeService: ShareTimeService,
-        private _snackBar: MatSnackBar,
     ) { }
 
     // get the exercise list
@@ -52,7 +48,6 @@ export class LandingPageComponent {
             const exercises = userField!['exercises'];
             // map to array
             this.exercisesList = exercises ? Object.keys(exercises) : [];
-            console.log(this.exercisesList);
         });
     }
 
@@ -68,5 +63,19 @@ export class LandingPageComponent {
         this.dialog.open(AddExerciseComponent, {
             data: { userId: this.userId, userVariables: this.shareTimeService.userVariables },
         });
+    }
+
+    openEditExercise(exercise: string) {
+        this.shareTimeService.currentDiaryEntryLog(exercise);
+        this.shareTimeService.show = false;
+    }
+
+    removeDiaryEntry(event: Event, exercise: string) {
+        event.stopPropagation();
+        console.log('delete: ', exercise);
+    }
+
+    showEditRemoveDiary() {
+        this.shareTimeService.showEditDiary = true;
     }
 }

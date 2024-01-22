@@ -5,6 +5,18 @@
             <input matInput [(ngModel)]="exerciseName.name" required>
         </mat-form-field>
     </mat-card-header>
+
+    <mat-card-header>
+        <mat-form-field>
+            <mat-label>Add category</mat-label>
+            <mat-select [(ngModel)]="bodypartName">
+                @for (bodypart of bodyparts; track bodypart) {
+                <mat-option [value]="bodypart.value">{{bodypart.viewValue}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+    </mat-card-header>
+
     <mat-card-actions>
         <button mat-button (click)="this.dialogRef.close()">Cancel</button>
         <button mat-button (click)="saveAddExercise()" [disabled]="!exerciseName">Save</button>

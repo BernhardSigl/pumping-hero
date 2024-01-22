@@ -1,0 +1,96 @@
+<div class="btns">
+    <button mat-mini-fab color="primary" (click)="back()">
+        <mat-icon>arrow_back_ios_new</mat-icon>
+    </button>
+    <h3>{{ landingPage.exercisesList }}</h3>
+    <button mat-mini-fab color="primary" (click)="addDiaryEntry()">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>
+
+<div class="card-background">
+    <div class="card">
+        <div class="inputs-with-btns">
+            <div class="overview-inputs">
+                <mat-form-field>
+                    <mat-label>Enter date</mat-label>
+                    <input matInput [matDatepicker]="picker1" [formControl]="date">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="example-form-field">
+                    <mat-label>Info (Weights, ...)</mat-label>
+                    <input matInput type="text">
+                </mat-form-field>
+            </div>
+            <div class="delete-and-restore-btns">
+                <button mat-mini-fab color="primary">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <button mat-mini-fab color="primary">
+                    <mat-icon>settings_backup_restore</mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <div class="input-reps">
+            <input><input type="number"><input type="number"><input type="number"><input type="number">
+
+        </div>
+        <div class="reps-increase-decrease">
+            <div class="button-area">
+                <button mat-mini-fab color="primary">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+            <div class="button-area">
+                <button mat-mini-fab color="primary">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+            <div class="button-area">
+                <button mat-mini-fab color="primary">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+            <div class="button-area">
+                <button mat-mini-fab color="primary">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+            <div class="button-area">
+                <button mat-mini-fab color="primary">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div class="reps-increase-decrease">
+            <div class="button-area">
+                <button mat-mini-fab color="primary">
+                    <mat-icon>remove</mat-icon>
+                </button>
+            </div>
+            <div class="button-area">
+                <button mat-mini-fab color="primary">
+                    <mat-icon>remove</mat-icon>
+                </button>
+            </div>
+            <div class="button-area">
+                <button mat-mini-fab color="primary">
+                    <mat-icon>remove</mat-icon>
+                </button>
+            </div>
+            <div class="button-area">
+                <button mat-mini-fab color="primary">
+                    <mat-icon>remove</mat-icon>
+                </button>
+            </div>
+            <div class="button-area">
+                <button mat-mini-fab color="primary">
+                    <mat-icon>remove</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

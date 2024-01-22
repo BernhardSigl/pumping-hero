@@ -5,10 +5,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { updateDoc } from '@angular/fire/firestore';
 import { ShareTimeService } from '../../share-time/share-time.service';
 import { User } from '../../models/user.class';
 import { FormsModule } from '@angular/forms';
+
+interface Bodypart {
+  value: string;
+  viewValue: string;
+}
 
 @Component({
   selector: 'app-add-exercise',
@@ -18,7 +24,8 @@ import { FormsModule } from '@angular/forms';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    MatSelectModule
   ],
   templateUrl: './add-exercise.component.html',
   styleUrl: './add-exercise.component.scss'
@@ -27,6 +34,7 @@ export class AddExerciseComponent {
   user!: User;
   userId!: string;
   exerciseName: { name: any } = { name: '' };
+  bodypartName: string = '';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -39,7 +47,6 @@ export class AddExerciseComponent {
     // console.log(existingUser.exercises);
     this.userId = this.data.userId;
     const existingUser = this.data.userVariables[0];
-    console.log(existingUser.exercises);
 
     this.user = new User({
       // nicht verändert
@@ -55,16 +62,30 @@ export class AddExerciseComponent {
       secondPreIntervalMin: existingUser?.secondPreIntervalMin,
       firstPreIntervalSec: existingUser?.firstPreIntervalSec,
       secondPreIntervalSec: existingUser?.secondPreIntervalSec,
+
       exercises: { ...existingUser?.exercises },
     });
   }
 
   async saveAddExercise() {
     this.user.exercises[this.exerciseName.name] = {};
+    this.user.exercises[this.exerciseName.name].bodypart = this.bodypartName;
 
     let docRef = this.shareTimeService.getSingleUserDocRef(this.userId);
     await updateDoc(docRef, this.user.toJson()).then(() => {
       this.dialogRef.close();
     });
   }
+
+  bodyparts: Bodypart[] = [
+    { value: 'Chest', viewValue: 'Chest' },
+    { value: 'Back', viewValue: 'Back' },
+    { value: 'Shoulders', viewValue: 'Shoulders' },
+    { value: 'Arms', viewValue: 'Arms' },
+    { value: 'Abdominal', viewValue: 'Abdominal' },
+    { value: 'Legs', viewValue: 'Legs' },
+    { value: 'Calves', viewValue: 'Calves' },
+    { value: 'Stamina', viewValue: 'Stamina' },
+    { value: 'Other', viewValue: 'Other' },
+  ];
 }

@@ -1,13 +1,13 @@
 .btns {
     gap: 16px;
     display: flex;
-    height: calc(100% - 48px);
     flex-direction: column;
     overflow-y: hidden;
-    // margin-top: 16px;
+    margin-top: 40px;
     align-items: center;
 
     button {
         width: 240px;
+        height: 48px;
     }
 }

@@ -1,9 +1,9 @@
 <app-timer></app-timer>
 
 <div class="content">
-    <mat-divider></mat-divider>
+    <mat-divider *ngIf="shareTimeService.show"></mat-divider>
 
-    <div class="interval">
+    <div class="interval" *ngIf="shareTimeService.show">
         <div class="interval-title">
             <h3>Alert every</h3>
             <mat-icon>notifications_active</mat-icon>
@@ -21,7 +21,7 @@
         </button>
     </div>
 
-    <div class="pre-interval">
+    <div class="pre-interval" *ngIf="shareTimeService.show">
         <div class="pre-interval-title">
             <h3>Pre Alert</h3>
             <mat-icon>notifications</mat-icon>
@@ -38,18 +38,37 @@
         </button>
     </div>
 
-    <mat-divider></mat-divider>
+    <mat-divider *ngIf="shareTimeService.show"></mat-divider>
 
-    <div class="gym-diary-title">
+    <div class="gym-diary-title" *ngIf="shareTimeService.show">
+        <button mat-mini-fab color="primary" (click)="shareTimeService.showEditDiary = !shareTimeService.showEditDiary">
+            <mat-icon *ngIf="!shareTimeService.showEditDiary">edit</mat-icon>
+            <mat-icon *ngIf="shareTimeService.showEditDiary">edit_off</mat-icon>
+        </button>
         <h3>Gym-Diary</h3>
         <mat-icon>fitness_center</mat-icon>
-    </div>
-    <div class="gym-diary">
-        <button mat-raised-button color="primary" (click)="openAddExerciseCard()"><mat-icon>add</mat-icon>Add
-            exercise</button>
-
-        <button mat-raised-button color="primary" *ngFor="let exercise of exercisesList">
-            <h3>{{ exercise }}</h3>
+        <button mat-mini-fab color="primary" (click)="openAddExerciseCard()">
+            <mat-icon>add</mat-icon>
         </button>
     </div>
+    <div class="gym-diary" *ngIf="shareTimeService.show">
+
+        <button mat-raised-button color="primary" *ngFor="let exercise of exercisesList" class="diaryBtn"
+            (click)="openEditExercise(exercise)">
+
+            <h3>{{ exercise }}</h3>
+
+            <button mat-mini-fab color="primary" class="removeDiaryBtn" (click)="removeDiaryEntry($event, exercise)"
+                *ngIf="shareTimeService.showEditDiary">
+                <mat-icon>delete</mat-icon>
+            </button>
+
+            <button mat-mini-fab color="primary" class="editDiaryBtn" *ngIf="shareTimeService.showEditDiary">
+                <mat-icon>edit</mat-icon>
+            </button>
+
+        </button>
+    </div>
+
+    <app-edit-exercise *ngIf="!shareTimeService.show"></app-edit-exercise>
 </div>

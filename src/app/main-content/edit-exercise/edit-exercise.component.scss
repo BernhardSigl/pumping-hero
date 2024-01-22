@@ -1,0 +1,85 @@
+.btns {
+    display: flex;
+    justify-content: space-between;
+
+    h3 {
+        display: flex;
+        align-items: center;
+        font-weight: 700;
+    }
+}
+
+.card-background {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    overflow: auto;
+    height: calc(100vh - 358px);
+
+    .card {
+        width: 100%;
+        height: auto;
+        padding: 12px;
+        background-color: #101010;
+        display: flex;
+        justify-content: center;
+        border: 2px solid white;
+        border-radius: 16px;
+        margin-top: 14px;
+        margin-bottom: 16px;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .card:not(:first-child) {
+        margin-top: 0;
+    }
+}
+
+.inputs-with-btns {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+
+    .overview-inputs {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .delete-and-restore-btns {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+}
+
+.input-reps {
+    display: flex;
+    justify-content: space-between;
+
+    input {
+        width: 48px;
+        height: 48px;
+        border: 1px solid black;
+        caret-color: auto;
+        text-align: center;
+        border-radius: 8px;
+    }
+}
+
+.reps-increase-decrease {
+    display: flex;
+    justify-content: space-between;
+
+    .button-area {
+        width: 48px;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+input:focus {
+    outline: none;
+    cursor: text !important;
+}

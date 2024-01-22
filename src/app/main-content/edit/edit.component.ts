@@ -71,6 +71,7 @@ export class EditComponent {
       email: existingUser?.email,
       picture: existingUser?.picture,
       location: existingUser?.location,
+      exercises: { ...existingUser?.exercises },
 
       // ändern
       firstIntervalMin: this.firstIntervalMin,

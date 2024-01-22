@@ -98,7 +98,7 @@ export class LoginComponent implements OnInit {
 
   async redirect(token: string) {
     this.ngZone.run(() => {
-      this.router.navigate([`mainContent/${token}`]);
+      this.router.navigate([`user/${token}`]);
     });
   }
 }

@@ -31,6 +31,10 @@
     justify-content: center;
     gap: 8px;
     margin-top: 16px;
+
+    button {
+        margin: 0 8px;
+    }
 }
 
 .gym-diary {
@@ -40,24 +44,50 @@
     justify-content: space-evenly;
     margin: 16px 0;
     width: 100%;
-    height: calc(100vh - 450px);
+    height: calc(100vh - 555px);
     overflow-y: auto;
 
-    button {
-        height: 90px;
+    .addDiaryBtn,
+    .diaryBtn {
+        height: 96px;
         width: 40%;
-        // background-image: url('./../../../assets/img/dumbell.png');
-        // background-repeat: no-repeat;
-        // background-size: cover;
-        // background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: left;
 
-        // background-color: rgb(random(256), random(256), random(256), 0.2);
-        // h3 {
-        // background-color: #171717;
-        // padding: 4px 8px;
-        // border-radius: 4px;
-        // }
+        h3 {
+            gap: 8px;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 8px;
+            border-radius: 4px;
+            width: 138px;
+            height: 72px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 1.2;
+        }
     }
+
+    .diaryBtn {
+        background-image: url('./../../../assets/img/arm-muscle.png');
+        display: flex;
+    }
+}
+
+.editDiaryBtn,
+.removeDiaryBtn {
+    position: absolute !important;
+    border: 1px solid white;
+}
+
+
+.editDiaryBtn {
+    right: 0;
+}
+
+.removeDiaryBtn {
+    right: 50px;
 }
 
 .active-button {

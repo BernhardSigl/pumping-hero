@@ -12,6 +12,9 @@ export class ShareTimeService {
   secAlert: number = 0;
   running = false;
   userVariables: any[] = [];
+  show: boolean = true;
+  showEditDiary: boolean = false;
+  currentDiaryEntry!: string;
 
   preIntervalConvert!: any;
   startTimerAlert: any;
@@ -37,7 +40,14 @@ export class ShareTimeService {
 
   firestore: Firestore = inject(Firestore);
 
-  constructor(private _snackBar: MatSnackBar,) { }
+  constructor(private _snackBar: MatSnackBar) {
+
+  }
+
+  currentDiaryEntryLog(exercise: string) {
+    this.currentDiaryEntry = exercise;
+    console.log('1', this.currentDiaryEntry);
+  }
 
   // Firebase
   subUsers(userId: string) {

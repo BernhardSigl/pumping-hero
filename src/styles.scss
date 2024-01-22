@@ -52,9 +52,9 @@ p {
 }
 
 // card and snackbar width
-.cdk-overlay-pane {
-    width: 90vw !important;
-}
+// .cdk-overlay-pane {
+//     width: 90vw !important;
+// }
 
 //
 
@@ -75,3 +75,29 @@ p {
 .mdc-snackbar__surface {
     padding: 0 !important;
 }
+
+// box below input-fields
+.mat-mdc-form-field-subscript-wrapper,
+.mat-mdc-form-field-bottom-align {
+    display: none !important;
+}
+
+// input-fields radius
+.mat-mdc-text-field-wrapper,
+.mdc-text-field {
+    border-radius: 8px !important;
+}
+
+// reps counter input field
+// .ng-tns-c1798928316-5 {
+//     padding-top: 0px !important;
+//     padding-bottom: 0px !important;
+//     padding-left: 0 !important;
+//     padding-right: 0 !important;
+
+//     .mdc-text-field__input {
+//         margin-top: 13px;
+//         padding: 0 8px !important;
+//         text-align: center;
+//     }
+// }
