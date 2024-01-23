@@ -46,7 +46,6 @@ export class ShareTimeService {
 
   currentDiaryEntryLog(exercise: string) {
     this.currentDiaryEntry = exercise;
-    console.log('1', this.currentDiaryEntry);
   }
 
   // Firebase
@@ -54,6 +53,7 @@ export class ShareTimeService {
     const q = this.getSingleUserDocRef(userId);
     onSnapshot(q, (querySnapshot) => {
       let userField = querySnapshot.data();
+
       this.userVariables.pop(); // aktuallisiert potenzielle Änderungen
       this.userVariables.push(userField);
 

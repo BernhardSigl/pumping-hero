@@ -2,26 +2,26 @@
     <button mat-mini-fab color="primary" (click)="back()">
         <mat-icon>arrow_back_ios_new</mat-icon>
     </button>
-    <h3>{{ landingPage.exercisesList }}</h3>
+    <h3>{{ shareTimeService.currentDiaryEntry }}</h3>
     <button mat-mini-fab color="primary" (click)="addDiaryEntry()">
         <mat-icon>add</mat-icon>
     </button>
 </div>
 
 <div class="card-background">
-    <div class="card">
+    <div class="card" *ngFor="let entry of diaryEntries">
         <div class="inputs-with-btns">
             <div class="overview-inputs">
                 <mat-form-field>
                     <mat-label>Enter date</mat-label>
-                    <input matInput [matDatepicker]="picker1" [formControl]="date">
+                    <input matInput [matDatepicker]="picker1" [(ngModel)]="entry.date">
                     <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1></mat-datepicker>
                 </mat-form-field>
 
                 <mat-form-field class="example-form-field">
                     <mat-label>Info (Weights, ...)</mat-label>
-                    <input matInput type="text">
+                    <input matInput type="text" [(ngModel)]="entry.info">
                 </mat-form-field>
             </div>
             <div class="delete-and-restore-btns">
@@ -31,11 +31,18 @@
                 <button mat-mini-fab color="primary">
                     <mat-icon>settings_backup_restore</mat-icon>
                 </button>
+                <button mat-mini-fab color="primary" (click)="save()">
+                    <mat-icon>save</mat-icon>
+                </button>
             </div>
         </div>
 
         <div class="input-reps">
-            <input><input type="number"><input type="number"><input type="number"><input type="number">
+            <input type="number" [(ngModel)]="entry.repValues[0]">
+            <input type="number" [(ngModel)]="entry.repValues[1]">
+            <input type="number" [(ngModel)]="entry.repValues[2]">
+            <input type="number" [(ngModel)]="entry.repValues[3]">
+            <input type="number" [(ngModel)]="entry.repValues[4]">
 
         </div>
         <div class="reps-increase-decrease">

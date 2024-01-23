@@ -52,7 +52,7 @@
         height: 96px;
         width: 40%;
         background-repeat: no-repeat;
-        background-size: contain;
+        background-size: cover;
         background-position: left;
 
         h3 {
@@ -71,7 +71,6 @@
 
     .diaryBtn {
         background-image: url('./../../../assets/img/arm-muscle.png');
-        display: flex;
     }
 }
 

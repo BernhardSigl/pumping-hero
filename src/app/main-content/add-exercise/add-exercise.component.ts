@@ -33,8 +33,10 @@ interface Bodypart {
 export class AddExerciseComponent {
   user!: User;
   userId!: string;
-  exerciseName: { name: any } = { name: '' };
+  exerciseName: { name: any } = { name: '' }; // create map
   bodypartName: string = '';
+  entries: any[] = [];
+  // entries: { name: any } = { name: '' }; // create map
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -70,6 +72,10 @@ export class AddExerciseComponent {
   async saveAddExercise() {
     this.user.exercises[this.exerciseName.name] = {};
     this.user.exercises[this.exerciseName.name].bodypart = this.bodypartName;
+    this.user.exercises[this.exerciseName.name].entries = this.entries;
+
+    // this.user.exercises[this.entries.name] = {};
+    // this.user.exercises[this.entries.name].reps = this.reps;
 
     let docRef = this.shareTimeService.getSingleUserDocRef(this.userId);
     await updateDoc(docRef, this.user.toJson()).then(() => {
