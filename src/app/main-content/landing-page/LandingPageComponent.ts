@@ -14,6 +14,7 @@ import { onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { EditExerciseComponent } from "../edit-exercise/edit-exercise.component";
 import { User } from '../../models/user.class';
 import { DeleteExerciseComponent } from '../delete-exercise/delete-exercise.component';
+import { RenameExerciseComponent } from '../rename-exercise/rename-exercise.component';
 
 @Component({
     selector: 'app-landing-page',
@@ -63,6 +64,7 @@ export class LandingPageComponent {
     }
 
     openAddExerciseCard() {
+        this.shareTimeService.showEditDiary = false;
         this.dialog.open(AddExerciseComponent, {
             data: {
                 userId: this.userId,
@@ -72,18 +74,30 @@ export class LandingPageComponent {
     }
 
     openEditExercise(exercise: string) {
-        this.shareTimeService.currentDiaryEntryLog(exercise);
         this.shareTimeService.show = false;
+        this.shareTimeService.showEditDiary = false;
+        this.shareTimeService.currentDiaryEntryLog(exercise);
     }
 
     removeDiaryEntry(event: Event, exercise: any) {
         event.stopPropagation();
-
         this.dialog.open(DeleteExerciseComponent, {
             data: {
                 userId: this.userId,
                 exerciseToDelete: exercise,
                 userVariables: this.shareTimeService.userVariables
+            },
+        });
+    }
+
+    editDiaryEntry(event: Event, exercise: any) {
+        event.stopPropagation();
+        this.dialog.open(RenameExerciseComponent, {
+            data: {
+                userId: this.userId,
+                exerciseToEdit: exercise,
+                userVariables: this.shareTimeService.userVariables,
+                bodypart: this.shareTimeService.userVariables[0].exercises[exercise]['bodypart']
             },
         });
     }

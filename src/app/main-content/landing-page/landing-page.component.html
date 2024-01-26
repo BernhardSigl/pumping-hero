@@ -63,7 +63,8 @@
                 <mat-icon>delete</mat-icon>
             </button>
 
-            <button mat-mini-fab color="primary" class="editDiaryBtn" *ngIf="shareTimeService.showEditDiary">
+            <button mat-mini-fab color="primary" class="editDiaryBtn" *ngIf="shareTimeService.showEditDiary"
+                (click)="editDiaryEntry($event, exercise)">
                 <mat-icon>edit</mat-icon>
             </button>
 

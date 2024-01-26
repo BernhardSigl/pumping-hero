@@ -17,7 +17,7 @@ interface Bodypart {
 }
 
 @Component({
-  selector: 'app-add-exercise',
+  selector: 'app-rename-exercise',
   standalone: true,
   imports: [
     MatButtonModule,
@@ -27,26 +27,31 @@ interface Bodypart {
     FormsModule,
     MatSelectModule
   ],
-  templateUrl: './add-exercise.component.html',
-  styleUrl: './add-exercise.component.scss'
+  templateUrl: './rename-exercise.component.html',
+  styleUrl: './rename-exercise.component.scss'
 })
-export class AddExerciseComponent {
+export class RenameExerciseComponent {
   user!: User;
   userId!: string;
   exerciseName: { name: any } = { name: '' }; // create map
   bodypartName: string = '';
   entries: any[] = [];
-  // entries: { name: any } = { name: '' }; // create map
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<AddExerciseComponent>,
-    private shareTimeService: ShareTimeService,
+    public shareTimeService: ShareTimeService,
+    public dialogRef: MatDialogRef<RenameExerciseComponent>,
   ) { }
 
   ngOnInit(): void {
+
     this.userId = this.data.userId;
     const existingUser = this.data.userVariables[0];
+    // console.log(existingUser);
+    // console.log(this.data.bodypart);
+    this.exerciseName.name = this.data.exerciseToEdit || '';
+    this.bodypartName = this.data.bodypart || '';
+
 
     this.user = new User({
       // nicht verändert
@@ -67,10 +72,19 @@ export class AddExerciseComponent {
     });
   }
 
-  async saveAddExercise() {
-    this.user.exercises[this.exerciseName.name] = {};
-    this.user.exercises[this.exerciseName.name].bodypart = this.bodypartName;
-    this.user.exercises[this.exerciseName.name].entries = this.entries;
+  async renameExercise() {
+    if (this.exerciseName.name !== this.data.exerciseToEdit) {
+      this.user.exercises[this.exerciseName.name] = {
+        ...this.user.exercises[this.data.exerciseToEdit],
+      };
+      delete this.user.exercises[this.data.exerciseToEdit];
+    }
+    if (this.bodypartName !== this.data.bodypart) {
+      this.user.exercises[this.exerciseName.name] = {
+        ...this.user.exercises[this.data.exerciseToEdit],
+        bodypart: this.bodypartName
+      };
+    }
 
     let docRef = this.shareTimeService.getSingleUserDocRef(this.userId);
     await updateDoc(docRef, this.user.toJson()).then(() => {
