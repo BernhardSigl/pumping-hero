@@ -67,7 +67,7 @@
 
         <mat-card-actions>
             <button mat-button (click)="this.dialogRef.close()">Cancel</button>
-            <button mat-button (click)="saveUser()">Apply</button>
+            <button mat-button (click)="saveUser()" [disabled]="!saveBehaviour()">Apply</button>
         </mat-card-actions>
     </mat-card>
 </div>

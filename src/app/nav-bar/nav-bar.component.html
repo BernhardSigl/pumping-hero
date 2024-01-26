@@ -1,4 +1,4 @@
-<mat-tab-group fitInkBarToContent>
+<mat-tab-group fitInkBarToContent (selectedTabChange)="disableEditMode()">
     <mat-tab>
         <ng-template mat-tab-label>
             <mat-icon>description</mat-icon>
@@ -10,7 +10,7 @@
         <ng-template mat-tab-label>
             <mat-icon>help</mat-icon>
         </ng-template>
-        Content 3
+        <app-help></app-help>
     </mat-tab>
 
     <mat-tab>

@@ -5,7 +5,7 @@ body {
     max-height: 100vh;
     width: 768px;
     font-family: Roboto, "Helvetica Neue", sans-serif;
-    background-color: #171717;
+    background-color: #1F1F1F;
     caret-color: transparent;
 }
 
@@ -38,9 +38,14 @@ h2,
 h3,
 h4,
 h5,
-p {
+p,
+ul {
     color: white;
     margin: 0 !important;
+}
+
+li {
+    color: white;
 }
 
 .mdc-tab__text-label {

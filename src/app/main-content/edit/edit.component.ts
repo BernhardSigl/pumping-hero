@@ -104,4 +104,15 @@ export class EditComponent {
     });
     this.shareTimeService.intervalComparison();
   }
+
+  saveBehaviour(): boolean {
+    return this.isValidInterval(this.firstIntervalMin, this.firstIntervalSec)
+      && this.isValidInterval(this.secondIntervalMin, this.secondIntervalSec)
+      && this.isValidInterval(this.firstPreIntervalMin, this.firstPreIntervalSec)
+      && this.isValidInterval(this.secondPreIntervalMin, this.secondPreIntervalSec);
+  }
+
+  isValidInterval(min: number, sec: number): boolean {
+    return min >= 0 && min <= 59 && sec >= 0 && sec <= 59;
+  }
 }
