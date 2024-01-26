@@ -35,7 +35,7 @@ import { RenameExerciseComponent } from '../rename-exercise/rename-exercise.comp
 
 export class LandingPageComponent {
     userId!: string;
-    exercisesList: any[] = [];
+    exercisesList: string[] = [];
     user!: User;
 
     constructor(
@@ -60,6 +60,11 @@ export class LandingPageComponent {
             const exercises = userField!['exercises'];
             // map to array
             this.exercisesList = exercises ? Object.keys(exercises) : [];
+
+            // background image
+            this.exercisesList.forEach((exerciseName: string) => {
+                this.shareTimeService.checkBodypart(exerciseName);
+            });
         });
     }
 
@@ -73,7 +78,7 @@ export class LandingPageComponent {
         });
     }
 
-    openEditExercise(exercise: string) {
+    openEditExercise(exercise: string, i: number) {
         this.shareTimeService.show = false;
         this.shareTimeService.showEditDiary = false;
         this.shareTimeService.currentDiaryEntryLog(exercise);

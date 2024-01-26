@@ -36,7 +36,6 @@ export class AddExerciseComponent {
   exerciseName: { name: any } = { name: '' }; // create map
   bodypartName: string = '';
   entries: any[] = [];
-  // entries: { name: any } = { name: '' }; // create map
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -68,6 +67,10 @@ export class AddExerciseComponent {
   }
 
   async saveAddExercise() {
+    if (!this.bodypartName) {
+      this.bodypartName = 'Other';
+    }
+
     this.user.exercises[this.exerciseName.name] = {};
     this.user.exercises[this.exerciseName.name].bodypart = this.bodypartName;
     this.user.exercises[this.exerciseName.name].entries = this.entries;

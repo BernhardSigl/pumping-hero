@@ -21,16 +21,23 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     google.accounts.id.initialize({
-      client_id: '440475341248-7cnocq0n3c2vcmmfukg58lq3jeasfeua.apps.googleusercontent.com',
+      client_id: '48091826759-81j87796gcoeko02ls6hjvjbkunvaolj.apps.googleusercontent.com',
       callback: (resp: any) => this.handleLogin(resp)
     });
+  }
 
-    google.accounts.id.renderButton(document.getElementById('google-btn'), {
-      theme: 'filled_blue',
-      size: 'large',
-      shape: 'rectangle',
-      width: 350
-    })
+  ngAfterViewInit(): void {
+    const customGoogleButton = document.getElementById('google-btn');
+    if (customGoogleButton) {
+      customGoogleButton.addEventListener('click', () => {
+        google.accounts.id.prompt((response: any) => {
+          if (response.isNotDisplayed() || response.isSkippedMoment()) {
+            document.cookie = `g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+            google.accounts.id.prompt();
+          }
+        });
+      });
+    }
   }
 
   private decodeToken(token: string) {

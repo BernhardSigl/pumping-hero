@@ -52,8 +52,8 @@
         height: 96px;
         width: 40%;
         background-repeat: no-repeat;
-        background-size: cover;
-        background-position: left;
+        background-size: contain;
+        background-position: left bottom;
 
         h3 {
             gap: 8px;
@@ -67,10 +67,6 @@
             align-items: center;
             line-height: 1.2;
         }
-    }
-
-    .diaryBtn {
-        background-image: url('./../../../assets/img/arm-muscle.png');
     }
 }
 

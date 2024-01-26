@@ -2,6 +2,7 @@
     <mat-card-header>
         <mat-card-title>Add exercise</mat-card-title>
         <mat-form-field class="example-full-width">
+            <mat-label>Exercise name</mat-label>
             <input matInput [(ngModel)]="exerciseName.name" required>
         </mat-form-field>
     </mat-card-header>
@@ -19,6 +20,6 @@
 
     <mat-card-actions>
         <button mat-button (click)="this.dialogRef.close();">Cancel</button>
-        <button mat-button (click)="saveAddExercise()" [disabled]="!exerciseName">Save</button>
+        <button mat-button (click)="saveAddExercise()" [disabled]="!exerciseName.name">Save</button>
     </mat-card-actions>
 </mat-card>

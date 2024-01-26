@@ -38,6 +38,8 @@ export class ShareTimeService {
   AUDIO_MAIN_ALERT = new Audio('./../../assets/sounds/main-alert.mp3');
   AUDIO_PRE_ALERT = new Audio('./../../assets/sounds/pre-alert.mp3');
 
+  backgroundImages: { [key: string]: string } = {};
+
   firestore: Firestore = inject(Firestore);
 
   constructor(private _snackBar: MatSnackBar) {
@@ -74,9 +76,8 @@ export class ShareTimeService {
   async deleteFieldElement(docId: string, exercise?: any) {
     console.log(this.firestore, "users", docId, exercise);
 
-    const docRef = doc(this.firestore, "users", docId, 'BD');
+    const docRef = doc(this.firestore, "users", docId);
 
-    // Remove the 'capital' field from the document
     await updateDoc(docRef, {
       capital: deleteField()
     });
@@ -234,5 +235,29 @@ export class ShareTimeService {
     this._snackBar.openFromComponent(SnackBarComponent, {
       duration: 3000,
     });
+  }
+
+  checkBodypart(exerciseName: string): string {
+    const backgroundBodypart = this.userVariables[0]?.exercises[exerciseName]?.bodypart;
+    const backgroundImageMap: { [key: string]: string } = {
+      'Chest': 'url("./../../assets/img/chest-muscle.png")',
+      'Back': 'url("./../../assets/img/back-muscle.png")',
+      'Arms': 'url("./../../assets/img/arm-muscle.png")',
+      'Shoulders': 'url("./../../assets/img/shoulders-muscle.png")',
+      'Abdominal': 'url("./../../assets/img/abdominal-muscle.png")',
+      'Legs': 'url("./../../assets/img/legs-muscle.png")',
+      'Calves': 'url("./../../assets/img/calves-muscle.png")',
+      'Stamina': 'url("./../../assets/img/stamina-muscle.png")',
+
+    };
+
+    const backgroundImage = backgroundImageMap[backgroundBodypart] || 'url("./path/to/default-image.jpg")';
+    this.backgroundImages[exerciseName] = backgroundImage;
+
+    return backgroundImage;
+  }
+
+  getBackgroundImage(exerciseName: string): string {
+    return this.backgroundImages[exerciseName];
   }
 }
