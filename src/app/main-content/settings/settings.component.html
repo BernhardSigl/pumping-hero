@@ -1,8 +1,17 @@
-<div class="btns">
-    <button mat-raised-button color="primary">Change language</button>
-    <button mat-raised-button color="primary">GitHub</button>
-    <button mat-raised-button color="primary">Get in contact</button>
-    <button mat-raised-button color="primary">Imprint</button>
-    <button mat-raised-button color="primary">Privacy policy</button>
-    <button mat-raised-button color="primary" (click)="signOut()">Sign out</button>
+<div *ngIf="currentContent === 'buttons'; else imprintOrPrivacyContent">
+    <div class="btns">
+        <a mat-raised-button color="primary" href="https://github.com/BernhardSigl" target="_blank">GitHub</a>
+        <a mat-raised-button color="primary" href="mailto:info@bernhard-sigl.com">Get in contact</a>
+        <a mat-raised-button color="primary" (click)="showImprint()">Imprint</a>
+        <a mat-raised-button color="primary" (click)="showPrivacyPolicy()">Privacy policy</a>
+        <a mat-raised-button color="primary" (click)="signOut()">Sign out</a>
+    </div>
 </div>
+
+<ng-template #imprintOrPrivacyContent>
+    <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon" (click)="showButtons()">
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+    <app-imprint *ngIf="currentContent === 'imprint'"></app-imprint>
+    <app-privacy-policy *ngIf="currentContent === 'privacy-policy'"></app-privacy-policy>
+</ng-template>

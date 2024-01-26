@@ -6,8 +6,17 @@
     margin-top: 40px;
     align-items: center;
 
-    button {
+    a {
         width: 240px;
         height: 48px;
     }
+}
+
+button {
+    margin: 16px;
+}
+
+app-privacy-policy {
+    display: flex;
+    justify-content: center;
 }

@@ -1,0 +1,17 @@
+.content {
+    overflow-y: auto;
+    max-height: calc(100vh - 136px);
+    color: white;
+}
+
+p,
+h2,
+a {
+    color: white;
+}
+
+h1 {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 16px !important;
+}
