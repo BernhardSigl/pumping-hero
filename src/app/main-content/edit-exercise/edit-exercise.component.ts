@@ -94,7 +94,7 @@ export class EditExerciseComponent {
   emptyDiaryEntry() {
     if (this.diaryEntries.length === 0) {
       const newEntry = {
-        date: '',
+        date: new Date,
         info: '',
         repValues: ['', '', '', '', ''],
       };

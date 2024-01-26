@@ -73,17 +73,14 @@ export class RenameExerciseComponent {
   }
 
   async renameExercise() {
+    const updatedExercise = {
+      ...this.user.exercises[this.data.exerciseToEdit],
+      bodypart: this.bodypartName
+    };
+    this.user.exercises[this.exerciseName.name] = updatedExercise;
+
     if (this.exerciseName.name !== this.data.exerciseToEdit) {
-      this.user.exercises[this.exerciseName.name] = {
-        ...this.user.exercises[this.data.exerciseToEdit],
-      };
       delete this.user.exercises[this.data.exerciseToEdit];
-    }
-    if (this.bodypartName !== this.data.bodypart) {
-      this.user.exercises[this.exerciseName.name] = {
-        ...this.user.exercises[this.data.exerciseToEdit],
-        bodypart: this.bodypartName
-      };
     }
 
     let docRef = this.shareTimeService.getSingleUserDocRef(this.userId);
