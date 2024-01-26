@@ -45,6 +45,8 @@ export class TimerComponent {
 
   startTimer: any;
 
+  currentTime: string = '';
+
   constructor(
     private route: ActivatedRoute,
     public dialog: MatDialog,
@@ -54,7 +56,8 @@ export class TimerComponent {
     this.route.params.subscribe((params) => {
       this.userId = params['id'];
     });
-    this.shareTimeService.subUsers(this.userId)
+    this.shareTimeService.subUsers(this.userId);
+    this.showCurrentTime();
   }
 
   openEditIntervalCard() {
@@ -109,4 +112,17 @@ export class TimerComponent {
     this.shareTimeService.secAlert = 0;
     this.shareTimeService.value = 0;
   }
+
+  showCurrentTime() {
+    const now = new Date();
+    const hours = this.addZero(now.getHours());
+    const minutes = this.addZero(now.getMinutes());
+    this.currentTime = `${hours}:${minutes}`;
+    setTimeout(() => this.showCurrentTime(), 6000);
+  }
+
+  addZero(num: number): string {
+    return num < 10 ? '0' + num : '' + num;
+  }
+
 }

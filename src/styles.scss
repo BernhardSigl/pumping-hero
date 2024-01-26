@@ -51,12 +51,11 @@ p {
     color: var(--mat-tab-header-active-label-text-color) !important;
 }
 
-// card and snackbar width
-// .cdk-overlay-pane {
-//     width: 90vw !important;
-// }
-
-//
+// circle
+.mat-mdc-progress-spinner {
+    width: 60px !important;
+    height: 60px !important;
+}
 
 .cdk-global-overlay-wrapper {
     top: -5% !important;
