@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { CommonModule, formatDate } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 // date
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,6 +13,8 @@ import { ShareTimeService } from '../../share-time/share-time.service';
 import { LandingPageComponent } from '../landing-page/LandingPageComponent';
 import { updateDoc } from '@angular/fire/firestore';
 import { User } from '../../models/user.class';
+import { DeleteDiaryEntryComponent } from '../delete-diary-entry/delete-diary-entry.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-edit-exercise',
@@ -27,46 +29,38 @@ import { User } from '../../models/user.class';
     MatInputModule,
     MatDatepickerModule,
     FormsModule,
-    ReactiveFormsModule,
     MatNativeDateModule,
   ]
 })
 
 export class EditExerciseComponent {
   user!: User;
-  userId!: string;
+  // userId!: string;
+  convertedDate!: any;
 
   diaryEntries: any[] = [];
-  repValues: number[] = [0, 0, 0, 0, 0];
-  info!: any;
 
   date = new FormControl(new Date());
   serializedDate = new FormControl(new Date().toISOString());
+  // input: any;
 
   constructor(
     private dateAdapter: DateAdapter<Date>,
     public shareTimeService: ShareTimeService,
     public landingPage: LandingPageComponent,
+    public dialog: MatDialog,
   ) {
     this.dateAdapter.setLocale('en-GB');
   }
 
   ngOnInit(): void {
     this.shareTimeService.subUsers(this.landingPage.userId);
-
     this.user = { ...this.shareTimeService.userVariables[0] };
-
     this.diaryEntries = this.user?.exercises[this.shareTimeService.currentDiaryEntry]?.entries || [];
 
+    this.convertDate();
+
     const existingUser = this.shareTimeService.userVariables[0];
-
-    // if (this.shareTimeService.userVariables[0].exercises[this.shareTimeService.currentDiaryEntry]?.entries[0]?.date) {
-    let currentExercise = this.shareTimeService.userVariables[0].exercises[this.shareTimeService.currentDiaryEntry]['entries'][0].date;
-    const currentDate = this.timestampToDate(currentExercise);
-    this.user.exercises[this.shareTimeService.currentDiaryEntry].entries[0].date = currentDate;
-    console.log(this.diaryEntries);
-    // }
-
     this.user = new User({
       firstName: existingUser?.firstName,
       email: existingUser?.email,
@@ -83,8 +77,30 @@ export class EditExerciseComponent {
       exercises: existingUser?.exercises,
     });
 
-    console.log(this.user.exercises[this.shareTimeService.currentDiaryEntry].entries[0].date);
+    this.emptyDiaryEntry();
+  }
 
+  // convert firebase date to html date
+  convertDate() {
+    for (const dateEntry of this.diaryEntries) {
+      const unconvertedDates = dateEntry?.date;
+      if (unconvertedDates) {
+        const timestamp = { seconds: dateEntry.date['seconds'] };
+        dateEntry.date = new Date(timestamp.seconds * 1000);
+      }
+    }
+  }
+
+  emptyDiaryEntry() {
+    if (this.diaryEntries.length === 0) {
+      const newEntry = {
+        date: '',
+        info: '',
+        repValues: ['', '', '', '', ''],
+      };
+      this.diaryEntries.unshift(newEntry);
+      this.save();
+    }
   }
 
   timestampToDate(timestamp: any): string {
@@ -102,28 +118,44 @@ export class EditExerciseComponent {
   }
 
   addDiaryEntry() {
-    const existingUser = this.shareTimeService.userVariables[0];
-
     const currentExercise = this.shareTimeService.userVariables[0].exercises[this.shareTimeService.currentDiaryEntry]['entries'];
 
-
     const newEntry = {
-      date: '',
+      date: new Date(),
       info: '',
-      repValues: [0, 0, 0, 0, 0],
+      repValues: ['', '', '', '', ''],
     };
 
-    this.diaryEntries.unshift(newEntry);
-    currentExercise.push(newEntry);
+    this.diaryEntries.unshift(newEntry); // anzeige im html
+    currentExercise.push(newEntry); // in firebase eintragen
+    this.save();
   }
 
   async save() {
-    console.log('saved!');
-
     let docRef = this.shareTimeService.getSingleUserDocRef(this.landingPage.userId);
+    await updateDoc(docRef, this.user.toJson());
+  }
 
-    await updateDoc(docRef, this.user.toJson()).then(() => {
+  increaseValue(entryIndex: number, repIndex: number) {
+    this.diaryEntries[entryIndex].repValues[repIndex]++;
+    this.save();
+  }
 
+  decreaseValue(entryIndex: number, repIndex: number) {
+    if (this.diaryEntries[entryIndex].repValues[repIndex] > 0) {
+      this.diaryEntries[entryIndex].repValues[repIndex]--;
+      this.save();
+    }
+  }
+
+  openDeleteDiaryEntry(entryIndex: number) {
+    this.dialog.open(DeleteDiaryEntryComponent, {
+      data: {
+        entryIndex: entryIndex,
+        currentDiaryEntry: this.shareTimeService.currentDiaryEntry,
+        diaryEntries: this.diaryEntries,
+        save: () => this.save()
+      },
     });
   }
 }

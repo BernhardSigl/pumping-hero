@@ -74,9 +74,6 @@ export class AddExerciseComponent {
     this.user.exercises[this.exerciseName.name].bodypart = this.bodypartName;
     this.user.exercises[this.exerciseName.name].entries = this.entries;
 
-    // this.user.exercises[this.entries.name] = {};
-    // this.user.exercises[this.entries.name].reps = this.reps;
-
     let docRef = this.shareTimeService.getSingleUserDocRef(this.userId);
     await updateDoc(docRef, this.user.toJson()).then(() => {
       this.dialogRef.close();

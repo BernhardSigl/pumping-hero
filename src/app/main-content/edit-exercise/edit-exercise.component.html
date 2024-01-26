@@ -9,92 +9,90 @@
 </div>
 
 <div class="card-background">
-    <div class="card" *ngFor="let entry of diaryEntries">
+    <div class="card" *ngFor="let entry of diaryEntries; let i = index">
         <div class="inputs-with-btns">
             <div class="overview-inputs">
                 <mat-form-field>
                     <mat-label>Enter date</mat-label>
-                    <input matInput [matDatepicker]="picker1" [(ngModel)]="entry.date">
-                    <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
-                    <mat-datepicker #picker1></mat-datepicker>
+                    <input matInput type="text" [matDatepicker]="picker" [(ngModel)]="entry.date" name="entryDate"
+                        (ngModelChange)="save()">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
 
                 <mat-form-field class="example-form-field">
                     <mat-label>Info (Weights, ...)</mat-label>
-                    <input matInput type="text" [(ngModel)]="entry.info">
+                    <input matInput type="text" [(ngModel)]="entry.info" (ngModelChange)="save()">
                 </mat-form-field>
             </div>
             <div class="delete-and-restore-btns">
-                <button mat-mini-fab color="primary">
+                <button mat-mini-fab color="primary" (click)="openDeleteDiaryEntry(i)">
                     <mat-icon>delete</mat-icon>
                 </button>
                 <button mat-mini-fab color="primary">
                     <mat-icon>settings_backup_restore</mat-icon>
                 </button>
-                <button mat-mini-fab color="primary" (click)="save()">
-                    <mat-icon>save</mat-icon>
-                </button>
             </div>
         </div>
 
         <div class="input-reps">
-            <input type="number" [(ngModel)]="entry.repValues[0]">
-            <input type="number" [(ngModel)]="entry.repValues[1]">
-            <input type="number" [(ngModel)]="entry.repValues[2]">
-            <input type="number" [(ngModel)]="entry.repValues[3]">
-            <input type="number" [(ngModel)]="entry.repValues[4]">
+            <input type="number" [(ngModel)]="entry.repValues[0]" (ngModelChange)="save()">
+            <input type="number" [(ngModel)]="entry.repValues[1]" (ngModelChange)="save()">
+            <input type="number" [(ngModel)]="entry.repValues[2]" (ngModelChange)="save()">
+            <input type="number" [(ngModel)]="entry.repValues[3]" (ngModelChange)="save()">
+            <input type="number" [(ngModel)]="entry.repValues[4]" (ngModelChange)="save()">
 
         </div>
         <div class="reps-increase-decrease">
             <div class="button-area">
-                <button mat-mini-fab color="primary">
+                <button mat-mini-fab color="primary" (click)="increaseValue(i, 0)">
                     <mat-icon>add</mat-icon>
                 </button>
             </div>
             <div class="button-area">
-                <button mat-mini-fab color="primary">
+                <button mat-mini-fab color="primary" (click)="increaseValue(i, 1)">
                     <mat-icon>add</mat-icon>
                 </button>
             </div>
             <div class="button-area">
-                <button mat-mini-fab color="primary">
+                <button mat-mini-fab color="primary" (click)="increaseValue(i, 2)">
                     <mat-icon>add</mat-icon>
                 </button>
             </div>
             <div class="button-area">
-                <button mat-mini-fab color="primary">
+                <button mat-mini-fab color="primary" (click)="increaseValue(i, 3)">
                     <mat-icon>add</mat-icon>
                 </button>
             </div>
             <div class="button-area">
-                <button mat-mini-fab color="primary">
+                <button mat-mini-fab color="primary" (click)="increaseValue(i, 4)">
                     <mat-icon>add</mat-icon>
                 </button>
             </div>
         </div>
         <div class="reps-increase-decrease">
             <div class="button-area">
-                <button mat-mini-fab color="primary">
+                <button mat-mini-fab color="primary" (click)="decreaseValue(i, 0)">
                     <mat-icon>remove</mat-icon>
                 </button>
             </div>
             <div class="button-area">
-                <button mat-mini-fab color="primary">
+                <button mat-mini-fab color="primary" (click)="decreaseValue(i, 1)">
                     <mat-icon>remove</mat-icon>
                 </button>
             </div>
             <div class="button-area">
-                <button mat-mini-fab color="primary">
+                <button mat-mini-fab color="primary" (click)="decreaseValue(i, 2)">
                     <mat-icon>remove</mat-icon>
                 </button>
             </div>
             <div class="button-area">
-                <button mat-mini-fab color="primary">
+                <button mat-mini-fab color="primary" (click)="decreaseValue(i, 3)">
                     <mat-icon>remove</mat-icon>
                 </button>
             </div>
             <div class="button-area">
-                <button mat-mini-fab color="primary">
+                <button mat-mini-fab color="primary" (click)="decreaseValue(i, 4)">
                     <mat-icon>remove</mat-icon>
                 </button>
             </div>

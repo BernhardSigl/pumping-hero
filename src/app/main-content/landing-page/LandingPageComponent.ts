@@ -10,8 +10,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { TimerComponent } from '../timer/timer.component';
 import { ShareTimeService } from '../../share-time/share-time.service';
 import { AddExerciseComponent } from '../add-exercise/add-exercise.component';
-import { onSnapshot } from '@angular/fire/firestore';
+import { onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { EditExerciseComponent } from "../edit-exercise/edit-exercise.component";
+import { User } from '../../models/user.class';
+import { DeleteExerciseComponent } from '../delete-exercise/delete-exercise.component';
 
 @Component({
     selector: 'app-landing-page',
@@ -33,12 +35,21 @@ import { EditExerciseComponent } from "../edit-exercise/edit-exercise.component"
 export class LandingPageComponent {
     userId!: string;
     exercisesList: any[] = [];
+    user!: User;
 
     constructor(
         private route: ActivatedRoute,
         public dialog: MatDialog,
         public shareTimeService: ShareTimeService,
     ) { }
+
+    ngOnInit(): void {
+        this.route.params.subscribe((params) => {
+            this.userId = params['id'];
+        });
+        this.shareTimeService.subUsers(this.userId);
+        this.subUsers();
+    }
 
     // get the exercise list
     subUsers() {
@@ -51,17 +62,12 @@ export class LandingPageComponent {
         });
     }
 
-    ngOnInit(): void {
-        this.route.params.subscribe((params) => {
-            this.userId = params['id'];
-        });
-        this.shareTimeService.subUsers(this.userId);
-        this.subUsers();
-    }
-
     openAddExerciseCard() {
         this.dialog.open(AddExerciseComponent, {
-            data: { userId: this.userId, userVariables: this.shareTimeService.userVariables },
+            data: {
+                userId: this.userId,
+                userVariables: this.shareTimeService.userVariables
+            },
         });
     }
 
@@ -70,9 +76,21 @@ export class LandingPageComponent {
         this.shareTimeService.show = false;
     }
 
-    removeDiaryEntry(event: Event, exercise: string) {
+    removeDiaryEntry(event: Event, exercise: any) {
         event.stopPropagation();
-        console.log('delete: ', exercise);
+
+        this.dialog.open(DeleteExerciseComponent, {
+            data: {
+                userId: this.userId,
+                exerciseToDelete: exercise,
+                userVariables: this.shareTimeService.userVariables
+            },
+        });
+    }
+
+    async save() {
+        let docRef = this.shareTimeService.getSingleUserDocRef(this.userId);
+        await updateDoc(docRef, this.user.toJson());
     }
 
     showEditRemoveDiary() {

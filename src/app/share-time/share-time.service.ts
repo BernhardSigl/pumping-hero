@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, doc, onSnapshot } from '@angular/fire/firestore';
+import { Firestore, collection, deleteField, doc, onSnapshot, updateDoc } from '@angular/fire/firestore';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../main-content/snack-bar/snack-bar.component';
@@ -68,6 +68,17 @@ export class ShareTimeService {
       this.secondIntervalSec = userVariable.secondIntervalSec;
       this.firstPreIntervalSec = userVariable.firstPreIntervalSec;
       this.secondPreIntervalSec = userVariable.secondPreIntervalSec;
+    });
+  }
+
+  async deleteFieldElement(docId: string, exercise?: any) {
+    console.log(this.firestore, "users", docId, exercise);
+
+    const docRef = doc(this.firestore, "users", docId, 'BD');
+
+    // Remove the 'capital' field from the document
+    await updateDoc(docRef, {
+      capital: deleteField()
     });
   }
 

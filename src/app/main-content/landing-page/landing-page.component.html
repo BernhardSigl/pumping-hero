@@ -53,7 +53,7 @@
     </div>
     <div class="gym-diary" *ngIf="shareTimeService.show">
 
-        <button mat-raised-button color="primary" *ngFor="let exercise of exercisesList" class="diaryBtn"
+        <button mat-raised-button color="primary" *ngFor="let exercise of exercisesList; let i = index" class="diaryBtn"
             (click)="openEditExercise(exercise)">
 
             <h3>{{ exercise }}</h3>
