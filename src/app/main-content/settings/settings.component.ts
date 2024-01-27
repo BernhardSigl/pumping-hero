@@ -5,6 +5,7 @@ import { ImprintComponent } from '../imprint/imprint.component';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { PrivacyPolicyComponent } from '../privacy-policy/privacy-policy.component';
+import { HelpComponent } from '../help/help.component';
 
 @Component({
   selector: 'app-settings',
@@ -14,7 +15,8 @@ import { PrivacyPolicyComponent } from '../privacy-policy/privacy-policy.compone
     MatButtonModule,
     ImprintComponent,
     MatIconModule,
-    PrivacyPolicyComponent
+    PrivacyPolicyComponent,
+    HelpComponent
   ],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss'
@@ -38,5 +40,9 @@ export class SettingsComponent {
 
   showPrivacyPolicy() {
     this.currentContent = 'privacy-policy';
+  }
+
+  showManual() {
+    this.currentContent = 'manual';
   }
 }

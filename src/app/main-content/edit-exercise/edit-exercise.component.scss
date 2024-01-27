@@ -14,7 +14,8 @@
     justify-content: flex-start;
     flex-direction: column;
     overflow: auto;
-    height: calc(100vh - 358px);
+    height: calc(100vh - 285px);
+    padding: 0 8px;
 
     .card {
         width: 100%;

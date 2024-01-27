@@ -248,10 +248,10 @@ export class ShareTimeService {
       'Legs': 'url("./../../assets/img/legs-muscle.png")',
       'Calves': 'url("./../../assets/img/calves-muscle.png")',
       'Stamina': 'url("./../../assets/img/stamina-muscle.png")',
-
+      'Other': ''
     };
 
-    const backgroundImage = backgroundImageMap[backgroundBodypart] || 'url("./path/to/default-image.jpg")';
+    const backgroundImage = backgroundImageMap[backgroundBodypart] || '';
     this.backgroundImages[exerciseName] = backgroundImage;
 
     return backgroundImage;

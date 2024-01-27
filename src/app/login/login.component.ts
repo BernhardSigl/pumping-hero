@@ -3,39 +3,50 @@ import { Component, OnInit, inject, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Firestore, addDoc, collection, getDocs, query } from '@angular/fire/firestore';
 import { User } from '../models/user.class';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [],
+  imports: [
+    CommonModule,
+    MatProgressBarModule
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit {
   user!: User;
   firestore: Firestore = inject(Firestore);
+  loading = false;
+  loadingLogin = false;
 
   private router = inject(Router);
 
   constructor(private ngZone: NgZone) { }
 
   ngOnInit(): void {
+    this.loading = true;
     google.accounts.id.initialize({
       client_id: '48091826759-81j87796gcoeko02ls6hjvjbkunvaolj.apps.googleusercontent.com',
       callback: (resp: any) => this.handleLogin(resp)
     });
+    this.loading = false;
   }
 
   ngAfterViewInit(): void {
     const customGoogleButton = document.getElementById('google-btn');
     if (customGoogleButton) {
       customGoogleButton.addEventListener('click', () => {
-        google.accounts.id.prompt((response: any) => {
-          if (response.isNotDisplayed() || response.isSkippedMoment()) {
-            document.cookie = `g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
-            google.accounts.id.prompt();
-          }
+        this.loadingLogin = true;
+        google.accounts.id.prompt(() => {
+          document.cookie = `g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+          google.accounts.id.prompt();
         });
+        setTimeout(() => {
+          this.loadingLogin = false;
+        }, 800);
       });
     }
   }

@@ -51,7 +51,7 @@
             <mat-icon>add</mat-icon>
         </button>
     </div>
-    <div class="gym-diary" *ngIf="shareTimeService.show">
+    <div class="gym-diary scroll-bar" *ngIf="shareTimeService.show">
 
         <button mat-raised-button color="primary" *ngFor="let exercise of exercisesList; let i = index" class="diaryBtn"
             [style.background-image]="shareTimeService.getBackgroundImage(exercise)"

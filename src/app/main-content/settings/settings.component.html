@@ -1,5 +1,6 @@
 <div *ngIf="currentContent === 'buttons'; else imprintOrPrivacyContent">
     <div class="btns">
+        <a mat-raised-button color="primary" (click)="showManual()">Manual</a>
         <a mat-raised-button color="primary" href="https://github.com/BernhardSigl" target="_blank">GitHub</a>
         <a mat-raised-button color="primary" href="mailto:info@bernhard-sigl.com">Get in contact</a>
         <a mat-raised-button color="primary" (click)="showImprint()">Imprint</a>
@@ -14,4 +15,5 @@
     </button>
     <app-imprint *ngIf="currentContent === 'imprint'"></app-imprint>
     <app-privacy-policy *ngIf="currentContent === 'privacy-policy'"></app-privacy-policy>
+    <app-help *ngIf="currentContent === 'manual'"></app-help>
 </ng-template>

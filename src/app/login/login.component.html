@@ -1,12 +1,18 @@
 <div class="login-box">
-    <h1>TIME TO FLEX</h1>
+    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+    <h1>PUMPING HERO</h1>
 
-    <div class="google-btn-div" id="google-btn">
+    <button class="google-btn-div" id="google-btn" [disabled]="loadingLogin">
         <div class="google-login">
-            <img src="./../../assets/img/Google.png" alt="" />
+            <img src="./../../assets/img/Google.png">
             <span>Anmelden mit Google</span>
         </div>
-    </div>
+    </button>
 
     <img src="./../../assets/img/login-bodybuilder.png" class="login-bodybuilder-img">
+
+    <div>
+        <a href=""></a>
+        <a href=""></a>
+    </div>
 </div>
