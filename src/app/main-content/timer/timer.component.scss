@@ -36,6 +36,23 @@
             position: absolute;
             bottom: 6px;
             right: 6px;
+            cursor: default;
+        }
+
+        .fullscreen-box {
+            position: absolute;
+            bottom: 10px;
+            left: 8px;
+
+            .mat-icon {
+                transform: scale(1.4);
+                color: #778af7;
+                cursor: pointer;
+
+                &:hover {
+                    transform: scale(1.5);
+                }
+            }
         }
     }
 

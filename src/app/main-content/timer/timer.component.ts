@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { Component, HostListener, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -47,10 +47,15 @@ export class TimerComponent {
 
   currentTime: string = '';
 
+  // Fullscreen:
+  elem: any;
+  isFullScreen!: boolean;
+
   constructor(
     private route: ActivatedRoute,
     public dialog: MatDialog,
-    public shareTimeService: ShareTimeService) { }
+    public shareTimeService: ShareTimeService,
+    @Inject(DOCUMENT) private document: any) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -58,6 +63,10 @@ export class TimerComponent {
     });
     this.shareTimeService.subUsers(this.userId);
     this.showCurrentTime();
+
+    // Fullscreen:
+    this.chkScreenMode();
+    this.elem = document.documentElement;
   }
 
   openEditIntervalCard() {
@@ -125,4 +134,48 @@ export class TimerComponent {
     return num < 10 ? '0' + num : '' + num;
   }
 
+
+  // Fullscreen:
+  @HostListener('document:fullscreenchange', ['$event'])
+  @HostListener('document:webkitfullscreenchange', ['$event'])
+  @HostListener('document:mozfullscreenchange', ['$event'])
+  @HostListener('document:MSFullscreenChange', ['$event'])
+
+  chkScreenMode() {
+    if (document.fullscreenElement) {
+      this.isFullScreen = true;
+    } else {
+      this.isFullScreen = false;
+    }
+  }
+
+  openFullscreen() {
+    if (this.elem.requestFullscreen) {
+      this.elem.requestFullscreen();
+    } else if (this.elem.mozRequestFullScreen) {
+      /* Firefox */
+      this.elem.mozRequestFullScreen();
+    } else if (this.elem.webkitRequestFullscreen) {
+      /* Chrome, Safari and Opera */
+      this.elem.webkitRequestFullscreen();
+    } else if (this.elem.msRequestFullscreen) {
+      /* IE/Edge */
+      this.elem.msRequestFullscreen();
+    }
+  }
+
+  closeFullscreen() {
+    if (this.document.exitFullscreen) {
+      this.document.exitFullscreen();
+    } else if (this.document.mozCancelFullScreen) {
+      /* Firefox */
+      this.document.mozCancelFullScreen();
+    } else if (this.document.webkitExitFullscreen) {
+      /* Chrome, Safari and Opera */
+      this.document.webkitExitFullscreen();
+    } else if (this.document.msExitFullscreen) {
+      /* IE/Edge */
+      this.document.msExitFullscreen();
+    }
+  }
 }
