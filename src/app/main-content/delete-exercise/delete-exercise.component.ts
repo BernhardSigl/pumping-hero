@@ -54,6 +54,7 @@ export class DeleteExerciseComponent {
 
     let docRef = this.shareTimeService.getSingleUserDocRef(this.data.userId);
     await updateDoc(docRef, this.user.toJson()).then(() => {
+      this.shareTimeService.landingPageSubUsers(this.data.userId);
       this.dialogRef.close();
     });
   }

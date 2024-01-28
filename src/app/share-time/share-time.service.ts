@@ -16,6 +16,8 @@ export class ShareTimeService {
   showEditDiary: boolean = false;
   currentDiaryEntry!: string;
 
+  exercisesList: string[] = [];
+
   preIntervalConvert!: any;
   startTimerAlert: any;
   intervalConvert!: any;
@@ -40,10 +42,11 @@ export class ShareTimeService {
 
   backgroundImages: { [key: string]: string } = {};
 
+  sortBodypart: string[] = [];
+
   firestore: Firestore = inject(Firestore);
 
   constructor(private _snackBar: MatSnackBar) {
-
   }
 
   currentDiaryEntryLog(exercise: string) {
@@ -70,6 +73,26 @@ export class ShareTimeService {
       this.secondIntervalSec = userVariable.secondIntervalSec;
       this.firstPreIntervalSec = userVariable.firstPreIntervalSec;
       this.secondPreIntervalSec = userVariable.secondPreIntervalSec;
+    });
+  }
+
+  // get the exercise list
+  landingPageSubUsers(userId: string) {
+    const q = this.getSingleUserDocRef(userId);
+    onSnapshot(q, (querySnapshot) => {
+      let userField = querySnapshot.data();
+      const exercises = userField!['exercises'];
+      // map to array
+      this.exercisesList = exercises ? Object.keys(exercises) : [];
+
+      // background image
+      this.sortBodypart = [];
+      this.exercisesList.forEach((exerciseName: string) => {
+        this.checkBodypart(exerciseName);
+        // this.sortBodypart = [];
+        this.sortBodypart.push(this.userVariables[0].exercises[`${exerciseName}`]['bodypart']);
+      });
+      this.sortDiary();
     });
   }
 
@@ -259,5 +282,21 @@ export class ShareTimeService {
 
   getBackgroundImage(exerciseName: string): string {
     return this.backgroundImages[exerciseName];
+  }
+
+  sortDiary() {
+    const customOrder = ['Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Abdominal', 'Calves', 'Stamina', 'Other'];
+    const exerciseBodypartPairs = this.exercisesList.map((exercise, index) => ({
+      exercise: exercise,
+      bodypart: this.sortBodypart[index]
+    }));
+
+    exerciseBodypartPairs.sort((a, b) => {
+      const orderA = customOrder.indexOf(a.bodypart);
+      const orderB = customOrder.indexOf(b.bodypart);
+      return orderA - orderB;
+    });
+
+    this.exercisesList = exerciseBodypartPairs.map(pair => pair.exercise);
   }
 }

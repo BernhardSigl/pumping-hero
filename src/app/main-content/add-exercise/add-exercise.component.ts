@@ -76,7 +76,9 @@ export class AddExerciseComponent {
     this.user.exercises[this.exerciseName.name].entries = this.entries;
 
     let docRef = this.shareTimeService.getSingleUserDocRef(this.userId);
+
     await updateDoc(docRef, this.user.toJson()).then(() => {
+      this.shareTimeService.landingPageSubUsers(this.userId);
       this.dialogRef.close();
     });
   }

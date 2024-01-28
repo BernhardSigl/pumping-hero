@@ -39,7 +39,8 @@
 
 .gym-diary {
     display: flex;
-    row-gap: 12px;
+    row-gap: 20px;
+    align-content: flex-start;
     flex-wrap: wrap;
     justify-content: space-evenly;
     margin: 16px 0;

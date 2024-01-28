@@ -35,7 +35,6 @@ import { RenameExerciseComponent } from '../rename-exercise/rename-exercise.comp
 
 export class LandingPageComponent {
     userId!: string;
-    exercisesList: string[] = [];
     user!: User;
 
     constructor(
@@ -49,23 +48,7 @@ export class LandingPageComponent {
             this.userId = params['id'];
         });
         this.shareTimeService.subUsers(this.userId);
-        this.subUsers();
-    }
-
-    // get the exercise list
-    subUsers() {
-        const q = this.shareTimeService.getSingleUserDocRef(this.userId);
-        onSnapshot(q, (querySnapshot) => {
-            let userField = querySnapshot.data();
-            const exercises = userField!['exercises'];
-            // map to array
-            this.exercisesList = exercises ? Object.keys(exercises) : [];
-
-            // background image
-            this.exercisesList.forEach((exerciseName: string) => {
-                this.shareTimeService.checkBodypart(exerciseName);
-            });
-        });
+        this.shareTimeService.landingPageSubUsers(this.userId);
     }
 
     openAddExerciseCard() {
