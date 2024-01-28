@@ -22,14 +22,15 @@
 
                 <mat-form-field class="example-form-field">
                     <mat-label>Info (Weights, ...)</mat-label>
-                    <input matInput type="text" [(ngModel)]="entry.info" (ngModelChange)="save()">
+                    <input matInput type="text" [(ngModel)]="entry.info" (ngModelChange)="save()" #inputContent>
                 </mat-form-field>
             </div>
             <div class="delete-and-restore-btns">
                 <button mat-mini-fab color="primary" (click)="openDeleteDiaryEntry(i)">
                     <mat-icon>delete</mat-icon>
                 </button>
-                <button mat-mini-fab color="primary">
+                <button mat-mini-fab color="primary" (click)="restoreInfo(i)"
+                    [style.visibility]="shouldShowRestoreButton(i) ? 'visible' : 'hidden'">
                     <mat-icon>settings_backup_restore</mat-icon>
                 </button>
             </div>

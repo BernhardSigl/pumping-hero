@@ -35,14 +35,14 @@ import { MatDialog } from '@angular/material/dialog';
 
 export class EditExerciseComponent {
   user!: User;
-  // userId!: string;
   convertedDate!: any;
+  entry: any = {};
+  currentIndex: number = 0;
 
   diaryEntries: any[] = [];
 
   date = new FormControl(new Date());
   serializedDate = new FormControl(new Date().toISOString());
-  // input: any;
 
   constructor(
     private dateAdapter: DateAdapter<Date>,
@@ -157,5 +157,33 @@ export class EditExerciseComponent {
         save: () => this.save()
       },
     });
+  }
+
+  restoreInfo(index: number) {
+    const nextEntryIndex = this.findNextEntryIndex(index);
+    if (nextEntryIndex !== -1) {
+      const nextInfo = this.diaryEntries[nextEntryIndex].info;
+      this.diaryEntries[index].info = nextInfo;
+      this.save();
+    }
+  }
+
+  findNextEntryIndex(index: number): number {
+    return index < this.diaryEntries.length - 1 ? index + 1 : -1;
+  }
+
+  shouldShowRestoreButton(index: number): boolean {
+    console.log(this.diaryEntries.length);
+
+    return this.diaryEntries.length > 1 && index !== this.findMaxIndex();
+  }
+
+  findMaxIndex(): number {
+    let maxIndex = 0;
+    for (let i = 0; i < this.diaryEntries.length; i++) {
+      maxIndex = this.diaryEntries.length;
+      maxIndex = i;
+    }
+    return maxIndex;
   }
 }

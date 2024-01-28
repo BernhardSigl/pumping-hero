@@ -298,7 +298,5 @@ export class ShareTimeService {
     });
 
     this.exercisesList = exerciseBodypartPairs.map(pair => pair.exercise);
-
-    console.log(this.exercisesList);
   }
 }
