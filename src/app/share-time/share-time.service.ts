@@ -294,9 +294,11 @@ export class ShareTimeService {
     exerciseBodypartPairs.sort((a, b) => {
       const orderA = customOrder.indexOf(a.bodypart);
       const orderB = customOrder.indexOf(b.bodypart);
-      return orderA - orderB;
+      return orderA - orderB || a.exercise.localeCompare(b.exercise);
     });
 
     this.exercisesList = exerciseBodypartPairs.map(pair => pair.exercise);
+
+    console.log(this.exercisesList);
   }
 }
