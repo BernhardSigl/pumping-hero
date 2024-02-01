@@ -14,7 +14,7 @@ import { HelpComponent } from '../main-content/help/help.component';
     MatIconModule,
     LandingPageComponent,
     SettingsComponent,
-    HelpComponent
+    HelpComponent,
   ],
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.scss'

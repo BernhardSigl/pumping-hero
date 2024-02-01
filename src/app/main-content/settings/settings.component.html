@@ -10,7 +10,7 @@
 </div>
 
 <ng-template #imprintOrPrivacyContent>
-    <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon" (click)="showButtons()">
+    <button mat-mini-fab color="primary" (click)="showButtons()">
         <mat-icon>arrow_back</mat-icon>
     </button>
     <app-imprint *ngIf="currentContent === 'imprint'"></app-imprint>

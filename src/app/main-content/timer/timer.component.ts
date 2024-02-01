@@ -72,7 +72,8 @@ export class TimerComponent {
   openEditIntervalCard() {
     this.dialog.open(EditComponent, {
       data: { userId: this.userId, userVariables: this.shareTimeService.userVariables },
-      position: { top: '90px' }
+      position: { top: '90px' },
+      width: '90%'
     });
   }
 
@@ -134,7 +135,6 @@ export class TimerComponent {
   addZero(num: number): string {
     return num < 10 ? '0' + num : '' + num;
   }
-
 
   // Fullscreen:
   @HostListener('document:fullscreenchange', ['$event'])

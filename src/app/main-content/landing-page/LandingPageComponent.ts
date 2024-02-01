@@ -58,7 +58,8 @@ export class LandingPageComponent {
                 userId: this.userId,
                 userVariables: this.shareTimeService.userVariables
             },
-            position: { top: '90px' }
+            position: { top: '90px' },
+            width: '90%'
         });
     }
 
@@ -89,7 +90,8 @@ export class LandingPageComponent {
                 userVariables: this.shareTimeService.userVariables,
                 bodypart: this.shareTimeService.userVariables[0].exercises[exercise]['bodypart']
             },
-            position: { top: '90px' }
+            position: { top: '90px' },
+            width: '90%'
         });
     }
 
