@@ -97,8 +97,6 @@ export class ShareTimeService {
   }
 
   async deleteFieldElement(docId: string, exercise?: any) {
-    console.log(this.firestore, "users", docId, exercise);
-
     const docRef = doc(this.firestore, "users", docId);
 
     await updateDoc(docRef, {

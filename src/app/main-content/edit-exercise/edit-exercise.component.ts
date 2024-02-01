@@ -156,6 +156,7 @@ export class EditExerciseComponent {
         diaryEntries: this.diaryEntries,
         save: () => this.save()
       },
+      position: { top: '90px' }
     });
   }
 
@@ -173,8 +174,6 @@ export class EditExerciseComponent {
   }
 
   shouldShowRestoreButton(index: number): boolean {
-    console.log(this.diaryEntries.length);
-
     return this.diaryEntries.length > 1 && index !== this.findMaxIndex();
   }
 

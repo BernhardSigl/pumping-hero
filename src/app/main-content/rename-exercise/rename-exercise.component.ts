@@ -47,8 +47,6 @@ export class RenameExerciseComponent {
 
     this.userId = this.data.userId;
     const existingUser = this.data.userVariables[0];
-    // console.log(existingUser);
-    // console.log(this.data.bodypart);
     this.exerciseName.name = this.data.exerciseToEdit || '';
     this.bodypartName = this.data.bodypart || '';
 

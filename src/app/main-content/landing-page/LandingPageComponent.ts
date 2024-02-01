@@ -58,6 +58,7 @@ export class LandingPageComponent {
                 userId: this.userId,
                 userVariables: this.shareTimeService.userVariables
             },
+            position: { top: '90px' }
         });
     }
 
@@ -75,6 +76,7 @@ export class LandingPageComponent {
                 exerciseToDelete: exercise,
                 userVariables: this.shareTimeService.userVariables
             },
+            position: { top: '90px' }
         });
     }
 
@@ -87,6 +89,7 @@ export class LandingPageComponent {
                 userVariables: this.shareTimeService.userVariables,
                 bodypart: this.shareTimeService.userVariables[0].exercises[exercise]['bodypart']
             },
+            position: { top: '90px' }
         });
     }
 

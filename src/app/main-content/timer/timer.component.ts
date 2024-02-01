@@ -72,6 +72,7 @@ export class TimerComponent {
   openEditIntervalCard() {
     this.dialog.open(EditComponent, {
       data: { userId: this.userId, userVariables: this.shareTimeService.userVariables },
+      position: { top: '90px' }
     });
   }
 

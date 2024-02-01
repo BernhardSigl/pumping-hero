@@ -28,11 +28,13 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    google.accounts.id.initialize({
-      client_id: '48091826759-81j87796gcoeko02ls6hjvjbkunvaolj.apps.googleusercontent.com',
-      callback: (resp: any) => this.handleLogin(resp)
+    this.loadGoogleApi(() => {
+      google.accounts.id.initialize({
+        client_id: '48091826759-81j87796gcoeko02ls6hjvjbkunvaolj.apps.googleusercontent.com',
+        callback: (resp: any) => this.handleLogin(resp)
+      });
+      this.loading = false;
     });
-    this.loading = false;
   }
 
   ngAfterViewInit(): void {
@@ -40,14 +42,29 @@ export class LoginComponent implements OnInit {
     if (customGoogleButton) {
       customGoogleButton.addEventListener('click', () => {
         this.loadingLogin = true;
-        google.accounts.id.prompt(() => {
-          document.cookie = `g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
-          google.accounts.id.prompt();
+        this.loadGoogleApi(() => {
+          google.accounts.id.prompt(() => {
+            document.cookie = `g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+            google.accounts.id.prompt();
+          });
+          setTimeout(() => {
+            this.loadingLogin = false;
+          }, 800);
         });
-        setTimeout(() => {
-          this.loadingLogin = false;
-        }, 800);
       });
+    }
+  }
+
+  private loadGoogleApi(callback: () => void): void {
+    if (typeof google === 'undefined' || !google.accounts) {
+      const script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      script.onload = callback;
+      document.head.appendChild(script);
+    } else {
+      callback();
     }
   }
 
