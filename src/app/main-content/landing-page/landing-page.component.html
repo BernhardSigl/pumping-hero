@@ -46,7 +46,11 @@
             <mat-icon *ngIf="shareTimeService.showEditDiary">edit_off</mat-icon>
         </button>
         <h3>Gym-Diary</h3>
-        <mat-icon>fitness_center</mat-icon>
+
+        <button mat-mini-fab color="primary" (click)="backup()" *ngIf="shareTimeService.showEditDiary">
+            <mat-icon>save</mat-icon>
+        </button>
+
         <button mat-mini-fab color="primary" (click)="openAddExerciseCard()">
             <mat-icon>add</mat-icon>
         </button>

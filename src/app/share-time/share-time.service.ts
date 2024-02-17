@@ -46,7 +46,7 @@ export class ShareTimeService {
 
   firestore: Firestore = inject(Firestore);
 
-  constructor(private _snackBar: MatSnackBar) {
+  constructor(private _snackBar: MatSnackBar) {   
   }
 
   currentDiaryEntryLog(exercise: string) {
@@ -54,7 +54,8 @@ export class ShareTimeService {
   }
 
   // Firebase
-  subUsers(userId: string) {
+  async subUsers(userId: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
     const q = this.getSingleUserDocRef(userId);
     onSnapshot(q, (querySnapshot) => {
       let userField = querySnapshot.data();
@@ -73,11 +74,14 @@ export class ShareTimeService {
       this.secondIntervalSec = userVariable.secondIntervalSec;
       this.firstPreIntervalSec = userVariable.firstPreIntervalSec;
       this.secondPreIntervalSec = userVariable.secondPreIntervalSec;
+      resolve();
+    });
     });
   }
 
   // get the exercise list
-  landingPageSubUsers(userId: string) {
+  async landingPageSubUsers(userId: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
     const q = this.getSingleUserDocRef(userId);
     onSnapshot(q, (querySnapshot) => {
       let userField = querySnapshot.data();
@@ -93,7 +97,9 @@ export class ShareTimeService {
         this.sortBodypart.push(this.userVariables[0].exercises[`${exerciseName}`]['bodypart']);
       });
       this.sortDiary();
+      resolve();
     });
+  });
   }
 
   async deleteFieldElement(docId: string, exercise?: any) {
