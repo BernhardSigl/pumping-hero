@@ -48,7 +48,6 @@ export class LandingPageComponent {
     });
     await this.shareTimeService.subUsers(this.userId);
     await this.shareTimeService.landingPageSubUsers(this.userId);
-    console.log(this.shareTimeService.userVariables[0].exercises);
   }
 
   openAddExerciseCard() {

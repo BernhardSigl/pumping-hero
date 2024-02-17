@@ -203,9 +203,7 @@ export class EditExerciseComponent {
     return maxIndex;
   }
 
-  toggleLock(entry: any, i:number) {
+  toggleLock(entry: any) {
     entry.locked = !entry.locked;
-    console.log(i);
-    
   }
 }
