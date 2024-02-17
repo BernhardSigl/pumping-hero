@@ -30,9 +30,8 @@ import { MatDialog } from '@angular/material/dialog';
     MatDatepickerModule,
     FormsModule,
     MatNativeDateModule,
-  ]
+  ],
 })
-
 export class EditExerciseComponent {
   user!: User;
   convertedDate!: any;
@@ -48,7 +47,7 @@ export class EditExerciseComponent {
     private dateAdapter: DateAdapter<Date>,
     public shareTimeService: ShareTimeService,
     public landingPage: LandingPageComponent,
-    public dialog: MatDialog,
+    public dialog: MatDialog
   ) {
     this.dateAdapter.setLocale('en-GB');
   }
@@ -56,7 +55,9 @@ export class EditExerciseComponent {
   ngOnInit(): void {
     this.shareTimeService.subUsers(this.landingPage.userId);
     this.user = { ...this.shareTimeService.userVariables[0] };
-    this.diaryEntries = this.user?.exercises[this.shareTimeService.currentDiaryEntry]?.entries || [];
+    this.diaryEntries =
+      this.user?.exercises[this.shareTimeService.currentDiaryEntry]?.entries ||
+      [];
 
     this.convertDate();
 
@@ -78,6 +79,17 @@ export class EditExerciseComponent {
     });
 
     this.emptyDiaryEntry();
+    this.lockEntries();
+  }
+
+  lockEntries() {
+        for (let i = 0; i < this.diaryEntries.length; i++) {
+      if (i === 0) {
+        this.diaryEntries[i].locked = false;
+      } else {
+         this.diaryEntries[i].locked = true;
+      }
+    }
   }
 
   // convert firebase date to html date
@@ -94,7 +106,7 @@ export class EditExerciseComponent {
   emptyDiaryEntry() {
     if (this.diaryEntries.length === 0) {
       const newEntry = {
-        date: new Date,
+        date: new Date(),
         info: '',
         repValues: ['', '', '', '', ''],
       };
@@ -106,8 +118,8 @@ export class EditExerciseComponent {
   timestampToDate(timestamp: any): string {
     const seconds = timestamp.seconds;
     const date = new Date(seconds * 1000);
-    const day = ("0" + date.getDate()).slice(-2);
-    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   }
@@ -118,7 +130,10 @@ export class EditExerciseComponent {
   }
 
   addDiaryEntry() {
-    const currentExercise = this.shareTimeService.userVariables[0].exercises[this.shareTimeService.currentDiaryEntry]['entries'];
+    const currentExercise =
+      this.shareTimeService.userVariables[0].exercises[
+        this.shareTimeService.currentDiaryEntry
+      ]['entries'];
 
     const newEntry = {
       date: new Date(),
@@ -132,7 +147,9 @@ export class EditExerciseComponent {
   }
 
   async save() {
-    let docRef = this.shareTimeService.getSingleUserDocRef(this.landingPage.userId);
+    let docRef = this.shareTimeService.getSingleUserDocRef(
+      this.landingPage.userId
+    );
     await updateDoc(docRef, this.user.toJson());
   }
 
@@ -154,9 +171,9 @@ export class EditExerciseComponent {
         entryIndex: entryIndex,
         currentDiaryEntry: this.shareTimeService.currentDiaryEntry,
         diaryEntries: this.diaryEntries,
-        save: () => this.save()
+        save: () => this.save(),
       },
-      position: { top: '90px' }
+      position: { top: '90px' },
     });
   }
 
@@ -184,5 +201,11 @@ export class EditExerciseComponent {
       maxIndex = i;
     }
     return maxIndex;
+  }
+
+  toggleLock(entry: any, i:number) {
+    entry.locked = !entry.locked;
+    console.log(i);
+    
   }
 }

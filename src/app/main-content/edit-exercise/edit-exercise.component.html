@@ -1,102 +1,221 @@
 <div class="btns">
-    <button mat-mini-fab color="primary" (click)="back()">
-        <mat-icon>arrow_back_ios_new</mat-icon>
-    </button>
-    <h3>{{ shareTimeService.currentDiaryEntry }}</h3>
-    <button mat-mini-fab color="primary" (click)="addDiaryEntry()">
-        <mat-icon>add</mat-icon>
-    </button>
+  <button mat-mini-fab color="primary" (click)="back()">
+    <mat-icon>arrow_back_ios_new</mat-icon>
+  </button>
+  <h3>{{ shareTimeService.currentDiaryEntry }}</h3>
+  <button mat-mini-fab color="primary" (click)="addDiaryEntry(); lockEntries()">
+    <mat-icon>add</mat-icon>
+  </button>
 </div>
 
 <div class="card-background scroll-bar">
-    <div class="card" *ngFor="let entry of diaryEntries; let i = index">
-        <div class="inputs-with-btns">
-            <div class="overview-inputs">
-                <mat-form-field>
-                    <mat-label>Enter date</mat-label>
-                    <input matInput type="text" [matDatepicker]="picker" [(ngModel)]="entry.date" name="entryDate"
-                        (ngModelChange)="save()">
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
+  <div class="card" *ngFor="let entry of diaryEntries; let i = index">
+    <div class="inputs-with-btns">
+      <div class="overview-inputs">
+        <mat-form-field>
+          <mat-label>Enter date</mat-label>
+          <input
+            matInput
+            type="text"
+            [matDatepicker]="picker"
+            [(ngModel)]="entry.date"
+            name="entryDate"
+            (ngModelChange)="save()"
+            [disabled]="entry.locked"
+            [ngClass]="{ 'custom-disabled': entry.locked }"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
 
-                <mat-form-field class="example-form-field">
-                    <mat-label>Info (Weights, ...)</mat-label>
-                    <input matInput type="text" [(ngModel)]="entry.info" (ngModelChange)="save()" #inputContent>
-                </mat-form-field>
-            </div>
-            <div class="delete-and-restore-btns">
-                <button mat-mini-fab color="primary" (click)="openDeleteDiaryEntry(i)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-                <button mat-mini-fab color="primary" (click)="restoreInfo(i)"
-                    [style.visibility]="shouldShowRestoreButton(i) ? 'visible' : 'hidden'">
-                    <mat-icon>settings_backup_restore</mat-icon>
-                </button>
-            </div>
-        </div>
-
-        <div class="input-reps">
-            <input type="number" [(ngModel)]="entry.repValues[0]" (ngModelChange)="save()">
-            <input type="number" [(ngModel)]="entry.repValues[1]" (ngModelChange)="save()">
-            <input type="number" [(ngModel)]="entry.repValues[2]" (ngModelChange)="save()">
-            <input type="number" [(ngModel)]="entry.repValues[3]" (ngModelChange)="save()">
-            <input type="number" [(ngModel)]="entry.repValues[4]" (ngModelChange)="save()">
-
-        </div>
-        <div class="reps-increase-decrease">
-            <div class="button-area">
-                <button mat-mini-fab color="primary" (click)="increaseValue(i, 0)">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </div>
-            <div class="button-area">
-                <button mat-mini-fab color="primary" (click)="increaseValue(i, 1)">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </div>
-            <div class="button-area">
-                <button mat-mini-fab color="primary" (click)="increaseValue(i, 2)">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </div>
-            <div class="button-area">
-                <button mat-mini-fab color="primary" (click)="increaseValue(i, 3)">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </div>
-            <div class="button-area">
-                <button mat-mini-fab color="primary" (click)="increaseValue(i, 4)">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </div>
-        </div>
-        <div class="reps-increase-decrease">
-            <div class="button-area">
-                <button mat-mini-fab color="primary" (click)="decreaseValue(i, 0)">
-                    <mat-icon>remove</mat-icon>
-                </button>
-            </div>
-            <div class="button-area">
-                <button mat-mini-fab color="primary" (click)="decreaseValue(i, 1)">
-                    <mat-icon>remove</mat-icon>
-                </button>
-            </div>
-            <div class="button-area">
-                <button mat-mini-fab color="primary" (click)="decreaseValue(i, 2)">
-                    <mat-icon>remove</mat-icon>
-                </button>
-            </div>
-            <div class="button-area">
-                <button mat-mini-fab color="primary" (click)="decreaseValue(i, 3)">
-                    <mat-icon>remove</mat-icon>
-                </button>
-            </div>
-            <div class="button-area">
-                <button mat-mini-fab color="primary" (click)="decreaseValue(i, 4)">
-                    <mat-icon>remove</mat-icon>
-                </button>
-            </div>
-        </div>
+        <mat-form-field class="example-form-field">
+          <mat-label>Info (Weights, ...)</mat-label>
+          <input
+            matInput
+            type="text"
+            [(ngModel)]="entry.info"
+            (ngModelChange)="save()"
+            #inputContent
+            [disabled]="entry.locked"
+            [ngClass]="{ 'custom-disabled': entry.locked }"
+          />
+        </mat-form-field>
+      </div>
+      <div class="delete-and-restore-btns">
+        <button mat-mini-fab color="primary" (click)="toggleLock(entry, i)">
+          <mat-icon>{{ entry.locked ? "lock" : "lock_open" }}</mat-icon>
+        </button>
+        <div style="width: 40px; height: 40px"></div>
+      </div>
+      <div class="delete-and-restore-btns">
+        <button mat-mini-fab color="primary" (click)="openDeleteDiaryEntry(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button
+          mat-mini-fab
+          color="primary"
+          (click)="restoreInfo(i)"
+          [style.visibility]="shouldShowRestoreButton(i) ? 'visible' : 'hidden'"
+        >
+          <mat-icon>settings_backup_restore</mat-icon>
+        </button>
+      </div>
     </div>
+
+    <div class="input-reps">
+      <input
+        type="number"
+        [(ngModel)]="entry.repValues[0]"
+        (ngModelChange)="save()"
+        [disabled]="entry.locked"
+        [ngClass]="{ 'custom-disabled': entry.locked }"
+      />
+      <input
+        type="number"
+        [(ngModel)]="entry.repValues[1]"
+        (ngModelChange)="save()"
+        [disabled]="entry.locked"
+        [ngClass]="{ 'custom-disabled': entry.locked }"
+      />
+      <input
+        type="number"
+        [(ngModel)]="entry.repValues[2]"
+        (ngModelChange)="save()"
+        [disabled]="entry.locked"
+        [ngClass]="{ 'custom-disabled': entry.locked }"
+      />
+      <input
+        type="number"
+        [(ngModel)]="entry.repValues[3]"
+        (ngModelChange)="save()"
+        [disabled]="entry.locked"
+        [ngClass]="{ 'custom-disabled': entry.locked }"
+      />
+      <input
+        type="number"
+        [(ngModel)]="entry.repValues[4]"
+        (ngModelChange)="save()"
+        [disabled]="entry.locked"
+        [ngClass]="{ 'custom-disabled': entry.locked }"
+      />
+    </div>
+
+    <div class="reps-increase-decrease">
+      <div class="button-area">
+        <button
+          mat-mini-fab
+          color="primary"
+          (click)="increaseValue(i, 0)"
+          [disabled]="entry.locked"
+          [ngClass]="{ 'custom-disabled-btn': entry.locked }"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <div class="button-area">
+        <button
+          mat-mini-fab
+          color="primary"
+          (click)="increaseValue(i, 1)"
+          [disabled]="entry.locked"
+          [ngClass]="{ 'custom-disabled-btn': entry.locked }"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <div class="button-area">
+        <button
+          mat-mini-fab
+          color="primary"
+          (click)="increaseValue(i, 2)"
+          [disabled]="entry.locked"
+          [ngClass]="{ 'custom-disabled-btn': entry.locked }"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <div class="button-area">
+        <button
+          mat-mini-fab
+          color="primary"
+          (click)="increaseValue(i, 3)"
+          [disabled]="entry.locked"
+          [ngClass]="{ 'custom-disabled-btn': entry.locked }"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <div class="button-area">
+        <button
+          mat-mini-fab
+          color="primary"
+          (click)="increaseValue(i, 4)"
+          [disabled]="entry.locked"
+          [ngClass]="{ 'custom-disabled-btn': entry.locked }"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="reps-increase-decrease">
+      <div class="button-area">
+        <button
+          mat-mini-fab
+          color="primary"
+          (click)="decreaseValue(i, 0)"
+          [disabled]="entry.locked"
+          [ngClass]="{ 'custom-disabled-btn': entry.locked }"
+        >
+          <mat-icon>remove</mat-icon>
+        </button>
+      </div>
+      <div class="button-area">
+        <button
+          mat-mini-fab
+          color="primary"
+          (click)="decreaseValue(i, 1)"
+          [disabled]="entry.locked"
+          [ngClass]="{ 'custom-disabled-btn': entry.locked }"
+        >
+          <mat-icon>remove</mat-icon>
+        </button>
+      </div>
+      <div class="button-area">
+        <button
+          mat-mini-fab
+          color="primary"
+          (click)="decreaseValue(i, 2)"
+          [disabled]="entry.locked"
+          [ngClass]="{ 'custom-disabled-btn': entry.locked }"
+        >
+          <mat-icon>remove</mat-icon>
+        </button>
+      </div>
+      <div class="button-area">
+        <button
+          mat-mini-fab
+          color="primary"
+          (click)="decreaseValue(i, 3)"
+          [disabled]="entry.locked"
+          [ngClass]="{ 'custom-disabled-btn': entry.locked }"
+        >
+          <mat-icon>remove</mat-icon>
+        </button>
+      </div>
+      <div class="button-area">
+        <button
+          mat-mini-fab
+          color="primary"
+          (click)="decreaseValue(i, 4)"
+          [disabled]="entry.locked"
+          [ngClass]="{ 'custom-disabled-btn': entry.locked }"
+        >
+          <mat-icon>remove</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

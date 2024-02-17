@@ -84,3 +84,16 @@ input:focus {
     outline: none;
     cursor: text !important;
 }
+
+.custom-disabled {
+    background-color: whitesmoke;
+    color: black !important;
+}
+
+.custom-disabled-btn {
+    background-color: #3f51b5 !important;
+}
+
+mat-label {
+    color: rgba(0, 0, 0, 0.6);
+}
