@@ -44,12 +44,14 @@
           />
         </mat-form-field>
       </div>
-      <div class="delete-and-restore-btns">
+
+      <!-- <div style="display:flex; gap: 8px"> -->
+      <!-- <div class="delete-and-restore-btns">
         <button mat-mini-fab color="primary" (click)="toggleLock(entry, i)">
           <mat-icon>{{ entry.locked ? "lock" : "lock_open" }}</mat-icon>
         </button>
         <div style="width: 40px; height: 40px"></div>
-      </div>
+      </div> -->
       <div class="delete-and-restore-btns">
         <button mat-mini-fab color="primary" (click)="openDeleteDiaryEntry(i)">
           <mat-icon>delete</mat-icon>
@@ -62,7 +64,12 @@
         >
           <mat-icon>settings_backup_restore</mat-icon>
         </button>
+
+        <button mat-mini-fab color="primary" (click)="toggleLock(entry, i)">
+            <mat-icon>{{ entry.locked ? "lock" : "lock_open" }}</mat-icon>
+          </button>
       </div>
+    <!-- </div> -->
     </div>
 
     <div class="input-reps">

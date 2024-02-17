@@ -92,6 +92,10 @@ li {
     border-radius: 8px !important;
 }
 
+mat-mdc-dialog-surface, .mdc-dialog__surface{
+    max-width: 768px !important;
+}
+
 // reps counter input field
 // .ng-tns-c1798928316-5 {
 //     padding-top: 0px !important;

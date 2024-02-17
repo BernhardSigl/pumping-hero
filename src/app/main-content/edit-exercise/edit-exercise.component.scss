@@ -41,17 +41,20 @@
     display: flex;
     justify-content: space-between;
     gap: 16px;
+    min-height: 132px;
+    align-items: center;
 
     .overview-inputs {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 12px;
     }
 
     .delete-and-restore-btns {
         display: flex;
         flex-direction: column;
         justify-content: space-around;
+        gap: 5px;
     }
 }
 
