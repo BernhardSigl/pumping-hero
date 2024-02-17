@@ -8,7 +8,10 @@ import { EditComponent } from '../edit/edit.component';
 
 //spinning wheel
 import { ThemePalette } from '@angular/material/core';
-import { ProgressSpinnerMode, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {
+  ProgressSpinnerMode,
+  MatProgressSpinnerModule,
+} from '@angular/material/progress-spinner';
 import { MatSliderModule } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
@@ -23,10 +26,14 @@ import { ShareTimeService } from '../../share-time/share-time.service';
     MatButtonModule,
     MatIconModule,
 
-    MatCardModule, MatRadioModule, FormsModule, MatSliderModule, MatProgressSpinnerModule
+    MatCardModule,
+    MatRadioModule,
+    FormsModule,
+    MatSliderModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './timer.component.html',
-  styleUrl: './timer.component.scss'
+  styleUrl: './timer.component.scss',
 })
 export class TimerComponent {
   color: ThemePalette = 'primary';
@@ -47,6 +54,10 @@ export class TimerComponent {
 
   currentTime: string = '';
 
+  isCountdownActive: boolean = false;
+  countdownSec: number | undefined;
+  countdownTimer: any;
+
   // Fullscreen:
   elem: any;
   isFullScreen!: boolean;
@@ -55,7 +66,8 @@ export class TimerComponent {
     private route: ActivatedRoute,
     public dialog: MatDialog,
     public shareTimeService: ShareTimeService,
-    @Inject(DOCUMENT) private document: any) { }
+    @Inject(DOCUMENT) private document: any
+  ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -71,13 +83,44 @@ export class TimerComponent {
 
   openEditIntervalCard() {
     this.dialog.open(EditComponent, {
-      data: { userId: this.userId, userVariables: this.shareTimeService.userVariables },
+      data: {
+        userId: this.userId,
+        userVariables: this.shareTimeService.userVariables,
+      },
       position: { top: '90px' },
-      width: '90%'
+      width: '90%',
     });
   }
 
+  async startWithDelay(): Promise<void> {
+    if (!this.shareTimeService.running) {
+      this.isCountdownActive = true;
+      this.countdownSec = 10;
+
+      this.countdownTimer = setInterval(() => {
+        if (this.countdownSec && this.countdownSec > 0) {
+          this.countdownSec--;
+        } else {
+          clearInterval(this.countdownTimer);
+          this.isCountdownActive = false;
+          this.start();
+        }
+      }, 1000);
+    } else {
+      this.start();
+    }
+  }
+
+  async delay(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  formatTime(time: number): string {
+    return time < 10 ? '0' + time : String(time);
+  }
+
   start(): void {
+    this.isCountdownActive = false;
     if (!this.shareTimeService.running) {
       this.shareTimeService.running = true;
       this.shareTimeService.logCurrentTime();
@@ -116,12 +159,18 @@ export class TimerComponent {
   }
 
   reset(): void {
-    clearInterval(this.startTimer);
-    clearInterval(this.shareTimeService.startTimerAlert);
-    this.shareTimeService.running = false;
-    this.hr = this.min = this.sec = this.ms = '0' + 0;
-    this.shareTimeService.secAlert = 0;
-    this.shareTimeService.value = 0;
+    if (this.isCountdownActive) {
+      clearInterval(this.countdownTimer);
+      this.countdownSec = undefined;
+      this.isCountdownActive = false;
+    } else {
+      clearInterval(this.startTimer);
+      clearInterval(this.shareTimeService.startTimerAlert);
+      this.shareTimeService.running = false;
+      this.hr = this.min = this.sec = this.ms = '0' + 0;
+      this.shareTimeService.secAlert = 0;
+      this.shareTimeService.value = 0;
+    }
   }
 
   showCurrentTime() {
@@ -141,7 +190,6 @@ export class TimerComponent {
   @HostListener('document:webkitfullscreenchange', ['$event'])
   @HostListener('document:mozfullscreenchange', ['$event'])
   @HostListener('document:MSFullscreenChange', ['$event'])
-
   chkScreenMode() {
     if (document.fullscreenElement) {
       this.isFullScreen = true;

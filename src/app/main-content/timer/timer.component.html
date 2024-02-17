@@ -1,33 +1,43 @@
 <div class="stopwatch-box">
-    <mat-card-content class="spinning-wheel">
-        <mat-progress-spinner class="example-margin" [color]="color" [mode]="mode" [value]="shareTimeService.value">
-        </mat-progress-spinner>
-    </mat-card-content>
+  <mat-card-content class="spinning-wheel">
+    <mat-progress-spinner
+      class="example-margin"
+      [color]="color"
+      [mode]="mode"
+      [value]="shareTimeService.value"
+    >
+    </mat-progress-spinner>
+  </mat-card-content>
 
-    <div class="stopwatch">
-        <h1>{{hr}}:</h1>
-        <h1> {{min}}:</h1>
-        <h1>{{sec}}</h1>
-        <!-- <h1>{{ms}}</h1> -->
-        <h1 class="currentTime">{{ currentTime }}</h1>
-        <div class="fullscreen-box">
-            <mat-icon class="screen" *ngIf="!isFullScreen" (click)="openFullscreen()">fullscreen</mat-icon>
-            <mat-icon class="screen" *ngIf="isFullScreen" (click)="closeFullscreen()">fullscreen_exit</mat-icon>
-        </div>
+  <div class="stopwatch">
+    <h1 [ngClass]="{ 'green-text': isCountdownActive }">{{ hr }}:</h1>
+    <h1 [ngClass]="{ 'green-text': isCountdownActive }">{{ min }}:</h1>
+    <h1 *ngIf="!isCountdownActive">{{ sec }}</h1>
+    <h1 *ngIf="isCountdownActive" [ngClass]="{ 'green-text': isCountdownActive }">{{ formatTime(countdownSec || 0) }}</h1>
+    <!-- <h1>{{ms}}</h1> -->
+    <h1 class="currentTime">{{ currentTime }}</h1>
+    <div class="fullscreen-box">
+      <mat-icon class="screen" *ngIf="!isFullScreen" (click)="openFullscreen()"
+        >fullscreen</mat-icon
+      >
+      <mat-icon class="screen" *ngIf="isFullScreen" (click)="closeFullscreen()"
+        >fullscreen_exit</mat-icon
+      >
     </div>
+  </div>
 
-    <div class="stopwatch-btns">
-        <button mat-mini-fab color="primary" (click)="start()">
-            <i *ngIf="!shareTimeService.running"><mat-icon>play_arrow</mat-icon></i>
-            <i *ngIf="shareTimeService.running"><mat-icon>pause</mat-icon></i>
-        </button>
+  <div class="stopwatch-btns">
+    <button mat-mini-fab color="primary" (click)="startWithDelay()"  [disabled]="isCountdownActive">
+      <i *ngIf="!shareTimeService.running"><mat-icon>play_arrow</mat-icon></i>
+      <i *ngIf="shareTimeService.running"><mat-icon>pause</mat-icon></i>
+    </button>
 
-        <button mat-mini-fab color="primary" (click)="reset()">
-            <mat-icon>restart_alt</mat-icon>
-        </button>
+    <button mat-mini-fab color="primary" (click)="reset()">
+      <mat-icon>restart_alt</mat-icon>
+    </button>
 
-        <button mat-mini-fab color="primary" (click)="openEditIntervalCard()">
-            <mat-icon>edit</mat-icon>
-        </button>
-    </div>
+    <button mat-mini-fab color="primary" (click)="openEditIntervalCard()">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
 </div>
