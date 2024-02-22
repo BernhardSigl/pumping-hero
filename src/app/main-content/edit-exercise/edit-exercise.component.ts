@@ -79,12 +79,12 @@ export class EditExerciseComponent {
     });
 
     this.emptyDiaryEntry();
-    this.lockEntries();
+    this.lockEntries('');
   }
 
-  lockEntries() {
+  lockEntries(entriesToLock: string) {
         for (let i = 0; i < this.diaryEntries.length; i++) {
-      if (i === 0) {
+      if (i === 0 && entriesToLock === 'newlyAdded') {
         this.diaryEntries[i].locked = false;
       } else {
          this.diaryEntries[i].locked = true;
@@ -144,6 +144,7 @@ export class EditExerciseComponent {
     this.diaryEntries.unshift(newEntry); // anzeige im html
     currentExercise.push(newEntry); // in firebase eintragen
     this.save();
+    this.lockEntries('newlyAdded');
   }
 
   async save() {
