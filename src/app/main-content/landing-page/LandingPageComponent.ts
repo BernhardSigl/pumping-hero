@@ -107,6 +107,12 @@ export class LandingPageComponent {
   }
 
   backup(): void {
+    const currentDate = new Date();
+    const day = currentDate.getDate().toString().padStart(2, '0');
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    const year = currentDate.getFullYear();
+    const formattedDate = `${day}${month}${year}`;
+
     const exercises = this.shareTimeService.userVariables[0].exercises;
     let exercisesText = '';
     for (const exercise in exercises) {
@@ -150,7 +156,7 @@ export class LandingPageComponent {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'exercises.txt';
+    a.download = `${formattedDate}_pumpinghero_backup.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
