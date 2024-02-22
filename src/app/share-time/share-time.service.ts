@@ -1,11 +1,19 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, deleteField, doc, onSnapshot, updateDoc } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  deleteField,
+  doc,
+  onSnapshot,
+  setDoc,
+  updateDoc,
+} from '@angular/fire/firestore';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../main-content/snack-bar/snack-bar.component';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ShareTimeService {
   value = 0;
@@ -15,6 +23,7 @@ export class ShareTimeService {
   show: boolean = true;
   showEditDiary: boolean = false;
   currentDiaryEntry!: string;
+  docId!: string;
 
   exercisesList: string[] = [];
 
@@ -46,8 +55,7 @@ export class ShareTimeService {
 
   firestore: Firestore = inject(Firestore);
 
-  constructor(private _snackBar: MatSnackBar) {   
-  }
+  constructor(private _snackBar: MatSnackBar) {}
 
   currentDiaryEntryLog(exercise: string) {
     this.currentDiaryEntry = exercise;
@@ -56,62 +64,64 @@ export class ShareTimeService {
   // Firebase
   async subUsers(userId: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-    const q = this.getSingleUserDocRef(userId);
-    onSnapshot(q, (querySnapshot) => {
-      let userField = querySnapshot.data();
+      const q = this.getSingleUserDocRef(userId);
+      onSnapshot(q, (querySnapshot) => {
+        let userField = querySnapshot.data();
 
-      this.userVariables.pop(); // aktuallisiert potenzielle Änderungen
-      this.userVariables.push(userField);
+        this.userVariables.pop(); // aktuallisiert potenzielle Änderungen
+        this.userVariables.push(userField);
 
-      const userVariable = this.userVariables[0];
+        const userVariable = this.userVariables[0];
 
-      this.firstIntervalMin = userVariable.firstIntervalMin;
-      this.secondIntervalMin = userVariable.secondIntervalMin;
-      this.firstPreIntervalMin = userVariable.firstPreIntervalMin;
-      this.secondPreIntervalMin = userVariable.secondPreIntervalMin;
+        this.firstIntervalMin = userVariable.firstIntervalMin;
+        this.secondIntervalMin = userVariable.secondIntervalMin;
+        this.firstPreIntervalMin = userVariable.firstPreIntervalMin;
+        this.secondPreIntervalMin = userVariable.secondPreIntervalMin;
 
-      this.firstIntervalSec = userVariable.firstIntervalSec;
-      this.secondIntervalSec = userVariable.secondIntervalSec;
-      this.firstPreIntervalSec = userVariable.firstPreIntervalSec;
-      this.secondPreIntervalSec = userVariable.secondPreIntervalSec;
-      resolve();
-    });
+        this.firstIntervalSec = userVariable.firstIntervalSec;
+        this.secondIntervalSec = userVariable.secondIntervalSec;
+        this.firstPreIntervalSec = userVariable.firstPreIntervalSec;
+        this.secondPreIntervalSec = userVariable.secondPreIntervalSec;
+        resolve();
+      });
     });
   }
 
   // get the exercise list
   async landingPageSubUsers(userId: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-    const q = this.getSingleUserDocRef(userId);
-    onSnapshot(q, (querySnapshot) => {
-      let userField = querySnapshot.data();
-      const exercises = userField!['exercises'];
-      // map to array
-      this.exercisesList = exercises ? Object.keys(exercises) : [];
+      const q = this.getSingleUserDocRef(userId);
+      onSnapshot(q, (querySnapshot) => {
+        let userField = querySnapshot.data();
+        const exercises = userField!['exercises'];
+        // map to array
+        this.exercisesList = exercises ? Object.keys(exercises) : [];
 
-      // background image
-      this.sortBodypart = [];
-      this.exercisesList.forEach((exerciseName: string) => {
-        this.checkBodypart(exerciseName);
-        // this.sortBodypart = [];
-        this.sortBodypart.push(this.userVariables[0].exercises[`${exerciseName}`]['bodypart']);
+        // background image
+        this.sortBodypart = [];
+        this.exercisesList.forEach((exerciseName: string) => {
+          this.checkBodypart(exerciseName);
+          // this.sortBodypart = [];
+          this.sortBodypart.push(
+            this.userVariables[0].exercises[`${exerciseName}`]['bodypart']
+          );
+        });
+        this.sortDiary();
+        resolve();
       });
-      this.sortDiary();
-      resolve();
     });
-  });
   }
 
   async deleteFieldElement(docId: string, exercise?: any) {
-    const docRef = doc(this.firestore, "users", docId);
+    const docRef = doc(this.firestore, 'users', docId);
 
     await updateDoc(docRef, {
-      capital: deleteField()
+      capital: deleteField(),
     });
   }
 
   getUsersColRef() {
-    return collection(this.firestore, "users");
+    return collection(this.firestore, 'users');
   }
 
   getSingleUserDocRef(docId: string) {
@@ -131,7 +141,9 @@ export class ShareTimeService {
   }
 
   checkActiveInterval() {
-    return (this.activeFirstInterval || this.activeSecondInterval) && this.running;
+    return (
+      (this.activeFirstInterval || this.activeSecondInterval) && this.running
+    );
   }
 
   intervalCalc() {
@@ -139,7 +151,8 @@ export class ShareTimeService {
       this.intervalConvert = this.firstIntervalMin * 60 + this.firstIntervalSec;
       this.circleProgressBehaviour();
     } else if (this.activeSecondInterval) {
-      this.intervalConvert = this.secondIntervalMin * 60 + this.secondIntervalSec;
+      this.intervalConvert =
+        this.secondIntervalMin * 60 + this.secondIntervalSec;
       this.circleProgressBehaviour();
     } else {
       this.value = 0;
@@ -152,26 +165,38 @@ export class ShareTimeService {
       this.secAlert = 0;
     }
     if (this.value > 100) {
-      this.value = +('' + this.value % 100);
+      this.value = +('' + (this.value % 100));
     }
   }
 
   preIntervalCalc() {
     if (this.activeFirstPreInterval) {
-      this.preIntervalConvert = this.intervalConvert - (this.firstPreIntervalMin * 60 + this.firstPreIntervalSec);
+      this.preIntervalConvert =
+        this.intervalConvert -
+        (this.firstPreIntervalMin * 60 + this.firstPreIntervalSec);
     } else if (this.activeSecondPreInterval) {
-      this.preIntervalConvert = this.intervalConvert - (this.secondPreIntervalMin * 60 + this.secondPreIntervalSec);
+      this.preIntervalConvert =
+        this.intervalConvert -
+        (this.secondPreIntervalMin * 60 + this.secondPreIntervalSec);
     }
   }
 
   playIntervalSound() {
-    if (this.secAlert % this.intervalConvert === 0 && (this.activeFirstInterval || this.activeSecondInterval) && this.running) {
+    if (
+      this.secAlert % this.intervalConvert === 0 &&
+      (this.activeFirstInterval || this.activeSecondInterval) &&
+      this.running
+    ) {
       this.intervalSoundBehaviour(this.AUDIO_MAIN_ALERT);
     }
   }
 
   playPreIntervalSound() {
-    if (this.secAlert % this.intervalConvert === this.preIntervalConvert && (this.activeFirstPreInterval || this.activeSecondPreInterval) && this.running) {
+    if (
+      this.secAlert % this.intervalConvert === this.preIntervalConvert &&
+      (this.activeFirstPreInterval || this.activeSecondPreInterval) &&
+      this.running
+    ) {
       this.intervalSoundBehaviour(this.AUDIO_PRE_ALERT);
     }
   }
@@ -184,25 +209,64 @@ export class ShareTimeService {
     };
   }
 
+  logDocId(docId: string) {
+    this.docId = docId;
+  }
 
   setInterval(interval: string) {
     this.toggleInterval(interval);
     this.togglePreInterval(interval);
   }
 
-  toggleInterval(interval: string) {
+  async toggleInterval(interval: string) {
     this.value = 0;
     this.secAlert = 0;
     if (interval === 'firstInterval') {
       this.activeFirstInterval = !this.activeFirstInterval;
       this.activeSecondInterval = false;
+      await this.changeActiveMainAlert(interval);
     } else if (interval === 'secondInterval') {
       this.activeSecondInterval = !this.activeSecondInterval;
       this.activeFirstInterval = false;
+      await this.changeActiveMainAlert(interval);
     }
     if (!this.activeFirstInterval && !this.activeSecondInterval) {
       this.activeFirstPreInterval = false;
       this.activeSecondPreInterval = false;
+      await this.changeActiveMainAlert('none');
+    }
+  }
+
+  checkIntervalsOnStart() {
+    this.checkFirstIntervalAtStart();
+    this.checkSecondIntervalAtStart();
+  }
+
+  checkFirstIntervalAtStart() {
+    const activeMainAlert = this.userVariables[0]['activeMainAlert'];
+    if (activeMainAlert) {
+      if (activeMainAlert === 'firstInterval') {
+        this.activeFirstInterval = true;
+      } else if (activeMainAlert === 'secondInterval') {
+        this.activeSecondInterval = true;
+      } else if (activeMainAlert === 'none') {
+        this.activeFirstInterval = false;
+        this.activeSecondInterval = false;
+      }
+    }
+  }
+
+  checkSecondIntervalAtStart() {
+    const activePreAlert = this.userVariables[0]['activePreAlert'];
+    if (activePreAlert) {
+      if (activePreAlert === 'firstPreInterval') {
+        this.activeFirstPreInterval = true;
+      } else if (activePreAlert === 'secondPreInterval') {
+        this.activeSecondPreInterval = true;
+      } else if (activePreAlert === 'none') {
+        this.activeFirstPreInterval = false;
+        this.activeSecondPreInterval = false;
+      }
     }
   }
 
@@ -210,47 +274,113 @@ export class ShareTimeService {
     if (this.firstPreIntervalIsClicked(interval)) {
       this.activeFirstPreInterval = !this.activeFirstPreInterval;
       this.activeSecondPreInterval = false;
+      this.changeActivePreAlert('firstPreInterval');
     } else if (this.secondPreIntervalIsClicked(interval)) {
       this.activeSecondPreInterval = !this.activeSecondPreInterval;
       this.activeFirstPreInterval = false;
+      this.changeActivePreAlert('secondPreInterval');
+    }
+    if (!this.activeFirstPreInterval && !this.activeSecondPreInterval) {
+      this.changeActivePreAlert('none');
     }
     this.intervalComparison();
   }
 
+  async changeActiveMainAlert(
+    activeMainAlert: string,
+  ): Promise<void> {
+    await setDoc(
+      this.getSingleUserDocRef(this.docId),
+      { activeMainAlert: activeMainAlert },
+      { merge: true }
+    );
+  }
+
+  async changeActivePreAlert(
+    activePreAlert: string,
+  ): Promise<void> {
+    await setDoc(
+      this.getSingleUserDocRef(this.docId),
+      { activePreAlert: activePreAlert },
+      { merge: true }
+    );
+  }
+
   firstPreIntervalIsClicked(interval: string) {
-    return interval === 'firstPreInterval' && (this.activeFirstInterval || this.activeSecondInterval);
+    return (
+      interval === 'firstPreInterval' &&
+      (this.activeFirstInterval || this.activeSecondInterval)
+    );
   }
 
   secondPreIntervalIsClicked(interval: string) {
-    return interval === 'secondPreInterval' && (this.activeFirstInterval || this.activeSecondInterval);
+    return (
+      interval === 'secondPreInterval' &&
+      (this.activeFirstInterval || this.activeSecondInterval)
+    );
   }
 
   intervalComparison() {
-    const firstPreIntervalTime = this.firstPreIntervalMin * 60 + this.firstPreIntervalSec;
-    const secondPreIntervalTime = this.secondPreIntervalMin * 60 + this.secondPreIntervalSec;
+    const firstPreIntervalTime =
+      this.firstPreIntervalMin * 60 + this.firstPreIntervalSec;
+    const secondPreIntervalTime =
+      this.secondPreIntervalMin * 60 + this.secondPreIntervalSec;
 
-    this.inervalComparisonCalc(firstPreIntervalTime, this.activeFirstPreInterval);
-    this.inervalComparisonCalc(secondPreIntervalTime, this.activeSecondPreInterval);
+    this.inervalComparisonCalc(
+      firstPreIntervalTime,
+      this.activeFirstPreInterval
+    );
+    this.inervalComparisonCalc(
+      secondPreIntervalTime,
+      this.activeSecondPreInterval
+    );
   }
 
   inervalComparisonCalc(preIntervalTime: number, activePreInterval: Boolean) {
-    if (this.firstIntervalSmallerThanPreInterval(preIntervalTime, activePreInterval)) {
+    if (
+      this.firstIntervalSmallerThanPreInterval(
+        preIntervalTime,
+        activePreInterval
+      )
+    ) {
       this.disablePreIntervalBtns();
       this.openSnackBar();
-    } else if (this.secondIntervalSmallerThanPreInterval(preIntervalTime, activePreInterval)) {
+    } else if (
+      this.secondIntervalSmallerThanPreInterval(
+        preIntervalTime,
+        activePreInterval
+      )
+    ) {
       this.disablePreIntervalBtns();
       this.openSnackBar();
+      this.changeActivePreAlert('none');
     }
   }
 
-  firstIntervalSmallerThanPreInterval(preIntervalTime: number, activePreInterval: Boolean) {
-    const firstIntervalTime = this.firstIntervalMin * 60 + this.firstIntervalSec;
-    return this.activeFirstInterval && activePreInterval && firstIntervalTime < preIntervalTime + 1;
+  firstIntervalSmallerThanPreInterval(
+    preIntervalTime: number,
+    activePreInterval: Boolean
+  ) {
+    const firstIntervalTime =
+      this.firstIntervalMin * 60 + this.firstIntervalSec;
+    return (
+      this.activeFirstInterval &&
+      activePreInterval &&
+      firstIntervalTime < preIntervalTime + 1
+    );
   }
 
-  secondIntervalSmallerThanPreInterval(preIntervalTime: number, activePreInterval: Boolean) {
-    const secondIntervalTime = this.secondIntervalMin * 60 + this.secondIntervalSec;
-    return this.activeSecondInterval && activePreInterval && secondIntervalTime < preIntervalTime + 1;
+  secondIntervalSmallerThanPreInterval(
+    preIntervalTime: number,
+    activePreInterval: Boolean
+  ) {
+    const secondIntervalTime =
+      this.secondIntervalMin * 60 + this.secondIntervalSec;
+    return (
+      this.activeSecondInterval &&
+      activePreInterval &&
+      secondIntervalTime < preIntervalTime + 1
+    );
   }
 
   disablePreIntervalBtns() {
@@ -265,17 +395,18 @@ export class ShareTimeService {
   }
 
   checkBodypart(exerciseName: string): string {
-    const backgroundBodypart = this.userVariables[0]?.exercises[exerciseName]?.bodypart;
+    const backgroundBodypart =
+      this.userVariables[0]?.exercises[exerciseName]?.bodypart;
     const backgroundImageMap: { [key: string]: string } = {
-      'Chest': 'url("./../../assets/img/chest-muscle.png")',
-      'Back': 'url("./../../assets/img/back-muscle.png")',
-      'Arms': 'url("./../../assets/img/arm-muscle.png")',
-      'Shoulders': 'url("./../../assets/img/shoulders-muscle.png")',
-      'Abdominal': 'url("./../../assets/img/abdominal-muscle.png")',
-      'Legs': 'url("./../../assets/img/legs-muscle.png")',
-      'Calves': 'url("./../../assets/img/calves-muscle.png")',
-      'Stamina': 'url("./../../assets/img/stamina-muscle.png")',
-      'Other': ''
+      Chest: 'url("./../../assets/img/chest-muscle.png")',
+      Back: 'url("./../../assets/img/back-muscle.png")',
+      Arms: 'url("./../../assets/img/arm-muscle.png")',
+      Shoulders: 'url("./../../assets/img/shoulders-muscle.png")',
+      Abdominal: 'url("./../../assets/img/abdominal-muscle.png")',
+      Legs: 'url("./../../assets/img/legs-muscle.png")',
+      Calves: 'url("./../../assets/img/calves-muscle.png")',
+      Stamina: 'url("./../../assets/img/stamina-muscle.png")',
+      Other: '',
     };
 
     const backgroundImage = backgroundImageMap[backgroundBodypart] || '';
@@ -289,10 +420,20 @@ export class ShareTimeService {
   }
 
   sortDiary() {
-    const customOrder = ['Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Abdominal', 'Calves', 'Stamina', 'Other'];
+    const customOrder = [
+      'Chest',
+      'Back',
+      'Legs',
+      'Shoulders',
+      'Arms',
+      'Abdominal',
+      'Calves',
+      'Stamina',
+      'Other',
+    ];
     const exerciseBodypartPairs = this.exercisesList.map((exercise, index) => ({
       exercise: exercise,
-      bodypart: this.sortBodypart[index]
+      bodypart: this.sortBodypart[index],
     }));
 
     exerciseBodypartPairs.sort((a, b) => {
@@ -301,6 +442,6 @@ export class ShareTimeService {
       return orderA - orderB || a.exercise.localeCompare(b.exercise);
     });
 
-    this.exercisesList = exerciseBodypartPairs.map(pair => pair.exercise);
+    this.exercisesList = exerciseBodypartPairs.map((pair) => pair.exercise);
   }
 }

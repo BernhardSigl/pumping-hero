@@ -9,13 +9,13 @@
             <mat-icon>notifications_active</mat-icon>
         </div>
         <button mat-raised-button color="primary" class="interval-btns"
-            (click)="this.shareTimeService.toggleInterval('firstInterval'); this.shareTimeService.logCurrentTime();this.shareTimeService.intervalComparison();"
+            (click)="this.shareTimeService.toggleInterval('firstInterval'); this.shareTimeService.logCurrentTime(); this.shareTimeService.intervalComparison();"
             [id]="shareTimeService.activeFirstInterval"
             [ngClass]="{'active-button': shareTimeService.activeFirstInterval}">
             {{ shareTimeService.firstIntervalMin }}m<br>{{ shareTimeService.firstIntervalSec }}s
         </button>
         <button mat-raised-button color="primary" class="interval-btns" [id]="shareTimeService.activeSecondInterval"
-            (click)="this.shareTimeService.toggleInterval('secondInterval'); this.shareTimeService.logCurrentTime();this.shareTimeService.intervalComparison();"
+            (click)="this.shareTimeService.toggleInterval('secondInterval'); this.shareTimeService.logCurrentTime(); this.shareTimeService.intervalComparison();"
             [ngClass]="{'active-button': shareTimeService.activeSecondInterval}">
             {{ shareTimeService.secondIntervalMin }}m<br>{{ shareTimeService.secondIntervalSec }}s
         </button>

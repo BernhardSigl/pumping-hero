@@ -10,7 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TimerComponent } from '../timer/timer.component';
 import { ShareTimeService } from '../../share-time/share-time.service';
 import { AddExerciseComponent } from '../add-exercise/add-exercise.component';
-import { onSnapshot, updateDoc } from '@angular/fire/firestore';
+import { updateDoc } from '@angular/fire/firestore';
 import { EditExerciseComponent } from '../edit-exercise/edit-exercise.component';
 import { User } from '../../models/user.class';
 import { DeleteExerciseComponent } from '../delete-exercise/delete-exercise.component';
@@ -46,8 +46,10 @@ export class LandingPageComponent {
     this.route.params.subscribe((params) => {
       this.userId = params['id'];
     });
+    this.shareTimeService.logDocId(this.userId);
     await this.shareTimeService.subUsers(this.userId);
     await this.shareTimeService.landingPageSubUsers(this.userId);
+    await this.shareTimeService.checkIntervalsOnStart();
   }
 
   openAddExerciseCard() {
