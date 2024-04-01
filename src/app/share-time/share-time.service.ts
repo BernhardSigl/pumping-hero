@@ -444,4 +444,18 @@ export class ShareTimeService {
 
     this.exercisesList = exerciseBodypartPairs.map((pair) => pair.exercise);
   }
+
+  keepScreenAwake() {
+    if ('wakeLock' in navigator) {
+      (navigator as any).wakeLock.request('screen')
+        .then((wakeLockObj: any) => {
+          console.log('Screen kept active');
+        })
+        .catch((err: any) => {
+          console.error('Error while activating screen:', err);
+        });
+    } else {
+      console.warn('Screen activity API not supported');
+    }
+  }
 }

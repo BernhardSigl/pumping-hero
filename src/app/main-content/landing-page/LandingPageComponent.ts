@@ -49,7 +49,8 @@ export class LandingPageComponent {
     this.shareTimeService.logDocId(this.userId);
     await this.shareTimeService.subUsers(this.userId);
     await this.shareTimeService.landingPageSubUsers(this.userId);
-    await this.shareTimeService.checkIntervalsOnStart();
+    this.shareTimeService.checkIntervalsOnStart();
+    this.shareTimeService.keepScreenAwake();
   }
 
   openAddExerciseCard() {
