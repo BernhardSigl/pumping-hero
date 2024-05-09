@@ -31,6 +31,9 @@ export class LoginComponent implements OnInit {
     this.loadGoogleApi(() => {
       google.accounts.id.initialize({
         client_id: '48091826759-81j87796gcoeko02ls6hjvjbkunvaolj.apps.googleusercontent.com',
+        // client_id: '48091826759-uf2tj2jrb72jctft6gqirilb50pnvt3f.apps.googleusercontent.com',
+
+        
         callback: (resp: any) => this.handleLogin(resp)
       });
       this.loading = false;

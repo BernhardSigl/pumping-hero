@@ -157,12 +157,14 @@ export class EditExerciseComponent {
   increaseValue(entryIndex: number, repIndex: number) {
     this.diaryEntries[entryIndex].repValues[repIndex]++;
     this.save();
+    this.logLastSavedExercise();
   }
 
   decreaseValue(entryIndex: number, repIndex: number) {
     if (this.diaryEntries[entryIndex].repValues[repIndex] > 0) {
       this.diaryEntries[entryIndex].repValues[repIndex]--;
       this.save();
+      this.logLastSavedExercise();
     }
   }
 
@@ -206,5 +208,9 @@ export class EditExerciseComponent {
 
   toggleLock(entry: any) {
     entry.locked = !entry.locked;
+  }
+
+  logLastSavedExercise() {
+    this.shareTimeService.saveLogLastSavedExercise(this.shareTimeService.currentDiaryEntry);
   }
 }

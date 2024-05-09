@@ -55,6 +55,9 @@ export class ShareTimeService {
 
   firestore: Firestore = inject(Firestore);
 
+  userId!: string;
+  lastSavedExercise!: string;
+
   constructor(private _snackBar: MatSnackBar) {}
 
   currentDiaryEntryLog(exercise: string) {
@@ -63,6 +66,7 @@ export class ShareTimeService {
 
   // Firebase
   async subUsers(userId: string): Promise<void> {
+    this.userId = userId;
     return new Promise<void>((resolve, reject) => {
       const q = this.getSingleUserDocRef(userId);
       onSnapshot(q, (querySnapshot) => {
@@ -286,9 +290,7 @@ export class ShareTimeService {
     this.intervalComparison();
   }
 
-  async changeActiveMainAlert(
-    activeMainAlert: string,
-  ): Promise<void> {
+  async changeActiveMainAlert(activeMainAlert: string): Promise<void> {
     await setDoc(
       this.getSingleUserDocRef(this.docId),
       { activeMainAlert: activeMainAlert },
@@ -296,9 +298,7 @@ export class ShareTimeService {
     );
   }
 
-  async changeActivePreAlert(
-    activePreAlert: string,
-  ): Promise<void> {
+  async changeActivePreAlert(activePreAlert: string): Promise<void> {
     await setDoc(
       this.getSingleUserDocRef(this.docId),
       { activePreAlert: activePreAlert },
@@ -447,7 +447,8 @@ export class ShareTimeService {
 
   keepScreenAwake() {
     if ('wakeLock' in navigator) {
-      (navigator as any).wakeLock.request('screen')
+      (navigator as any).wakeLock
+        .request('screen')
         .then((wakeLockObj: any) => {
           console.log('Screen kept active');
         })
@@ -456,6 +457,25 @@ export class ShareTimeService {
         });
     } else {
       console.warn('Screen activity API not supported');
+    }
+  }
+
+  async saveLogLastSavedExercise(currentDiaryEntry: string): Promise<void> {
+    const backgroundImage = (this.checkBodypart(currentDiaryEntry)).replace('./', './../');
+    await setDoc(
+      this.getSingleUserDocRef(this.userId),
+      { lastSavedExercise: backgroundImage },
+      { merge: true }
+    );
+    this.lastSavedExercise = backgroundImage;
+  }
+
+  async getLastSavedExercise() {
+    if (this.userId) {
+      await this.subUsers(this.userId);
+      if (this.userVariables[0].lastSavedExercise !== undefined) {
+        this.lastSavedExercise = this.userVariables[0].lastSavedExercise;
+      }
     }
   }
 }

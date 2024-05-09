@@ -36,7 +36,7 @@ import { ShareTimeService } from '../../share-time/share-time.service';
   styleUrl: './timer.component.scss',
 })
 export class TimerComponent {
-  color: ThemePalette = 'primary';
+  color: ThemePalette = 'warn';
   mode: ProgressSpinnerMode = 'determinate';
 
   initialValue = 0;
@@ -62,6 +62,8 @@ export class TimerComponent {
   elem: any;
   isFullScreen!: boolean;
 
+  lastExerciseImage!: string;
+
   constructor(
     private route: ActivatedRoute,
     public dialog: MatDialog,
@@ -69,7 +71,7 @@ export class TimerComponent {
     @Inject(DOCUMENT) private document: any
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.route.params.subscribe((params) => {
       this.userId = params['id'];
     });
@@ -79,6 +81,9 @@ export class TimerComponent {
     // Fullscreen:
     this.chkScreenMode();
     this.elem = document.documentElement;
+    await this.shareTimeService.getLastSavedExercise();
+    // console.log('timer: ',this.shareTimeService.lastSavedExercise);
+    
   }
 
   openEditIntervalCard() {
