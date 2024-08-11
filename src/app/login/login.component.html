@@ -1,18 +1,109 @@
 <div class="login-box">
-    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-    <h1>PUMPING HERO</h1>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+  <div class="loading-box" *ngIf="loading"></div>
+  <h1>PUMPING HERO</h1>
 
-    <button data-use_fedcm_for_prompt="true" class="google-btn-div" id="google-btn" [disabled]="loadingLogin">
-        <div class="google-login">
-            <img src="./../../assets/img/Google.png">
-            <span>Anmelden mit Google</span>
-        </div>
-    </button>
-
-    <img src="./../../assets/img/login-bodybuilder.png" class="login-bodybuilder-img">
-
-    <div>
-        <a href=""></a>
-        <a href=""></a>
+  <!-- <button
+    data-use_fedcm_for_prompt="true"
+    class="google-btn-div"
+    id="google-btn"
+    [disabled]="loadingLogin"
+  >
+    <div class="google-login">
+      <img src="./../../assets/img/Google.png" />
+      <span>Anmelden mit Google</span>
     </div>
+  </button> -->
+
+  <img
+    src="./../../assets/img/login-bodybuilder.png"
+    class="login-bodybuilder-img"
+  />
+
+  <div>
+    <form [formGroup]="form" (ngSubmit)="register()">
+      <mat-form-field>
+        <input
+          type="email"
+          placeholder="Email"
+          formControlName="regEmail"
+          matInput
+          (input)="checkRegInputs()"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <input
+          type="password"
+          placeholder="Password (min. 6)"
+          formControlName="regPassword"
+          matInput
+          (input)="checkRegInputs()"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <input
+          type="password"
+          matInput
+          placeholder="Confirm Password"
+          formControlName="confirmPassword"
+          matInput
+          (input)="checkRegInputs()"
+          required
+        />
+      </mat-form-field>
+
+      <button
+        type="submit"
+        mat-raised-button
+        color="primary"
+        [disabled]="!registerBtn"
+      >
+        Register
+      </button>
+    </form>
+  </div>
+
+  <div>
+    <form [formGroup]="form" (ngSubmit)="login()">
+      <mat-form-field>
+        <input
+          type="email"
+          placeholder="Email"
+          formControlName="logEmail"
+          matInput
+          (input)="checkLogInputs()"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          type="password"
+          placeholder="Password"
+          formControlName="logPassword"
+          (input)="checkLogInputs()"
+          matInput
+        />
+      </mat-form-field>
+      <button
+        type="submit"
+        mat-raised-button
+        color="primary"
+        [disabled]="!loginBtn"
+      >
+        Login
+      </button>
+    </form>
+    <button
+      mat-raised-button
+      color="primary"
+      class="rememberMe"
+      [ngClass]="{ 'rememberMe-active': rememberMe }"
+      (click)="toggleRememberMe()"
+    >
+      Remember me
+    </button>
+  </div>
 </div>

@@ -1,10 +1,9 @@
 import {
   ApplicationConfig,
-  importProvidersFrom,
   isDevMode,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
+import { getAuth, provideAuth } from '@angular/fire/auth';
 import { routes } from './app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
@@ -25,6 +24,7 @@ export const appConfig: ApplicationConfig = {
         messagingSenderId: '48091826759',
       })
     ),
+    provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),

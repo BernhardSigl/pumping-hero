@@ -22,35 +22,48 @@ mat-progress-bar {
     border-radius: 2px;
 }
 
+.loading-box {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+}
+
 h1 {
     font-size: 36px;
     font-weight: bold;
     // height: 70px;
 }
 
-.google-btn-div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: white;
-    border-radius: 5rem;
-    border: 1px solid transparent;
-    cursor: pointer;
-    width: 85%;
-
-    .google-login {
-        display: flex;
-        align-items: center;
-        padding: 8px 12px;
-        gap: 0.8rem;
-
-        img {
-            width: 30px;
-        }
-    }
+.rememberMe{
+    width: 100%;
+    margin-top: 8px;
 }
 
+button.rememberMe-active {
+    background-color: green !important;
+  }
+
 .login-bodybuilder-img {
-    width: 50%;
-    height: auto;
+    width: auto;
+    height: 120px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+button:disabled {
+    background-color: grey;
+}
+
+@media(max-height: 770px) {
+    .login-bodybuilder-img {
+        position: absolute;
+        width: auto;
+        height: 80%;
+        z-index: -1;
+    }
 }

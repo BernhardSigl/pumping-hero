@@ -27,6 +27,9 @@ export class SettingsComponent {
 
   signOut() {
     sessionStorage.removeItem('loggedInUser');
+    localStorage.removeItem('email');
+    localStorage.removeItem('password');
+    localStorage.removeItem('rememberMe');
     this.auth.signOut();
   }
 
