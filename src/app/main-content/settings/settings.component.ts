@@ -25,14 +25,6 @@ export class SettingsComponent {
   currentContent = 'buttons';
   auth = inject(AuthService);
 
-  signOut() {
-    sessionStorage.removeItem('loggedInUser');
-    localStorage.removeItem('email');
-    localStorage.removeItem('password');
-    localStorage.removeItem('rememberMe');
-    this.auth.signOut();
-  }
-
   showButtons() {
     this.currentContent = 'buttons';
   }
