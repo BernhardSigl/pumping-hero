@@ -45,10 +45,13 @@ export class TimerComponent {
   userId!: string;
   userVariables: any[] = [];
 
-  ms: any = '0' + 0;
-  sec: any = '0' + 0;
-  min: any = '0' + 0;
-  hr: any = '0' + 0;
+  ms: number = 0;
+  sec: number = 0;
+  min: number = 0;
+  hr: number = 0;
+  secFormatted: string = '00';
+  minFormatted: string = '00';
+  hrFormatted: string = '00';
 
   startTimer: any;
 
@@ -82,8 +85,6 @@ export class TimerComponent {
     this.chkScreenMode();
     this.elem = document.documentElement;
     await this.shareTimeService.getLastSavedExercise();
-    // console.log('timer: ',this.shareTimeService.lastSavedExercise);
-    
   }
 
   openEditIntervalCard() {
@@ -101,7 +102,6 @@ export class TimerComponent {
     if (!this.shareTimeService.running) {
       this.isCountdownActive = true;
       this.countdownSec = 10;
-
       this.countdownTimer = setInterval(() => {
         if (this.countdownSec && this.countdownSec > 0) {
           this.countdownSec--;
@@ -129,34 +129,40 @@ export class TimerComponent {
     if (!this.shareTimeService.running) {
       this.shareTimeService.running = true;
       this.shareTimeService.logCurrentTime();
+      let previousTime = performance.now();
+      let msAccumulator = 0;
       this.startTimer = setInterval(() => {
-        this.ms++;
-        this.ms = this.ms < 10 ? '0' + this.ms : this.ms;
-
-        if (this.ms === 100) {
+        const now = performance.now();
+        const deltaTime = now - previousTime;
+        previousTime = now;
+        msAccumulator += deltaTime;
+        while (msAccumulator >= 1000) {
           this.sec++;
           this.shareTimeService.secAlert++;
-          this.sec = this.sec < 10 ? '0' + this.sec : this.sec;
-          this.ms = '0' + 0;
+          msAccumulator -= 1000;
+          if (this.sec >= 60) {
+            this.sec = 0;
+            this.min++;
+          }
+          if (this.min >= 60) {
+            this.min = 0;
+            this.hr++;
+          }
+          this.secFormatted = this.formatTimeWithZero(this.sec);
+          this.minFormatted = this.formatTimeWithZero(this.min);
+          this.hrFormatted = this.formatTimeWithZero(this.hr);
         }
-
-        if (this.sec === 60) {
-          this.min++;
-          this.min = this.min < 10 ? '0' + this.min : this.min;
-          this.sec = '0' + 0;
-        }
-
-        if (this.min === 60) {
-          this.hr++;
-          this.hr = this.hr < 10 ? '0' + this.hr : this.hr;
-          this.hr = '0' + 0;
-        }
+        this.ms = Math.floor(msAccumulator / 10);
       }, 10);
     } else {
       this.stop();
     }
   }
 
+  formatTimeWithZero(value: number): string {
+    return value < 10 ? '0' + value : value.toString();
+  }
+  
   stop(): void {
     clearInterval(this.startTimer);
     clearInterval(this.shareTimeService.startTimerAlert);
@@ -172,7 +178,10 @@ export class TimerComponent {
       clearInterval(this.startTimer);
       clearInterval(this.shareTimeService.startTimerAlert);
       this.shareTimeService.running = false;
-      this.hr = this.min = this.sec = this.ms = '0' + 0;
+      this.hr = this.min = this.sec = this.ms = 0;
+      this.secFormatted = this.formatTimeWithZero(this.sec);
+      this.minFormatted = this.formatTimeWithZero(this.min);
+      this.hrFormatted = this.formatTimeWithZero(this.hr);
       this.shareTimeService.secAlert = 0;
       this.shareTimeService.value = 0;
     }

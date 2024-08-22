@@ -10,10 +10,10 @@
   </mat-card-content>
 
   <div class="stopwatch">
-    <h1 [ngClass]="{ 'green-text': isCountdownActive }">{{ hr }}:</h1>
-    <h1 [ngClass]="{ 'green-text': isCountdownActive }">{{ min }}:</h1>
-    <h1 *ngIf="!isCountdownActive">{{ sec }}</h1>
-    <h1 *ngIf="isCountdownActive" [ngClass]="{ 'green-text': isCountdownActive }">{{ formatTime(countdownSec || 0) }}</h1>
+    <h1 *ngIf="!isCountdownActive" [ngClass]="{ 'purple-text': isCountdownActive }">{{ hrFormatted }}:</h1>
+    <h1 *ngIf="!isCountdownActive" [ngClass]="{ 'purple-text': isCountdownActive }">{{ minFormatted }}:</h1>
+    <h1 *ngIf="!isCountdownActive">{{ secFormatted }}</h1>
+    <h1 *ngIf="isCountdownActive" [ngClass]="{ 'purple-text': isCountdownActive }">{{ formatTime(countdownSec || 0) }}</h1>
     <!-- <h1>{{ms}}</h1> -->
     <h1 class="currentTime">{{ currentTime }}</h1>
     <div class="fullscreen-box">
