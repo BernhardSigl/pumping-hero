@@ -1,5 +1,7 @@
 <div *ngIf="currentContent === 'buttons'; else imprintOrPrivacyContent">
     <div class="btns">
+        <a mat-raised-button *ngIf="showSpecificBtns" [color]="powerStatus === 'on' ? 'secondary' : 'primary'" (click)="power('on')">Power on</a>
+        <a mat-raised-button *ngIf="showSpecificBtns" [color]="powerStatus === 'off' ? 'secondary' : 'primary'" (click)="power('off')">Power off</a>
         <a mat-raised-button color="primary" (click)="showManual()">Manual</a>
         <a mat-raised-button color="primary" href="https://github.com/BernhardSigl" target="_blank">GitHub</a>
         <a mat-raised-button color="primary" href="mailto:info@bernhard-sigl.com">Get in contact</a>
