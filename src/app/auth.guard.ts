@@ -9,16 +9,16 @@ export const authGuard: CanActivateFn = (route, state) => {
   const auth = inject(Auth);
   const router = inject(Router);
 
-  console.log('Auth Guard executed');
+  // console.log('Auth Guard executed');
 
   return new Observable<boolean>((observer) => {
     const unsubscribe = auth.onAuthStateChanged(
       (user) => {
         if (user) {
-          console.log('User authenticated:', user);
+          // console.log('User authenticated:', user);
           observer.next(true);
         } else {
-          console.log('User not authenticated');
+          // console.log('User not authenticated');
           router.navigate(['']);
           observer.next(false);
         }

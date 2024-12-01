@@ -16,7 +16,7 @@
     <h1 *ngIf="isCountdownActive" [ngClass]="{ 'purple-text': isCountdownActive }">{{ formatTime(countdownSec || 0) }}</h1>
     <!-- <h1>{{ms}}</h1> -->
     <h1 class="currentTime">{{ currentTime }}</h1>
-    <h1 class="version">v62</h1>
+    <h1 class="version">v63</h1>
     <div class="fullscreen-box">
       <mat-icon class="screen" *ngIf="!isFullScreen" (click)="openFullscreen()"
         >fullscreen</mat-icon

@@ -174,4 +174,55 @@ export class LandingPageComponent {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   }
+
+  hideTime() {
+    const showHideContent = document.getElementsByClassName("showHideContent");
+    const diaryContent = document.getElementById("gym-diary");
+    const showHideTimeBtn = document.getElementById("showHideTime");
+    const margin = document.getElementById("gym-diary-title");
+
+    if (showHideTimeBtn) {
+      const iconElement = showHideTimeBtn.querySelector("mat-icon");
+  
+      if (showHideTimeBtn.classList.contains("toggled")) {
+        Array.from(showHideContent).forEach((c) => {
+          (c as HTMLElement).classList.remove("hideTimeContent");
+        });
+  
+        if (diaryContent) {
+          diaryContent.style.height = "calc(100vh - 490px)";
+        }
+  
+        if (iconElement) {
+          iconElement.innerHTML = "keyboard_arrow_up";
+        }
+
+        if (margin) {
+          margin.style.marginTop = "16px";
+        }
+
+        showHideTimeBtn.classList.remove("toggled");
+      } else {
+        Array.from(showHideContent).forEach((c) => {
+          (c as HTMLElement).classList.add("hideTimeContent");
+        });
+  
+        if (diaryContent) {
+          diaryContent.style.height = "calc(100vh - 313px)";
+        }
+  
+        if (iconElement) {
+          iconElement.innerHTML = "keyboard_arrow_down";
+        }
+
+        if (margin) {
+          margin.style.marginTop = "0";
+        }
+  
+        showHideTimeBtn.classList.add("toggled");
+      }
+    }
+  }
+  
+  
 }

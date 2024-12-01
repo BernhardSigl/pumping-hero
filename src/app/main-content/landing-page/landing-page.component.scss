@@ -31,10 +31,17 @@
     justify-content: center;
     gap: 8px;
     margin-top: 16px;
+    position: relative;
 
     button {
         margin: 0 8px;
     }
+}
+
+.hideTimeContent {
+    position: absolute;
+    z-index: -9999;
+    visibility: hidden;
 }
 
 .gym-diary {

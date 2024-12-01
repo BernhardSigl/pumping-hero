@@ -1,9 +1,9 @@
 <app-timer></app-timer>
 
 <div class="content">
-    <mat-divider *ngIf="shareTimeService.show"></mat-divider>
+    <mat-divider *ngIf="shareTimeService.show" class="showHideContent"></mat-divider>
 
-    <div class="interval" *ngIf="shareTimeService.show">
+    <div class="interval showHideContent" *ngIf="shareTimeService.show">
         <div class="interval-title">
             <h3>Alert every</h3>
             <mat-icon>notifications_active</mat-icon>
@@ -21,7 +21,7 @@
         </button>
     </div>
 
-    <div class="pre-interval" *ngIf="shareTimeService.show">
+    <div class="pre-interval showHideContent" *ngIf="shareTimeService.show">
         <div class="pre-interval-title">
             <h3>Pre Alert</h3>
             <mat-icon>notifications</mat-icon>
@@ -38,9 +38,9 @@
         </button>
     </div>
 
-    <mat-divider *ngIf="shareTimeService.show"></mat-divider>
+    <mat-divider *ngIf="shareTimeService.show" class="showHideContent"></mat-divider>
 
-    <div class="gym-diary-title" *ngIf="shareTimeService.show">
+    <div class="gym-diary-title" *ngIf="shareTimeService.show" id="gym-diary-title">
         <button mat-mini-fab color="primary" (click)="shareTimeService.showEditDiary = !shareTimeService.showEditDiary">
             <mat-icon *ngIf="!shareTimeService.showEditDiary">edit</mat-icon>
             <mat-icon *ngIf="shareTimeService.showEditDiary">edit_off</mat-icon>
@@ -54,8 +54,12 @@
         <button mat-mini-fab color="primary" (click)="openAddExerciseCard()">
             <mat-icon>add</mat-icon>
         </button>
+
+        <button mat-mini-fab color="primary" id="showHideTime" (click)="hideTime()">
+            <mat-icon>keyboard_arrow_up</mat-icon>
+        </button>
     </div>
-    <div class="gym-diary scroll-bar" *ngIf="shareTimeService.show">
+    <div class="gym-diary scroll-bar" *ngIf="shareTimeService.show" id="gym-diary">
 
         <button mat-raised-button color="primary"
             *ngFor="let exercise of shareTimeService.exercisesList; let i = index;" class="diaryBtn"
