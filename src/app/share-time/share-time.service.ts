@@ -58,6 +58,8 @@ export class ShareTimeService {
   userId!: string;
   lastSavedExercise!: string;
 
+  hideShowIntervalBool!: boolean;
+
   constructor(private _snackBar: MatSnackBar) {}
 
   currentDiaryEntryLog(exercise: string) {
@@ -461,7 +463,10 @@ export class ShareTimeService {
   }
 
   async saveLogLastSavedExercise(currentDiaryEntry: string): Promise<void> {
-    const backgroundImage = (this.checkBodypart(currentDiaryEntry)).replace('./', './../');
+    const backgroundImage = this.checkBodypart(currentDiaryEntry).replace(
+      './',
+      './../'
+    );
     await setDoc(
       this.getSingleUserDocRef(this.userId),
       { lastSavedExercise: backgroundImage },
@@ -476,6 +481,85 @@ export class ShareTimeService {
       if (this.userVariables[0].lastSavedExercise !== undefined) {
         this.lastSavedExercise = this.userVariables[0].lastSavedExercise;
       }
+    }
+  }
+
+  async hideTime() {
+    const maxRetries = 10,
+      loadingIndicator = document.getElementById('loading');
+    let retries = 0;
+
+    if (loadingIndicator) {
+      loadingIndicator.classList.add('hide');
+    }
+
+    while (retries < maxRetries) {
+      const showHideTimeBtn = document.getElementById('showHideTime');
+
+      if (showHideTimeBtn) {
+        const isToggled = showHideTimeBtn.classList.contains('toggled');
+
+        if (isToggled || !isToggled) {
+          const showHideContent =
+            document.getElementsByClassName('showHideContent');
+          const diaryContent = document.getElementById('gym-diary');
+          const margin = document.getElementById('gym-diary-title');
+          const iconElement = showHideTimeBtn.querySelector('mat-icon');
+
+          if (isToggled) {
+            Array.from(showHideContent).forEach((c) => {
+              (c as HTMLElement).classList.remove('hideTimeContent');
+            });
+
+            if (diaryContent) {
+              diaryContent.style.height = 'calc(100vh - 490px)';
+            }
+
+            if (iconElement) {
+              iconElement.innerHTML = 'keyboard_arrow_up';
+            }
+
+            if (margin) {
+              margin.style.marginTop = '16px';
+            }
+
+            showHideTimeBtn.classList.remove('toggled');
+            this.hideShowIntervalBool = false;
+          } else {
+            Array.from(showHideContent).forEach((c) => {
+              (c as HTMLElement).classList.add('hideTimeContent');
+            });
+
+            if (diaryContent) {
+              diaryContent.style.height = 'calc(100vh - 313px)';
+            }
+
+            if (iconElement) {
+              iconElement.innerHTML = 'keyboard_arrow_down';
+            }
+
+            if (margin) {
+              margin.style.marginTop = '0';
+            }
+
+            showHideTimeBtn.classList.add('toggled');
+            this.hideShowIntervalBool = true;
+          }
+
+          break;
+        }
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      retries++;
+    }
+
+    if (loadingIndicator) {
+      loadingIndicator.classList.remove('hide');
+    }
+
+    if (retries >= maxRetries) {
+      console.warn('hideTime konnte nicht erfolgreich abgeschlossen werden.');
     }
   }
 }

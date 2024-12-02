@@ -124,9 +124,12 @@ export class EditExerciseComponent {
     return `${day}/${month}/${year}`;
   }
 
-  back() {
+  async back() {
     this.shareTimeService.show = true;
     this.shareTimeService.currentDiaryEntry = '';
+    if (this.shareTimeService.hideShowIntervalBool) {
+      await this.shareTimeService.hideTime();
+    }
   }
 
   addDiaryEntry() {

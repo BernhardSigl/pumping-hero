@@ -1,6 +1,6 @@
 <app-timer></app-timer>
 
-<div class="content">
+<div class="content" id="loading">
     <mat-divider *ngIf="shareTimeService.show" class="showHideContent"></mat-divider>
 
     <div class="interval showHideContent" *ngIf="shareTimeService.show">
@@ -55,7 +55,7 @@
             <mat-icon>add</mat-icon>
         </button>
 
-        <button mat-mini-fab color="primary" id="showHideTime" (click)="hideTime()">
+        <button mat-mini-fab color="primary" id="showHideTime" (click)="shareTimeService.hideTime()">
             <mat-icon>keyboard_arrow_up</mat-icon>
         </button>
     </div>
