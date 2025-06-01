@@ -145,7 +145,7 @@ mat-mdc-dialog-surface, .mdc-dialog__surface{
 
 .mat-mdc-tab-header {
     animation: hide 0s forwards;
-    animation-delay: 3s;
+    animation-delay: 0s;
 }
 
 @keyframes hide {
@@ -155,32 +155,32 @@ mat-mdc-dialog-surface, .mdc-dialog__surface{
     }
 }
 
-.gym-diary {
-    height: calc(100vh - 490px);
-    animation: shrinkHeight 0.3s forwards;
-    animation-delay: 3s;
-  }
+// .gym-diary {
+//     height: calc(100vh - 490px);
+//     animation: shrinkHeight 0s forwards;
+//     animation-delay: 0s;
+//   }
   
-  @keyframes shrinkHeight {
-    from {
-        height: calc(100vh - 490px);
-    }
-    to {
-      height: calc(100vh - 442px);
-    }
-  }
+//   @keyframes shrinkHeight {
+//     from {
+//         height: calc(100vh - 490px);
+//     }
+//     to {
+//       height: calc(100vh - 442px);
+//     }
+//   }
 
-.card-background {
-    height: calc(100vh - 285px);
-    animation: shrinkHeightCard 0s forwards;
-    animation-delay: 0s;
-}
+// .card-background {
+//     height: calc(100vh - 285px);
+//     animation: shrinkHeightCard 0s forwards;
+//     animation-delay: 0s;
+// }
   
-@keyframes shrinkHeightCard {
-    from {
-        height: calc(100vh - 285px);
-    }
-    to {
-      height: calc(100vh - 233px);
-    }
-  }
+// @keyframes shrinkHeightCard {
+//     from {
+//         height: calc(100vh - 285px);
+//     }
+//     to {
+//       height: calc(100vh - 233px);
+//     }
+//   }

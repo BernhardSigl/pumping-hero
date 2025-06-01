@@ -512,7 +512,7 @@ export class ShareTimeService {
             });
 
             if (diaryContent) {
-              diaryContent.style.height = 'calc(100vh - 490px)';
+              diaryContent.style.height = 'calc(100vh - 442px)';
             }
 
             if (iconElement) {
@@ -531,7 +531,7 @@ export class ShareTimeService {
             });
 
             if (diaryContent) {
-              diaryContent.style.height = 'calc(100vh - 313px)';
+              diaryContent.style.height = 'calc(100vh - 265px)';
             }
 
             if (iconElement) {
