@@ -142,3 +142,45 @@ mat-mdc-dialog-surface, .mdc-dialog__surface{
     background-color: #909090;
     border-radius: 10px;
 }
+
+.mat-mdc-tab-header {
+    animation: hide 0s forwards;
+    animation-delay: 3s;
+}
+
+@keyframes hide {
+    to {
+      display: none;
+      visibility: hidden;
+    }
+}
+
+.gym-diary {
+    height: calc(100vh - 490px);
+    animation: shrinkHeight 0.3s forwards;
+    animation-delay: 3s;
+  }
+  
+  @keyframes shrinkHeight {
+    from {
+        height: calc(100vh - 490px);
+    }
+    to {
+      height: calc(100vh - 442px);
+    }
+  }
+
+.card-background {
+    height: calc(100vh - 285px);
+    animation: shrinkHeightCard 0s forwards;
+    animation-delay: 0s;
+}
+  
+@keyframes shrinkHeightCard {
+    from {
+        height: calc(100vh - 285px);
+    }
+    to {
+      height: calc(100vh - 233px);
+    }
+  }
